@@ -1,0 +1,14 @@
+name = "LLRParsing"
+uuid = "c3118f9c-a4de-4e0f-9f06-ac8db61d0145"
+authors = ["Fabian Zierler <fabian.zierler@a1.net>"]
+version = "0.1.0"
+
+[deps]
+BenchmarkTools = "6e4b80f9-dd63-53aa-95a3-0cdb28fa8baf"
+HiRepParsing = "c7cc7de0-aa5c-4db3-979c-e9fc59cba489"
+Parsers = "69de0a69-1ddd-5017-9359-2bf0b02dc9f0"
+
+[compat]
+BenchmarkTools = "1.6.0"
+HiRepParsing = "0.1.0"
+Parsers = "2.8.1"
