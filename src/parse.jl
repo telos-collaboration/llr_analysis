@@ -1,10 +1,16 @@
-function _parse_float_string!(array,string;n) 
+# This function uses the Parsers.jl package to quickly parse 
+# a string that contains 'n' doubles seperated by spaces.
+# Then result is stored in pre-allocated array 'tmp'
+function _parse_float_string!(array,string;n)
     opts = Parsers.Options(delim=' ', ignorerepeated=true)
     io = IOBuffer(string)
     for i in 1:n
         array[i] = Parsers.parse(Float64, io, opts)
     end
 end
+# Parse temporal Polyakov loop from the logfile
+# (i.e. we only parse direction '0')
+# I extract the full complex loop
 function polyakov_loop(file)
     polyakov_loop = ComplexF64[]
     tmp = zeros(ComplexF32,2)
