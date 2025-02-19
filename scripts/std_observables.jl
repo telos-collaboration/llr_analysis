@@ -3,6 +3,7 @@ using BenchmarkTools
 using HDF5
 using StatsBase
 using Statistics
+using LinearAlgebra
 using MadrasSokal
 
 # For higher moments I use the didcated functions because they are faster
@@ -32,7 +33,8 @@ function apply_jackknife(obs::AbstractVector)
     ΔO = sqrt(N-1)*std(obs,corrected=false)
     return O, ΔO
 end
-function std_observables(f,ens)
+function std_observables(h5file,ens)
+    f      = h5open(h5file)
     plaq = f[ens]["plaquette"][]
     poly = f[ens]["polyakov_loop"][]
     Nt = f[ens]["Nt"][]
@@ -65,11 +67,14 @@ function std_observables(f,ens)
     Δplaq_vev = std(plaq_τ)/sqrt(length(plaq_τ))
     Δpoly_sus = jackknife_resample_1d_reduction(poly_τ,x -> poly_susceptibility(x,Nl))[2]
     Δpoly_vev = std(poly_τ)/sqrt(length(poly_τ))
+
+    # Obtain histograms like David did for further use
+    h = fit(Histogram,plaq,nbins=100)
+    h = LinearAlgebra.normalize(h, mode=:pdf)
     
     return binder_plaq, Δbinder_plaq, sh_plaq, Δsh_plaq, plaq_vev, Δplaq_vev, poly_sus, Δpoly_sus, poly_vev, Δpoly_vev
 end
 
 h5file = "LLR_data.hdf5"
-f      = h5open(h5file)
 ens    = "ImportanceSampling/4x20/7.32/"
-binder, Δbinder, sh_plaq, Δsh_plaq, plaq, Δplaq, poly_sus, Δpoly_sus, poly, Δpoly = std_observables(f,ens)
+binder, Δbinder, sh_plaq, Δsh_plaq, plaq, Δplaq, poly_sus, Δpoly_sus, poly, Δpoly = std_observables(h5file,ens)
