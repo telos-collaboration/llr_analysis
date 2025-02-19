@@ -15,10 +15,9 @@ function parse_importance_sampling_hdf5(basedir,h5file;outname="output_file")
     end
 end
 
-using BenchmarkTools
-basedir = "/home/fabian/Documents/Physics/Data/DataLLR/ImportanceSampling/Importance_Sampling_noCSV_noRW/"
-h5file = "test.hdf5"
-@profview parse_importance_sampling_hdf5(basedir,h5file)
-@time parse_importance_sampling_hdf5(basedir,h5file)
-f = h5open(h5file)
-close(f)
+h5file = "LLR_data.hdf5"
+path = "/home/fabian/Documents/Physics/"
+path = "/home/fabian/Dokumente/Physics/"
+basedir = joinpath(path,"Data/DataLLR/ImportanceSampling/Importance_Sampling_noCSV_noRW/")
+
+parse_importance_sampling_hdf5(basedir,h5file)

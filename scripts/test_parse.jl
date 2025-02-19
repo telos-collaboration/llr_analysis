@@ -4,8 +4,11 @@ using DelimitedFiles
 using LLRParsing
 using Test
 
-compare_file = "/home/fabian/Documents/Physics/Analysis/LLR_SU3/LLRAnalysis/data/IS/IS_4x20/7.32/full.csv"
-file = "/home/fabian/Documents/Physics/Data/DataLLR/ImportanceSampling/Importance_Sampling_noCSV_noRW/IS_4x20/7.32/output_file"
+path = "/home/fabian/Documents/Physics/"
+path = "/home/fabian/Dokumente/Physics/"
+
+compare_file = joinpath(path,"Analysis/LLR_SU3/LLRAnalysis/data/IS/IS_4x20/7.32/full.csv")
+file         = joinpath(path,"Data/DataLLR/ImportanceSampling/Importance_Sampling_noCSV_noRW/IS_4x20/7.32/output_file")
 
 Nt, Nl, plaq, beta, poly = parse_importance_sampling(file)
 poly1 = abs.(real.(poly))
