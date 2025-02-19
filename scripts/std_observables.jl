@@ -21,11 +21,32 @@ function std_observables(f,ens)
     sh_plaq  = specific_heat_plaq(plaq,Nl,Nt)
     poly_vev = mean(abs,poly)
     plaq_vev = mean(plaq)
-    return binder_plaq, poly_sus, sh_plaq, poly_vev, plaq_vev
+    return binder_plaq, poly_sus, sh_plaq, poly_vev, plaq_vev, plaq, poly
 end
 
 h5file = "test.hdf5"
 f      = h5open(h5file)
 ens    = "ImportanceSampling/4x20/7.32/"
 
-binder_plaq, poly_sus, sh_plaq, poly_vev, plaq_vev = std_observables(f,ens)
+binder_plaq, poly_sus, sh_plaq, poly_vev, plaq_vev, plaq, poly = std_observables(f,ens)
+
+using MadrasSokal
+madras_sokal_time(plaq)
+madras_sokal_time(abs.(poly))
+
+# generate a resample of the original correlator matrix
+function jackknife_resample_1d_reduction(x,f)
+
+    resampled = similar(x)
+    tmp = zeros(eltype(x),(length(x)-1))
+    for index in eachindex(x)    
+        for i in eachindex(x)
+            index == i && continue
+            j = i < index ? i : i - 1
+            tmp[j] = x[i]
+        end
+        resampled[index] = f(tmp)
+    end
+
+    return resampled
+end
