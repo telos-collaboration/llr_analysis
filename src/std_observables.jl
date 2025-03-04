@@ -31,7 +31,9 @@ function std_observables(h5file,ens)
     poly = f[ens]["polyakov_loop"][]
     Nt = f[ens]["Nt"][]
     Nl = f[ens]["Nl"][]
-
+    return std_observables(plaq, poly, Nt, Nl)
+end
+function std_observables(plaq, poly, Nt, Nl)
     binder_plaq = binder_cumulant(plaq)
     sh_plaq  = specific_heat_plaq(plaq,Nl,Nt)
     plaq_vev = mean(plaq)
@@ -61,8 +63,8 @@ function std_observables(h5file,ens)
     Δpoly_vev = std(poly_τ)/sqrt(length(poly_τ))
 
     # Obtain histograms like David did for further use
-    h = fit(Histogram,plaq,nbins=100)
-    h = LinearAlgebra.normalize(h, mode=:pdf)
+    hist = fit(Histogram,plaq,nbins=100)
+    hist = LinearAlgebra.normalize(hist, mode=:pdf)
     
     return binder_plaq, Δbinder_plaq, sh_plaq, Δsh_plaq, plaq_vev, Δplaq_vev, poly_sus, Δpoly_sus, poly_vev, Δpoly_vev
 end
