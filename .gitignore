@@ -1,2 +1,7 @@
 *.h5
 *.hdf5
+*.zst
+*.csv
+*.txt
+!test/test_data/importance_sampling_4x20_beta7.32_full.csv
+!test/test_data/importance_sampling_4x20_beta7.32_logs.zst
