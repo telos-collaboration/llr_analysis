@@ -26,13 +26,13 @@ function parse_dS0(file)
     end
     return dS0
 end
-"""
-    Parse the new central action for the replica.
-    In contrast to Davids parsing code I do not distinguish
-    between NR, RM and fixed-a updates here but will later 
-    split the output into corresping pices.
-"""
 function parse_S0(file)
+    """
+        Parse the new central action for the replica.
+        In contrast to Davids parsing code I do not distinguish
+        between NR, RM and fixed-a updates here but will later 
+        split the output into corresping pices.
+    """
     pattern = "[SWAP][10]New Rep Par S0 = "
     pos1    = length(pattern)
     S0      = Float64[]
@@ -44,16 +44,6 @@ function parse_S0(file)
     end
     return S0
 end
-
-base_dir = "/home/fabian/Downloads/llr_parser_test_data/su3_4x20_8/"
-repeats, replica_dirs = get_repeat_and_replica_dirs(base_dir)
-
-fileSU3 = "/home/fabian/Downloads/llr_parser_test_data/su3_4x20_8/0/Rep_0/out_0"
-fileSp4 = "/home/fabian/Downloads/llr_parser_test_data/sp4_4x20_48/0/Rep_0/out_0"
-@test parse_dS0(fileSU3) == 1216.86282
-@test parse_dS0(fileSp4) == 122.55319
-S0 = parse_S0(fileSp4)
-
 function parse_RM_plaquette(file)
     pattern = "[MAIN][0]NR Plaq a fixed "
     pos     = length(pattern)
@@ -76,7 +66,43 @@ function parse_NR_plaquette(file)
     end
     return plaq
 end
+function parse_a_NR(file)
+    pattern = "[MAIN][0]NR <a_rho"
+    a       = Float64[]
+    for line in eachline(file)
+        if startswith(line,pattern)
+            pos = findfirst('=',line) + 1
+            append!(a,parse(Float64,line[pos:end]))
+        end
+    end
+    return a
+end
+function parse_a_RM(file)
+    pattern = "[MAIN][0]<a_rho"
+    a       = Float64[]
+    for line in eachline(file)
+        if startswith(line,pattern)
+            pos = findfirst('=',line) + 1
+            append!(a,parse(Float64,line[pos:end]))
+        end
+    end
+    return a
+end
+
+
+base_dir = "/home/fabian/Downloads/llr_parser_test_data/su3_4x20_8/"
+repeats, replica_dirs = get_repeat_and_replica_dirs(base_dir)
+
+fileSU3 = "/home/fabian/Downloads/llr_parser_test_data/su3_4x20_8/0/Rep_0/out_0"
+fileSp4 = "/home/fabian/Downloads/llr_parser_test_data/sp4_4x20_48/0/Rep_0/out_0"
+@test parse_dS0(fileSU3) == 1216.86282
+@test parse_dS0(fileSp4) == 122.55319
+S0 = parse_S0(fileSp4)
 parse_RM_plaquette(fileSp4)
 parse_RM_plaquette(fileSU3)
 parse_NR_plaquette(fileSp4)
 parse_NR_plaquette(fileSU3)
+parse_a_NR(fileSp4)
+parse_a_NR(fileSU3)
+parse_a_RM(fileSp4)
+parse_a_RM(fileSU3)
