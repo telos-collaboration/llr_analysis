@@ -52,5 +52,31 @@ fileSU3 = "/home/fabian/Downloads/llr_parser_test_data/su3_4x20_8/0/Rep_0/out_0"
 fileSp4 = "/home/fabian/Downloads/llr_parser_test_data/sp4_4x20_48/0/Rep_0/out_0"
 @test parse_dS0(fileSU3) == 1216.86282
 @test parse_dS0(fileSp4) == 122.55319
-
 S0 = parse_S0(fileSp4)
+
+function parse_RM_plaquette(file)
+    pattern = "[MAIN][0]NR Plaq a fixed "
+    pos     = length(pattern)
+    plaq    = Float64[]
+    for line in eachline(file)
+        if startswith(line,pattern)
+            append!(plaq,parse(Float64,line[pos:end]))
+        end
+    end
+    return plaq
+end
+function parse_NR_plaquette(file)
+    pattern = "[MAIN][0]Plaq a fixed "
+    pos     = length(pattern)
+    plaq    = Float64[]
+    for line in eachline(file)
+        if startswith(line,pattern)
+            append!(plaq,parse(Float64,line[pos:end]))
+        end
+    end
+    return plaq
+end
+parse_RM_plaquette(fileSp4)
+parse_RM_plaquette(fileSU3)
+parse_NR_plaquette(fileSp4)
+parse_NR_plaquette(fileSU3)
