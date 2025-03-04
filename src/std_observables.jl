@@ -68,3 +68,34 @@ function std_observables(plaq, poly, Nt, Nl)
     
     return binder_plaq, Δbinder_plaq, sh_plaq, Δsh_plaq, plaq_vev, Δplaq_vev, poly_sus, Δpoly_sus, poly_vev, Δpoly_vev
 end
+function write_all_std_observables_to_hdf5(h5file_in,h5file_out)
+    fid  = h5open(h5file_in)["ImportanceSampling"]
+    @showprogress for latt in keys(fid)
+        for β in keys(fid[latt])
+            plaq_vec = fid[joinpath(latt,β,"plaquette")][]
+            poly_vec = fid[joinpath(latt,β,"polyakov_loop")][]
+            Nt   = fid[joinpath(latt,β,"Nt")][]
+            Nl   = fid[joinpath(latt,β,"Nl")][]
+            beta = fid[joinpath(latt,β,"beta")][]
+    
+            bc, Δbc, sh, Δsh, plaq, Δplaq, psus, Δpsus, poly, Δpoly = std_observables(plaq_vec, poly_vec, Nt, Nl)
+
+            # Save newly computed data to file
+            h5write(h5file_out,joinpath("ImportanceSampling",latt,β,"plaquette"),plaq)
+            h5write(h5file_out,joinpath("ImportanceSampling",latt,β,"Delta_plaquette"),Δplaq)
+            h5write(h5file_out,joinpath("ImportanceSampling",latt,β,"polyakov_loop"),poly)
+            h5write(h5file_out,joinpath("ImportanceSampling",latt,β,"Delta_polyakov_loop"),Δpoly)
+            h5write(h5file_out,joinpath("ImportanceSampling",latt,β,"binder_cumulant"),bc)
+            h5write(h5file_out,joinpath("ImportanceSampling",latt,β,"poly_susceptibility"),psus)
+            h5write(h5file_out,joinpath("ImportanceSampling",latt,β,"specific_heat_plaq"),sh)
+            h5write(h5file_out,joinpath("ImportanceSampling",latt,β,"Delta_binder_cumulant"),Δbc)
+            h5write(h5file_out,joinpath("ImportanceSampling",latt,β,"Delta_poly_susceptibility"),Δpsus)
+            h5write(h5file_out,joinpath("ImportanceSampling",latt,β,"Delta_specific_heat_plaq"),Δsh)
+            # Also save basic lattice parameters
+            h5write(h5file_out,joinpath("ImportanceSampling",latt,β,"Nt"),Nt)
+            h5write(h5file_out,joinpath("ImportanceSampling",latt,β,"Nl"),Nl)
+            h5write(h5file_out,joinpath("ImportanceSampling",latt,β,"beta"),beta)
+    
+        end
+    end    
+end
