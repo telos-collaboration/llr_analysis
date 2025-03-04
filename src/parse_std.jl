@@ -39,7 +39,7 @@ function parse_importance_sampling(file)
     poly = polyakov_loop(file)
     return Nt, Nl, plaq, beta, poly 
 end
-function importance_sampling_hdf5(file_in,h5file)
+function importance_sampling_file_to_hdf5(file_in,h5file)
     Nt, Nl, plaq, beta, poly = parse_importance_sampling(file_in)
     ensemble = "ImportanceSampling/$(Nt)x$(Nl)/$beta"
 
@@ -49,3 +49,16 @@ function importance_sampling_hdf5(file_in,h5file)
     h5write(h5file,joinpath(ensemble,"Nl"),Nl)
     h5write(h5file,joinpath(ensemble,"beta"),beta)
 end
+function importance_sampling_dir_hdf5(basedir,h5file;outname="output_file")
+    isfile(h5file) && rm(h5file)
+    # Iterate recursively through all directories in basedir
+    # Check if there is a matching output file
+    # If yes: Save data to the hdf5 file 
+    for (root,dirs,files) in walkdir(basedir)
+        if outname ∈ files
+            infile = joinpath(root,outname)
+            importance_sampling_file_to_hdf5(infile,h5file)
+        end
+    end
+end
+
