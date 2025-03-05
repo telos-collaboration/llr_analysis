@@ -27,12 +27,6 @@ function parse_dS0(file)
     return dS0
 end
 function parse_S0(file)
-    """
-        Parse the new central action for the replica.
-        In contrast to Davids parsing code I do not distinguish
-        between NR, RM and fixed-a updates here but will later 
-        split the output into corresping pices.
-    """
     pattern = "[SWAP][10]New Rep Par S0 = "
     pos1    = length(pattern)
     S0      = Float64[]
@@ -88,7 +82,31 @@ function parse_a_RM(file)
     end
     return a
 end
+function parse_fixeda_S0_a_dS(file)
+    is_fxa = false
+    S0 = Float64[]
+    a  = Float64[]
+    dS = Float64[]
+    rx = r" S0 ([0-9]+.[0-9]+),  a  ([0-9]+.[0-9]+) , dS ([0-9]+.[0-9]+)"
 
+    for line in eachline(file)
+        if startswith(line,"[SYSTEM][0]Process finalized.")
+            is_fxa = false
+            @show is_fxa
+        end
+        if startswith(line,"[MAIN][0]Robins Monro update done.")
+            is_fxa = true
+            @show is_fxa
+        end
+        if is_fxa && startswith(line,"[llr:setreplica][0]New LLR Param:")
+            vals = match(rx,line).captures 
+            append!(S0,parse(Float64,vals[1]))
+            append!(a ,parse(Float64,vals[2]))
+            append!(dS,parse(Float64,vals[3]))
+         end
+    end
+    return S0, a, dS
+end
 
 base_dir = "/home/fabian/Downloads/llr_parser_test_data/su3_4x20_8/"
 repeats, replica_dirs = get_repeat_and_replica_dirs(base_dir)
@@ -106,3 +124,5 @@ parse_a_NR(fileSp4)
 parse_a_NR(fileSU3)
 parse_a_RM(fileSp4)
 parse_a_RM(fileSU3)
+parse_fixeda_S0_a_dS(fileSp4)[1]
+parse_fixeda_S0_a_dS(fileSU3)[1]
