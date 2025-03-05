@@ -5,11 +5,9 @@ using BenchmarkTools
 using ProgressMeter
 
 function parse_entire_llr_dir_to_hdf5(dir,h5file;name=basename(dir)) 
-    isfile(h5file) && rm(h5file)
-    fid = h5open(h5file,"w")
-
+    fid = h5open(h5file,"cw")
     repeats, replica_dirs = get_repeat_and_replica_dirs(dir)
-    @showprogress for repeat in repeats
+    @showprogress desc="parsing $name" for repeat in repeats
         for rep in replica_dirs[repeat]
             file = joinpath(dir, repeat,rep,"out_0")
             dS0, S0, plaq, a, is_rm, S0_fxa, a_fxa, poly = parse_llr_quick(file)
@@ -37,8 +35,12 @@ function test_parsing(dir)
     end
     
 end
+h5file = "output/sp4_david.hdf5"
+for dir in readdir("/media/fabian/Adata2TB/sp4_backup_full",join=true)
+    parse_entire_llr_dir_to_hdf5(dir,h5file)
+end
 
-dir = "/home/fabian/Downloads/llr_parser_test_data/sp4_4x20_48"
-h5file = "test.hdf5"
-parse_entire_llr_dir_to_hdf5(dir,h5file)
-test_parsing(dir)
+h5file = "output/su3_david.hdf5"
+for dir in readdir("/media/fabian/Adata2TB/su3_backup_logfiles",join=true)
+    parse_entire_llr_dir_to_hdf5(dir,h5file)
+end
