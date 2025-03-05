@@ -28,4 +28,5 @@ end
 
 dir = "/home/fabian/Downloads/llr_parser_test_data/sp4_4x20_48"
 h5file = "test.hdf5"
+parse_entire_llr_dir_to_hdf5(dir,h5file) 
 @profview parse_entire_llr_dir_to_hdf5(dir,h5file) 

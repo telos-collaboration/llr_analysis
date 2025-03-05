@@ -157,26 +157,28 @@ function parse_llr_quick(file)
         if startswith(line,"[SYSTEM][0]Process finalized.")
             is_fxa = false
         end
-        if startswith(line,"[MAIN][0]Robins Monro update done.")
-            is_fxa = true
-            append!(S0_fxa,S0[end])
-            append!(a_fxa,a[end])
-            append!(dS_fxa,dS0)
+        if startswith(line,"[MAIN][0]")
+            if startswith(line,"[MAIN][0]Robins Monro update done.")
+                is_fxa = true
+                append!(S0_fxa,S0[end])
+                append!(a_fxa,a[end])
+                append!(dS_fxa,dS0)
+            end
+            if occursin(patternPl,line)
+                m   = match(patternPl,line)
+                str = m.captures
+                append!(plaq,parse(Float64,str[2]))
+                append!(is_rm,isnothing(str[1]))
+            end
+            if occursin(pattern_a,line)
+                m   = match(pattern_a,line)
+                str = m.captures
+                append!(a,parse(Float64,str[2]))
+            end
         end
         if !is_fxa && startswith(line,patternS0)
             pos2 = first(findnext("dS",line,posS0))
             append!(S0,parse(Float64,line[posS0:pos2-1]))
-        end
-        if occursin(patternPl,line)
-            m   = match(patternPl,line)
-            str = m.captures
-            append!(plaq,parse(Float64,str[2]))
-            append!(is_rm,isnothing(str[1]))
-        end
-        if occursin(pattern_a,line)
-            m   = match(pattern_a,line)
-            str = m.captures
-            append!(a,parse(Float64,str[2]))
         end
         if is_fxa && startswith(line,"[llr:setreplica][0]New LLR Param:")
             vals = match(rx,line).captures 
