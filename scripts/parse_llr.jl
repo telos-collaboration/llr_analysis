@@ -26,7 +26,20 @@ function parse_entire_llr_dir_to_hdf5(dir,h5file;name=basename(dir))
     end
     close(fid)
 end
+function test_parsing(dir)
+    repeats, replica_dirs = get_repeat_and_replica_dirs(dir)
+    @showprogress for repeat in repeats
+        for rep in replica_dirs[repeat]
+            file = joinpath(dir, repeat,rep,"out_0")
+            ans1 = parse_llr_quick(file)
+            ans2 = parse_llr_full(file)
+            @assert ans1 == ans2
+        end
+    end
+    
+end
 
 dir = "/home/fabian/Downloads/llr_parser_test_data/sp4_4x20_48"
 h5file = "test.hdf5"
 parse_entire_llr_dir_to_hdf5(dir,h5file)
+test_parsing(dir)
