@@ -1,5 +1,6 @@
 using Test
 using NaturalSort
+using Parsers
 function get_repeat_and_replica_dirs(base_dir)
     # Obtain all directories containing repeats and sort them
     repeat_dirs = filter( str -> all(isdigit, str), readdir(base_dir))
@@ -107,6 +108,26 @@ function parse_fixeda_S0_a_dS(file)
     end
     return S0, a, dS
 end
+function _parse_data!(array,string;n)
+    opts = Parsers.Options(delim=' ', ignorerepeated=true)
+    io = IOBuffer(string)
+    for i in 1:n
+        array[i] = Parsers.parse(Float64, io, opts)
+    end
+end
+function parse_fun_polyakov_loop(file)
+    poly    = ComplexF64[]
+    pattern = "[FUND_POLYAKOV][0]Polyakov direction 0 = "
+    pos     = length(pattern)
+    vals    = zeros(2)
+    for line in eachline(file)
+        if startswith(line,pattern)
+            _parse_data!(vals,line[pos:end];n=2)
+            append!(poly, vals[1] + im*vals[2])
+        end
+    end
+    return poly
+end
 
 base_dir = "/home/fabian/Downloads/llr_parser_test_data/su3_4x20_8/"
 repeats, replica_dirs = get_repeat_and_replica_dirs(base_dir)
@@ -126,3 +147,5 @@ parse_a_RM(fileSp4)
 parse_a_RM(fileSU3)
 parse_fixeda_S0_a_dS(fileSp4)[1]
 parse_fixeda_S0_a_dS(fileSU3)[1]
+parse_fun_polyakov_loop(fileSp4)
+parse_fun_polyakov_loop(fileSU3)
