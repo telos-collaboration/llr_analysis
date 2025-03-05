@@ -1,3 +1,6 @@
+# Test parsing of importance sampling files 
+compare_file = "./test_data/importance_sampling_4x20_beta7.32_full.csv"
+file         = "./test_data/importance_sampling_4x20_beta7.32_logs.zst"
 file_tmp     = "./test_data/tmp.txt"
 compare_file_std = "./test_data/4x20_std.csv"
 
