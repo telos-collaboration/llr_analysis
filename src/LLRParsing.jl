@@ -17,6 +17,6 @@ include("std_observables.jl")
 export std_observables
 include("parse_llr.jl")
 export get_repeat_and_replica_dirs
-export parse_dS0, parse_S0, parse_NR_plaquette, parse_RM_plaquette, parse_a_NR, parse_a_RM, parse_fixeda_S0_a_dS, parse_fun_polyakov_loop
+export parse_dS0, parse_S0, parse_llr_plaquette, parse_a_NR, parse_a_RM, parse_fixeda_S0_a_dS, parse_fun_polyakov_loop
 
 end # module LLRParsing

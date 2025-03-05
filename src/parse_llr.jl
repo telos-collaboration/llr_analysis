@@ -43,27 +43,19 @@ function parse_S0(file)
     end
     return S0
 end
-function parse_NR_plaquette(file)
-    pattern = "[MAIN][0]NR Plaq a fixed "
-    pos     = length(pattern)
+function parse_llr_plaquette(file)
+    pattern = r"^\[MAIN\]\[0\](NR )*Plaq a fixed ([0-9]+.[0-9]+)"
     plaq    = Float64[]
+    is_rm   = Bool[]
     for line in eachline(file)
-        if startswith(line,pattern)
-            append!(plaq,parse(Float64,line[pos:end]))
+        if occursin(pattern,line)
+            m   = match(pattern,line)
+            str = m.captures
+            append!(plaq,parse(Float64,str[2]))
+            append!(is_rm,isnothing(str[1]))
         end
     end
-    return plaq
-end
-function parse_RM_plaquette(file)
-    pattern = "[MAIN][0]Plaq a fixed "
-    pos     = length(pattern)
-    plaq    = Float64[]
-    for line in eachline(file)
-        if startswith(line,pattern)
-            append!(plaq,parse(Float64,line[pos:end]))
-        end
-    end
-    return plaq
+    return plaq, is_rm
 end
 function parse_a_NR(file)
     pattern = "[MAIN][0]NR <a_rho"
