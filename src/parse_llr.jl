@@ -57,27 +57,19 @@ function parse_llr_plaquette(file)
     end
     return plaq, is_rm
 end
-function parse_a_NR(file)
-    pattern = "[MAIN][0]NR <a_rho"
+function parse_a(file)
+    pattern = r"^\[MAIN\]\[0\](NR )*<a_rho\(.+\)>= ([0-9]+.[0-9]+)"
     a       = Float64[]
+    is_rm   = Bool[]
     for line in eachline(file)
-        if startswith(line,pattern)
-            pos = findfirst('=',line) + 1
-            append!(a,parse(Float64,line[pos:end]))
+        if occursin(pattern,line)
+            m   = match(pattern,line)
+            str = m.captures
+            append!(a,parse(Float64,str[2]))
+            append!(is_rm,isnothing(str[1]))
         end
     end
-    return a
-end
-function parse_a_RM(file)
-    pattern = "[MAIN][0]<a_rho"
-    a       = Float64[]
-    for line in eachline(file)
-        if startswith(line,pattern)
-            pos = findfirst('=',line) + 1
-            append!(a,parse(Float64,line[pos:end]))
-        end
-    end
-    return a
+    return a, is_rm
 end
 function parse_fixeda_S0_a_dS(file;S0_last,a_last,dS_last)
     is_fxa = false

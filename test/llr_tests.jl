@@ -15,11 +15,10 @@ fa = sortslices(fa,dims=1,by=x->(x[8]))
 dS0 = parse_dS0(fileSp4)
 S0  = parse_S0(fileSp4)
 plaq, is_rm = parse_llr_plaquette(fileSp4)
-a_NR = parse_a_NR(fileSp4)
-a_RM = parse_a_RM(fileSp4)
-a    = vcat(a_NR,a_RM) 
+a, is_rm2   = parse_a(fileSp4) 
 poly = parse_fun_polyakov_loop(fileSp4)
 S0_fxa, a_fxa, dS_fxa = parse_fixeda_S0_a_dS(fileSp4;S0_last=S0[end],a_last=a[end],dS_last=dS0)
+
 a_fxa_david = Float64[]
 S0_fxa_david = Float64[]
 for i in  Iterators.partition(eachindex(fa[:,1]),100) 
