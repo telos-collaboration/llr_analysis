@@ -89,7 +89,7 @@ function parse_fixeda_S0_a_dS(file;S0_last,a_last,dS_last)
             append!(S0,parse(Float64,vals[1]))
             append!(a ,parse(Float64,vals[2]))
             append!(dS,parse(Float64,vals[3]))
-         end
+        end
     end
     # remove the last entry, because no measurement has been performed after the last fixed-a update
     return S0[1:end-1], a[1:end-1], dS[1:end-1]
@@ -127,4 +127,67 @@ function parse_llr_full(file)
     S0_fxa, a_fxa, dS_fxa = parse_fixeda_S0_a_dS(file;S0_last=S0[end],a_last=a[end],dS_last=dS0)
     poly = parse_fun_polyakov_loop(file)
     return dS0, S0, plaq, a, is_rm, S0_fxa, a_fxa, dS_fxa, poly
+end
+function parse_llr_quick(file)
+    """ This is equvivalent to parse_llr_full(file) but performs only one pass over the file  """
+    pattern_poly = "[FUND_POLYAKOV][0]Polyakov direction 0 = "
+    patternS0 = "[SWAP][10]New Rep Par S0 = "
+    patternPl = r"^\[MAIN\]\[0\](NR )*Plaq a fixed ([0-9]+.[0-9]+)"
+    pattern_a = r"^\[MAIN\]\[0\](NR )*<a_rho\(.+\)>= ([0-9]+.[0-9]+)"    
+    pos_poly  = length(pattern_poly)
+    posS0 = length(patternS0)
+    dS0 = parse_dS0(file)
+    rx = r" S0 ([0-9]+.[0-9]+),  a  ([0-9]+.[0-9]+) , dS ([0-9]+.[0-9]+)"
+    
+    is_rm  = Bool[]
+    plaq   = Float64[]
+    S0     = Float64[]
+    a      = Float64[]
+    poly   = ComplexF64[]
+    
+    S0_fxa = Float64[]
+    a_fxa  = Float64[]
+    dS_fxa = Float64[]
+    
+    tmp_poly = zeros(2)
+    is_fxa = false
+
+    for line in eachline(file)
+    
+        if startswith(line,"[SYSTEM][0]Process finalized.")
+            is_fxa = false
+        end
+        if startswith(line,"[MAIN][0]Robins Monro update done.")
+            is_fxa = true
+            append!(S0_fxa,S0[end])
+            append!(a_fxa,a[end])
+            append!(dS_fxa,dS0)
+        end
+        if !is_fxa && startswith(line,patternS0)
+            pos2 = first(findnext("dS",line,posS0))
+            append!(S0,parse(Float64,line[posS0:pos2-1]))
+        end
+        if occursin(patternPl,line)
+            m   = match(patternPl,line)
+            str = m.captures
+            append!(plaq,parse(Float64,str[2]))
+            append!(is_rm,isnothing(str[1]))
+        end
+        if occursin(pattern_a,line)
+            m   = match(pattern_a,line)
+            str = m.captures
+            append!(a,parse(Float64,str[2]))
+        end
+        if is_fxa && startswith(line,"[llr:setreplica][0]New LLR Param:")
+            vals = match(rx,line).captures 
+            append!(S0_fxa,parse(Float64,vals[1]))
+            append!(a_fxa ,parse(Float64,vals[2]))
+            append!(dS_fxa,parse(Float64,vals[3]))
+        end
+        if startswith(line,pattern_poly)
+            _parse_data!(tmp_poly,line[pos_poly:end];n=2)
+            append!(poly, tmp_poly[1] + im*tmp_poly[2])
+        end
+    end
+    return dS0, S0, plaq, a, is_rm, S0_fxa[1:end-1], a_fxa[1:end-1], dS_fxa[1:end-1], poly
 end
