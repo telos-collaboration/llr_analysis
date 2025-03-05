@@ -114,3 +114,17 @@ function parse_fun_polyakov_loop(file)
     end
     return poly
 end
+function parse_llr_no_fxa(file)
+    dS0 = parse_dS0(file)
+    S0  = parse_S0(file)
+    plaq, is_rmP = parse_llr_plaquette(file)
+    a, is_rma   = parse_a(file) 
+    @assert is_rmP == is_rma
+    return dS0, S0, plaq, a, is_rma
+end
+function parse_llr_full(file)
+    dS0, S0, plaq, a, is_rm = parse_llr_no_fxa(file)
+    S0_fxa, a_fxa, dS_fxa = parse_fixeda_S0_a_dS(file;S0_last=S0[end],a_last=a[end],dS_last=dS0)
+    poly = parse_fun_polyakov_loop(file)
+    return dS0, S0, plaq, a, is_rm, S0_fxa, a_fxa, dS_fxa, poly
+end

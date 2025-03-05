@@ -12,12 +12,7 @@ RM = RM[RM[:,7] .== 0, :]
 RM = sortslices(RM,dims=1,by=x->(x[1]))
 fa = sortslices(fa,dims=1,by=x->(x[8]))
 
-dS0 = parse_dS0(fileSp4)
-S0  = parse_S0(fileSp4)
-plaq, is_rm = parse_llr_plaquette(fileSp4)
-a, is_rm2   = parse_a(fileSp4) 
-poly = parse_fun_polyakov_loop(fileSp4)
-S0_fxa, a_fxa, dS_fxa = parse_fixeda_S0_a_dS(fileSp4;S0_last=S0[end],a_last=a[end],dS_last=dS0)
+dS0, S0, plaq, a, is_rm, S0_fxa, a_fxa, dS_fxa, poly = parse_llr_full(fileSp4)
 
 a_fxa_david = Float64[]
 S0_fxa_david = Float64[]
