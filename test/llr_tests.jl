@@ -12,7 +12,7 @@ RM = RM[RM[:,7] .== 0, :]
 RM = sortslices(RM,dims=1,by=x->(x[1]))
 fa = sortslices(fa,dims=1,by=x->(x[8]))
 
-dS0, S0, plaq, a, is_rm, S0_fxa, a_fxa, dS_fxa, poly = parse_llr_full(fileSp4)
+dS0, S0, plaq, a, is_rm, S0_fxa, a_fxa, poly = parse_llr_full(fileSp4)
 
 a_fxa_david = Float64[]
 S0_fxa_david = Float64[]
@@ -27,7 +27,6 @@ end
     @test isapprox(plaq,RM[:,6]./RM[:,5]./6)
     @test a == -RM[:,2]
     @test abs.(poly) == fa[:,6]
-    @test only(unique(dS_fxa)) == 2only(unique(RM[:,4]))
     @test a_fxa == -a_fxa_david
     @test S0_fxa == S0_fxa_david
 end
