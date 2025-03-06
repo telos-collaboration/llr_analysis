@@ -10,7 +10,7 @@ function parse_entire_llr_dir_to_hdf5(dir,h5file;name=basename(dir))
     @showprogress desc="parsing $name" for repeat in repeats
         for rep in replica_dirs[repeat]
             file = joinpath(dir, repeat,rep,"out_0")
-            dS0, S0, plaq, a, is_rm, S0_fxa, a_fxa, poly = parse_llr_quick(file)
+            dS0, S0, plaq, a, is_rm, S0_fxa, a_fxa, poly = parse_llr(file)
             write(fid,joinpath(name,repeat,rep,"dS0"),dS0)
             write(fid,joinpath(name,repeat,rep,"S0"),S0)
             write(fid,joinpath(name,repeat,rep,"plaq"),plaq)
@@ -28,7 +28,7 @@ function test_parsing(dir)
     @showprogress for repeat in repeats
         for rep in replica_dirs[repeat]
             file = joinpath(dir, repeat,rep,"out_0")
-            ans1 = parse_llr_quick(file)
+            ans1 = parse_llr(file)
             ans2 = parse_llr_full(file)
             @assert ans1 == ans2
         end
