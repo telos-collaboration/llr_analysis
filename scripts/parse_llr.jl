@@ -35,12 +35,12 @@ function test_parsing(dir)
     end
     
 end
-h5file = "output/sp4_david.hdf5"
+h5file = "output/Sp4_llr_david.hdf5"
 for dir in readdir("/media/fabian/Adata2TB/sp4_backup_full",join=true)
     parse_entire_llr_dir_to_hdf5(dir,h5file)
 end
 
-h5file = "output/su3_david.hdf5"
+h5file = "output/SU3_llr_david.hdf5"
 for dir in readdir("/media/fabian/Adata2TB/su3_backup_logfiles",join=true)
     parse_entire_llr_dir_to_hdf5(dir,h5file)
 end
