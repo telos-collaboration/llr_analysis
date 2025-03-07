@@ -1,11 +1,13 @@
 using Pkg; Pkg.activate(".")
-using HDF5
 using LLRParsing
 
+path = "/home/fabian/Documents/Physics/Data/DataLLR"
+path = "/media/fabian/Adata2TB/LLR/"
+
 h5file  = "output/Sp4_std_data.hdf5"
-basedir = "/home/fabian/Dokumente/Physics/Data/DataLLR/ImportanceSampling/Importance_Sampling_noCSV_noRW/"
+basedir = joinpath(path,"std_sp4")
 importance_sampling_dir_hdf5(basedir,h5file)
 
 h5file  = "output/SU3_std_data.hdf5"
-basedir = "/media/fabian/Adata2TB/std"
+basedir = joinpath(path,"std_su3")
 importance_sampling_dir_hdf5(basedir,h5file)

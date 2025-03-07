@@ -13,6 +13,13 @@ function get_repeat_and_replica_dirs(base_dir)
     end
     return repeat_dirs, dir_dict
 end
+function _all_files_from_dict(dir,replica_dirs)
+    files = AbstractString[]
+    for repeat in keys(replica_dirs), rep in replica_dirs[repeat]
+        push!(files, joinpath(dir,repeat,rep,"out_0"))
+    end
+    return files
+end
 function parse_dS0(file)
     dS0 = NaN
     pattern = "[MAIN][0]LLR Delta S"
@@ -92,4 +99,38 @@ function parse_llr(file)
         end
     end
     return dS0, S0, plaq, a, is_rm, S0_fxa[1:end-1], a_fxa[1:end-1], poly
+end
+function llr_dir_hdf5(dir,h5file;suffix="") 
+    fid = h5open(h5file,"cw")
+
+    # get all repeats and replicas and store that information for future use
+    repeats, replica_dirs = get_repeat_and_replica_dirs(dir)
+    files      = _all_files_from_dict(dir,replica_dirs)
+    N_repeats  = length(repeats)
+    # assure the global lattice parameters are identical for all repeats and replicas
+    N_replicas = only(unique([length(replica_dirs[r]) for r in repeats]))
+    Nt = only(unique(first.(latticesize.(files))))  
+    Nl = only(unique(last.(latticesize.(files))))
+
+    name = "$(Nt)x$(Nl)_$(N_repeats)repeats_$(N_replicas)replicas"*suffix
+    write(fid,joinpath(name,"N_repeats"),N_repeats)
+    write(fid,joinpath(name,"N_replicas"),N_replicas)
+    write(fid,joinpath(name,"Nt"),Nt)
+    write(fid,joinpath(name,"Nl"),Nl)
+
+    @showprogress desc="parsing $name" for repeat in repeats
+        for rep in replica_dirs[repeat]
+            file = joinpath(dir, repeat,rep,"out_0")
+            dS0, S0, plaq, a, is_rm, S0_fxa, a_fxa, poly = parse_llr(file)
+            write(fid,joinpath(name,repeat,rep,"dS0"),dS0)
+            write(fid,joinpath(name,repeat,rep,"S0"),S0)
+            write(fid,joinpath(name,repeat,rep,"plaq"),plaq)
+            write(fid,joinpath(name,repeat,rep,"a"),a)
+            write(fid,joinpath(name,repeat,rep,"is_rm"),is_rm)
+            write(fid,joinpath(name,repeat,rep,"S0_fxa"),S0_fxa)
+            write(fid,joinpath(name,repeat,rep,"a_fxa"),a_fxa)
+            write(fid,joinpath(name,repeat,rep,"poly"),poly)
+        end
+    end
+    close(fid)
 end
