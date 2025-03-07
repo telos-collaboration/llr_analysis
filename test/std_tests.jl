@@ -11,7 +11,7 @@ write(output, input)
 close(input)
 close(output)
 
-Nt, Nl, plaq, beta, poly = parse_importance_sampling(file_tmp)
+Nt, Nl, plaq, beta, poly = LLRParsing.parse_importance_sampling(file_tmp)
 data = readdlm(compare_file,',',skipstart=1)
 rm(file_tmp)
 
