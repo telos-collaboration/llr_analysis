@@ -13,3 +13,11 @@ end
 for dir in readdir(joinpath(path,"llr_su3"),join=true)
     llr_dir_hdf5(dir,h5fileSU3)
 end
+
+h5file_in = "output/SU3_llr_david.hdf5"
+h5file_out= "output/SU3_llr_david_sorted.hdf5"
+sort_by_central_energy_to_hdf5(h5file_in,h5file_out)
+
+h5file_in = "output/Sp4_llr_david.hdf5"
+h5file_out= "output/Sp4_llr_david_sorted.hdf5"
+sort_by_central_energy_to_hdf5(h5file_in,h5file_out)
