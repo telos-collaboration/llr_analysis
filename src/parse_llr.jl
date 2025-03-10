@@ -134,10 +134,13 @@ function llr_dir_hdf5(dir,h5file;suffix="")
     end
     close(fid)
 end
-function sort_by_central_energy_to_hdf5(h5file_in,h5file_out)
+function sort_by_central_energy_to_hdf5(h5file_in,h5file_out;skip_ens=nothing)
     h5dset = h5open(h5file_in)
     for run in keys(h5dset)
-        run == "6x72_26repeats_48replicas" && continue
+        @show run
+        if !isnothing(skip_ens) 
+            run ∈ skip_ens && continue
+        end
         N_replicas = read(h5dset[run],"N_replicas")
         N_repeats  = read(h5dset[run],"N_repeats")
         # read all last elements for a and the central action
