@@ -2,7 +2,7 @@ using HDF5
 using Plots
 using LaTeXStrings
 using Statistics
-gr(fontfamily="Computer Modern",legend=:topright,frame=:box,titlefontsize=11,legendfontsize=9,labelfontsize=12,left_margin=10Plots.mm)
+gr(fontfamily="Computer Modern",legend=:topright,frame=:box,titlefontsize=11,legendfontsize=9,labelfontsize=12,left_margin=0Plots.mm)
 include("an_history.jl")
 function a_trajectory(h5dset,run;replica=0)
     N_replicas = read(h5dset[run],"N_replicas")
@@ -61,7 +61,9 @@ function full_trajectory_plot(h5dset,run,repeat_id,replica_id,lens=true)
     if lens
         plot!(plt3, subplot=2, left_margin=0Plots.mm, tickfontsize=7, ylabel="")  
     end
-    return plt1, plt2, plt3, plt4
+    l   =  grid(4, 1, heights=[0.29 ,0.29, 0.29, 0.13])
+    plt = plot(plt1, plt2, plt3, plt4, layout = l, size=(500,1000))
+    return plt
 end
 
 h5file_out = "output/SU3_llr_david_sorted.hdf5"
@@ -71,13 +73,14 @@ runs = keys(h5dset)
 run  = runs[end-1]
 
 # Plot 
-Nreplicas  = read(h5dset[run],"N_replicas")
-repeat_id  = 0
-replica_id = Nreplicas ÷ 2 -2 
+Nreplicas        = read(h5dset[run],"N_replicas")
+a0, Δa0, S0, ind = a_vs_central_action(h5dset,run)
+replica_id       = last(findmax(Δa0))
+repeat_id        = 0
+plt1 = full_trajectory_plot(h5dset,run,repeat_id,replica_id)
+plt2 = full_trajectory_plot(h5dset,run,repeat_id,Nreplicas-1)
+plt3 = full_trajectory_plot(h5dset,run,repeat_id,1)
+plot!(plt2,legend=:topleft)
 
-plt1, plt2, plt3, plt4 = full_trajectory_plot(h5dset,run,repeat_id,replica_id)
-
-l   =  grid(4, 1, heights=[0.3 ,0.3, 0.3, 0.1])
-plt = plot(plt1, plt2, plt3, plt4, layout = l, size=(500,1000))
-plt
-
+plt = plot(plt3, plt1, plt2, layout = grid(1, 3), size=(1400,1000))
+savefig("overview.svg")

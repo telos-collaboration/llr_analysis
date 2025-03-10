@@ -3,4 +3,6 @@
 *.zst
 *.csv
 *.txt
+*.pdf
+*.svg
 !test/test_data/*
