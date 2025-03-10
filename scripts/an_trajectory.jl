@@ -45,10 +45,10 @@ function fancy_title(run)
     Lt, Ls, Nrep, Nint = m
     return L"%$Lt \times %$(Ls)^3: N_{\mathrm{intervals}}=%$Nint, N_{\mathrm{rep}}=%$Nrep"
 end
-function full_trajectory_plot(h5dset,run,repeat_id,replica_id)
+function full_trajectory_plot(h5dset,run,repeat_id,replica_id,lens=true)
     plt1 = plot_a_trajectory_repeat!(plot(),h5dset,run,repeat_id,replica_id)
     plt2 = plot_a_trajectory_all!(plot(),h5dset,run,replica_id)
-    plt3 = a_vs_central_action_plot!(plot(),h5dset,run;index=nothing,highlight_index=replica_id)
+    plt3 = a_vs_central_action_plot!(plot(),h5dset,run;lens,index=nothing,highlight_index=replica_id)
     plt4 = a_variance_vs_central_action_plot!(plot(),h5dset,run;index=nothing,highlight_index=replica_id)
     for plt in [plt1,plt2]
         plot_nr_rm_shading!(plt,h5dset,run,repeat_id,replica_id)
@@ -57,7 +57,10 @@ function full_trajectory_plot(h5dset,run,repeat_id,replica_id)
     plot!(plt1, ylims=ylims(plt2), title=fancy_title(run),ylabel=L"a_n^{(m)}")
     plot!(plt2, ylims=ylims(plt2), title="", xlabel="NR/RM iteration m",ylabel=L"a_n^{(m)}")  
     plot!(plt3, title="", xlabel="",ylabel=L"a_n")  
-    plot!(plt4, title="", xlabel=L"\textrm{central}~\textrm{plaquette}~u_p")  
+    plot!(plt4, title="", xlabel=L"\textrm{central}~\textrm{plaquette}~u_p")
+    if lens
+        plot!(plt3, subplot=2, left_margin=0Plots.mm, tickfontsize=7, ylabel="")  
+    end
     return plt1, plt2, plt3, plt4
 end
 
