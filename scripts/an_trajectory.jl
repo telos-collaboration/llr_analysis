@@ -65,6 +65,7 @@ runs = keys(h5dset)
 run  = runs[end]
 
 # Plot 
-replica_id = 48
-repeat_id  = 3
+Nreplicas  = read(h5dset[run],"N_replicas")
+repeat_id  = 0
+replica_id = Nreplicas ÷2
 plt = full_trajectory_plot(h5dset,run,repeat_id,replica_id)
