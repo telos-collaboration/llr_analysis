@@ -43,31 +43,37 @@ function fancy_title(run)
     rx = r"([0-9]+)x([0-9]+)_([0-9]+)repeats_([0-9]+)replicas"
     m  = match(rx,run).captures
     Lt, Ls, Nrep, Nint = m
-    return L"%$Lt \times %$(Ls)^3: N_{\mathrm{int}}=%$Nint, N_{\mathrm{rep}}=%$Nrep"
+    return L"%$Lt \times %$(Ls)^3: N_{\mathrm{intervals}}=%$Nint, N_{\mathrm{rep}}=%$Nrep"
 end
 function full_trajectory_plot(h5dset,run,repeat_id,replica_id)
     plt1 = plot_a_trajectory_repeat!(plot(),h5dset,run,repeat_id,replica_id)
     plt2 = plot_a_trajectory_all!(plot(),h5dset,run,replica_id)
+    plt3 = a_vs_central_action_plot!(plot(),h5dset,run;index=nothing,highlight_index=replica_id)
+    plt4 = a_variance_vs_central_action_plot!(plot(),h5dset,run;index=nothing,highlight_index=replica_id)
     for plt in [plt1,plt2]
         plot_nr_rm_shading!(plt,h5dset,run,repeat_id,replica_id)
         plot_a_repeat_average!(plt,h5dset,run;replica=replica_id)
     end
     plot!(plt1, ylims=ylims(plt2), title=fancy_title(run),ylabel=L"a_n^{(m)}")
     plot!(plt2, ylims=ylims(plt2), title="", xlabel="NR/RM iteration m",ylabel=L"a_n^{(m)}")  
-    return plt1, plt2
+    plot!(plt3, title="", xlabel=L"\textrm{central plaquette}~u_p")  
+    return plt1, plt2, plt3, plt4
 end
 
 h5file_out = "output/SU3_llr_david_sorted.hdf5"
 h5file_out = "output/Sp4_llr_david_sorted.hdf5"
 h5dset = h5open(h5file_out)
 runs = keys(h5dset)
-run  = runs[1]
+run  = runs[end-1]
 
 # Plot 
 Nreplicas  = read(h5dset[run],"N_replicas")
 repeat_id  = 0
-replica_id = Nreplicas ÷2
-plt1, plt2 = full_trajectory_plot(h5dset,run,repeat_id,replica_id)
-plt3 = a_vs_central_action_plot!(plot(),h5dset,run;index=nothing)
-l   = @layout [a ; b; c]
-plt = plot(plt1, plt2, plt3, layout = l, size=(600,1200))
+replica_id = Nreplicas ÷ 2 -2 
+
+plt1, plt2, plt3, plt4 = full_trajectory_plot(h5dset,run,repeat_id,replica_id)
+
+l   = @layout [a ; b; c; d]
+plt = plot(plt1, plt2, plt3, plt4, layout = l, size=(600,1200))
+plt
+

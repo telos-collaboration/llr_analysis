@@ -33,11 +33,29 @@ function a_vs_central_action_plot(h5dset,runs;indices)
     end
     return plt
 end
-function a_vs_central_action_plot!(plt,h5dset,run;index=nothing)
+function a_vs_central_action_plot!(plt,h5dset,run;index=nothing,highlight_index=nothing)
     a0, Δa0, S0, ind = a_vs_central_action(h5dset,run;ind=index)
     Nt = read(h5dset[run],"Nt")
     Nl = read(h5dset[run],"Nl")
     V  = Nl^3 * Nt
     up = S0/(6V)
-    plot!(plt,up,a0,yerr=Δa0,marker=:auto,label="$(Nt)x$(Nl): ΔE=$(round(2(S0[2]-S0[1])/6V,sigdigits=1)) (Nr+RM steps=$ind)")
+    plot!(plt,up,a0,yerr=Δa0,marker=:auto,label="$(Nt)x$(Nl): ΔE=$(round(2(S0[2]-S0[1])/6V,sigdigits=1))")
+    if !isnothing(highlight_index)
+        mid = up[highlight_index]
+        del = (up[highlight_index+1] - up[highlight_index])/2
+        vspan!(plt,[mid-del,mid+del], color = :green, alpha = 0.7, labels = "replica");
+    end
+end
+function a_variance_vs_central_action_plot!(plt,h5dset,run;index=nothing,highlight_index=nothing)
+    a0, Δa0, S0, ind = a_vs_central_action(h5dset,run;ind=index)
+    Nt = read(h5dset[run],"Nt")
+    Nl = read(h5dset[run],"Nl")
+    V  = Nl^3 * Nt
+    up = S0/(6V)
+    plot!(plt,up,zero(a0),ribbon=Δa0,label=L"\textrm{variance}~\textrm{of}~a_n")
+    if !isnothing(highlight_index)
+        mid = up[highlight_index]
+        del = (up[highlight_index+1] - up[highlight_index])/2
+        vspan!(plt,[mid-del,mid+del], color = :green, alpha = 0.8, labels = "replica");
+    end
 end
