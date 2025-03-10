@@ -3,7 +3,7 @@ using Plots
 using LaTeXStrings
 using Statistics
 gr(fontfamily="Computer Modern",frame=:box,titlefontsize=12,legendfontsize=11,labelfontsize=13)
-
+include("an_history.jl")
 function a_trajectory(h5dset,run;replica=0)
     N_replicas = read(h5dset[run],"N_replicas")
     N_repeats = read(h5dset[run],"N_repeats")
@@ -36,7 +36,7 @@ function plot_a_repeat_average!(plt,h5dset,run;replica)
     a_last    = last.(a)
     N_repeats = length(a_last) 
     a0, Δa    = mean(a_last), std(a_last)/sqrt(N_repeats)
-    hspan!(plt,[a0-Δa,a0+Δa], color = :gray, alpha = 0.8, labels = L"a_n");
+    hspan!(plt,[a0-Δa,a0+Δa], color = :black, alpha = 0.8, labels = L"a_n");
     return plt
 end
 function fancy_title(run)
@@ -54,18 +54,20 @@ function full_trajectory_plot(h5dset,run,repeat_id,replica_id)
     end
     plot!(plt1, ylims=ylims(plt2), title=fancy_title(run),ylabel=L"a_n^{(m)}")
     plot!(plt2, ylims=ylims(plt2), title="", xlabel="NR/RM iteration m",ylabel=L"a_n^{(m)}")  
-    l   = @layout [a ; b]
-    plt = plot(plt1, plt2, layout = l, legend = :outerright)
-    return plt
+    return plt1, plt2
 end
 
+h5file_out = "output/SU3_llr_david_sorted.hdf5"
 h5file_out = "output/Sp4_llr_david_sorted.hdf5"
 h5dset = h5open(h5file_out)
 runs = keys(h5dset)
-run  = runs[end]
+run  = runs[1]
 
 # Plot 
 Nreplicas  = read(h5dset[run],"N_replicas")
 repeat_id  = 0
 replica_id = Nreplicas ÷2
-plt = full_trajectory_plot(h5dset,run,repeat_id,replica_id)
+plt1, plt2 = full_trajectory_plot(h5dset,run,repeat_id,replica_id)
+plt3 = a_vs_central_action_plot!(plot(),h5dset,run;index=nothing)
+l   = @layout [a ; b; c]
+plt = plot(plt1, plt2, plt3, layout = l, size=(600,1200))

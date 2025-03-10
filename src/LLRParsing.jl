@@ -18,5 +18,6 @@ export std_observables
 include("parse_llr.jl")
 export get_repeat_and_replica_dirs
 export parse_llr, llr_dir_hdf5
+export sort_by_central_energy_to_hdf5
 
 end # module LLRParsing
