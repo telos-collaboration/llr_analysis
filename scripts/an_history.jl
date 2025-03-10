@@ -19,21 +19,22 @@ function a_vs_central_action(h5dset,run;ind=nothing)
     Δa0 = dropdims(std(a_last,dims=2),dims=2)/sqrt(N_repeats)
     return a0, Δa0, S0, ind
 end
+function a_vs_central_action_plot(h5dset,runs;indices)
+    plt = plot()
+    for run in runs
+        for ind in indices
+            a0, Δa0, S0, ind = a_vs_central_action(h5dset,run;ind)
+            Nt = read(fid[run],"Nt")
+            Nl = read(fid[run],"Nl")
+            V  = Nl^3 * Nt
+            up = S0/(6V)
+            plot!(plt,up,a0,yerr=Δa0,marker=:auto,label="$(Nt)x$(Nl): ΔE=$(round(2(S0[2]-S0[1])/6V,sigdigits=1)) (Nr+RM steps=$ind)")
+        end
+    end
+    return plt
+end
 
 file = "output/SU3_llr_david_sorted.hdf5"
 fid  = h5open(file)
 runs = keys(fid)
-
-plt = plot()
-for run in runs[1:1]
-    for ind in [50,100,300,500]
-        a0, Δa0, S0, ind = a_vs_central_action(fid,run;ind)
-
-        Nt = read(fid[run],"Nt")
-        Nl = read(fid[run],"Nl")
-        V  = Nl^3 * Nt
-        up = S0/(6V)
-        plot!(plt,up,a0,yerr=Δa0,marker=:auto,label="$(Nt)x$(Nl): ΔE=$(round(2(S0[2]-S0[1])/6V,sigdigits=1)) (Nr+RM steps=$ind)")
-    end
-end
-plt
+plt  = a_vs_central_action_plot(fid,runs[1:1],indices=[50,100])
