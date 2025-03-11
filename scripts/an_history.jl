@@ -67,6 +67,7 @@ function a_vs_central_action_plot!(plt,h5dset,run;index=nothing,highlight_index=
         lens!(plt, xlms, ylms,inset = (1, bbox(0.60, 0.50, 0.38, 0.38 )))
         plot!(;subplot=2, yticks, xticks)
     end
+    return plt
 end
 function a_variance_vs_central_action_plot!(plt,h5dset,run;index=nothing,highlight_index=nothing)
     a0, Δa0, S0, ind = a_vs_central_action(h5dset,run;ind=index)

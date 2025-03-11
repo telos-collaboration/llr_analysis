@@ -45,7 +45,7 @@ function fancy_title(run)
     Lt, Ls, Nrep, Nint = m
     return L"%$Lt \times %$(Ls)^3: N_{\mathrm{intervals}}=%$Nint, N_{\mathrm{rep}}=%$Nrep"
 end
-function full_trajectory_plot(h5dset,run,repeat_id,replica_id,lens=true)
+function full_trajectory_plot(h5dset,run,repeat_id,replica_id;lens=true)
     plt1 = plot_a_trajectory_repeat!(plot(),h5dset,run,repeat_id,replica_id)
     plt2 = plot_a_trajectory_all!(plot(),h5dset,run,replica_id)
     plt3 = a_vs_central_action_plot!(plot(),h5dset,run;lens,index=nothing,highlight_index=replica_id)
@@ -68,19 +68,19 @@ end
 
 h5file_out = "output/SU3_llr_david_sorted.hdf5"
 h5file_out = "output/Sp4_llr_david_sorted.hdf5"
+h5file_out = "output/Sp4_llr_new_sorted.hdf5"
+
 h5dset = h5open(h5file_out)
 runs = keys(h5dset)
-run  = runs[end-1]
+run  = runs[1]
 
 # Plot 
 Nreplicas        = read(h5dset[run],"N_replicas")
 a0, Δa0, S0, ind = a_vs_central_action(h5dset,run)
-replica_id       = last(findmax(Δa0))
+replica_id       = min(findmax(Δa0)[2],Nreplicas-1)
 repeat_id        = 0
-plt1 = full_trajectory_plot(h5dset,run,repeat_id,replica_id)
+plt1 = full_trajectory_plot(h5dset,run,repeat_id,replica_id,lens=true)
 plt2 = full_trajectory_plot(h5dset,run,repeat_id,Nreplicas-1)
 plt3 = full_trajectory_plot(h5dset,run,repeat_id,1)
 plot!(plt2,legend=:topleft)
-
 plt = plot(plt3, plt1, plt2, layout = grid(1, 3), size=(1400,1000))
-savefig("overview.svg")

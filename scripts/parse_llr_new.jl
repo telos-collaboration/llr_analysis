@@ -2,6 +2,7 @@ using Pkg; Pkg.activate(".")
 using LLRParsing
 
 path   = "/media/fabian/Adata2TB/LLR_New/CSD3/"
+path   = "/home/fabian/Downloads/CSD3/"
 h5file = "output/Sp4_llr_new.hdf5"
 h5file_sorted = "output/Sp4_llr_new_sorted.hdf5"
 
