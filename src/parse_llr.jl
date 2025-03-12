@@ -157,13 +157,15 @@ function sort_by_central_energy_to_hdf5(h5file_in,h5file_out;skip_ens=nothing)
         # read all last elements for a and the central action
         for j in repeats
             ntraj = length(h5dset[run]["$j/Rep_0/is_rm"])
-            a = zeros(N_replicas,ntraj)
-            S = zeros(N_replicas,ntraj)
-            p = zeros(N_replicas,ntraj)
+            a   = zeros(N_replicas,ntraj)
+            S   = zeros(N_replicas,ntraj)
+            p   = zeros(N_replicas,ntraj)
+            is_rm = zeros(Bool,(ntraj))
             for i in 1:N_replicas
-                a[i,:] = h5dset[run]["$j/Rep_$(i-1)/a"][] 
-                S[i,:] = h5dset[run]["$j/Rep_$(i-1)/S0"][]
-                p[i,:] = h5dset[run]["$j/Rep_$(i-1)/plaq"][]
+                dset = joinpath(run,"$j/Rep_$(i-1)")
+                copyto!(a[i,:], h5dset[dset]["a"]) 
+                copyto!(S[i,:], h5dset[dset]["S0"])
+                copyto!(p[i,:], h5dset[dset]["plaq"])
             end
             ## Sort by the central action to account for different swaps
             for j in 1:ntraj
@@ -175,13 +177,15 @@ function sort_by_central_energy_to_hdf5(h5file_in,h5file_out;skip_ens=nothing)
             ## make sure that the sorted central action alwas matches
             for i in 1:N_replicas
                 @assert allequal(S[i,:])
-                write(h5dset_out,joinpath(run,"$j","Rep_$(i-1)","S0_sorted"),  S[i,:])
-                write(h5dset_out,joinpath(run,"$j","Rep_$(i-1)","a_sorted"),   a[i,:])
-                write(h5dset_out,joinpath(run,"$j","Rep_$(i-1)","plaq_sorted"),p[i,:])
-                dS0   = read(h5dset,joinpath(run,"$j","Rep_$(i-1)","dS0"))
-                is_rm = read(h5dset,joinpath(run,"$j","Rep_$(i-1)","is_rm"))
-                write(h5dset_out,joinpath(run,"$j","Rep_$(i-1)","dS0")  ,dS0)
-                write(h5dset_out,joinpath(run,"$j","Rep_$(i-1)","is_rm"),is_rm)
+                dset    = create_group(h5dset_out, joinpath(run,"$j","Rep_$(i-1)"))
+                dset_in = h5dset[joinpath(run,"$j","Rep_$(i-1)")]
+                dS0 = read(dset_in,"dS0")
+                copyto!(is_rm,dset_in["is_rm"])
+                write(dset,"S0_sorted",  S[i,:])
+                write(dset,"a_sorted",   a[i,:])
+                write(dset,"plaq_sorted",p[i,:])
+                write(dset,"dS0"        ,dS0)
+                write(dset,"is_rm"      ,is_rm)
             end
         end
         write(h5dset_out,joinpath(run,"N_replicas"),N_replicas)
