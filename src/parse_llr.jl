@@ -8,10 +8,18 @@ function get_repeat_and_replica_dirs(base_dir)
         rx = r"Rep_[0-9]+"
         repeat_path  = joinpath(base_dir,repeat)  
         replica_dirs = filter(startswith(rx),readdir(repeat_path))
-        sort!(replica_dirs,lt=natural) 
-        dir_dict[repeat] = replica_dirs 
+        sort!(replica_dirs,lt=natural)
+        # check if there exists an ouput file for every replica in this repeat
+        # If not, then skip this repeat. This scenario rarely happens and only
+        # has been seen in thermalisation
+        files = joinpath.(Ref(base_dir),Ref(repeat),replica_dirs,Ref("out_0"))
+        if all(isfile, files)
+            dir_dict[repeat] = replica_dirs
+        else
+            @warn "directory $(basename(base_dir)), repeat $repeat: some output files are missing/empty"
+        end
     end
-    return repeat_dirs, dir_dict
+    return dir_dict
 end
 function _all_files_from_dict(dir,replica_dirs)
     files = AbstractString[]
@@ -104,9 +112,10 @@ function llr_dir_hdf5(dir,h5file;suffix="")
     fid = h5open(h5file,"cw")
 
     # get all repeats and replicas and store that information for future use
-    repeats, replica_dirs = get_repeat_and_replica_dirs(dir)
-    files      = _all_files_from_dict(dir,replica_dirs)
-    N_repeats  = length(repeats)
+    replica_dirs = get_repeat_and_replica_dirs(dir)
+    repeats      = sort(collect(keys(replica_dirs)),lt=natural)
+    files        = _all_files_from_dict(dir,replica_dirs)
+    N_repeats    = length(repeats)
     # assure the global lattice parameters are identical for all repeats and replicas
     N_replicas = only(unique([length(replica_dirs[r]) for r in repeats]))
     Nt = only(unique(first.(latticesize.(files))))  
@@ -115,6 +124,7 @@ function llr_dir_hdf5(dir,h5file;suffix="")
     name = "$(Nt)x$(Nl)_$(N_repeats)repeats_$(N_replicas)replicas"*suffix
     write(fid,joinpath(name,"N_repeats"),N_repeats)
     write(fid,joinpath(name,"N_replicas"),N_replicas)
+    write(fid,joinpath(name,"repeats"),repeats)
     write(fid,joinpath(name,"Nt"),Nt)
     write(fid,joinpath(name,"Nl"),Nl)
 
@@ -135,24 +145,25 @@ function llr_dir_hdf5(dir,h5file;suffix="")
     close(fid)
 end
 function sort_by_central_energy_to_hdf5(h5file_in,h5file_out;skip_ens=nothing)
-    h5dset = h5open(h5file_in)
-    for run in keys(h5dset)
-        @show run
+    h5dset     = h5open(h5file_in,"r")
+    h5dset_out = h5open(h5file_out,"cw")
+    @showprogress desc="sorting $h5file_in" for run in keys(h5dset)
         if !isnothing(skip_ens) 
             run ∈ skip_ens && continue
         end
         N_replicas = read(h5dset[run],"N_replicas")
         N_repeats  = read(h5dset[run],"N_repeats")
+        repeats    = read(h5dset[run],"repeats")
         # read all last elements for a and the central action
-        for j in 1:N_repeats
-            ntraj = length(h5dset[run]["$(j-1)/Rep_0/is_rm"])
+        for j in repeats
+            ntraj = length(h5dset[run]["$j/Rep_0/is_rm"])
             a = zeros(N_replicas,ntraj)
             S = zeros(N_replicas,ntraj)
             p = zeros(N_replicas,ntraj)
             for i in 1:N_replicas
-                a[i,:] = h5dset[run]["$(j-1)/Rep_$(i-1)/a"][] 
-                S[i,:] = h5dset[run]["$(j-1)/Rep_$(i-1)/S0"][]
-                p[i,:] = h5dset[run]["$(j-1)/Rep_$(i-1)/plaq"][]
+                a[i,:] = h5dset[run]["$j/Rep_$(i-1)/a"][] 
+                S[i,:] = h5dset[run]["$j/Rep_$(i-1)/S0"][]
+                p[i,:] = h5dset[run]["$j/Rep_$(i-1)/plaq"][]
             end
             ## Sort by the central action to account for different swaps
             for j in 1:ntraj
@@ -164,16 +175,19 @@ function sort_by_central_energy_to_hdf5(h5file_in,h5file_out;skip_ens=nothing)
             ## make sure that the sorted central action alwas matches
             for i in 1:N_replicas
                 @assert allequal(S[i,:])
-                h5write(h5file_out,joinpath(run,"$(j-1)","Rep_$(i-1)","S0_sorted"),  S[i,:])
-                h5write(h5file_out,joinpath(run,"$(j-1)","Rep_$(i-1)","a_sorted"),   a[i,:])
-                h5write(h5file_out,joinpath(run,"$(j-1)","Rep_$(i-1)","plaq_sorted"),p[i,:])
-                h5write(h5file_out,joinpath(run,"$(j-1)","Rep_$(i-1)","dS0"),h5read(h5file_in,joinpath(run,"$(j-1)","Rep_$(i-1)","dS0")))
-                h5write(h5file_out,joinpath(run,"$(j-1)","Rep_$(i-1)","is_rm"),h5read(h5file_in,joinpath(run,"$(j-1)","Rep_$(i-1)","is_rm")))
+                write(h5dset_out,joinpath(run,"$j","Rep_$(i-1)","S0_sorted"),  S[i,:])
+                write(h5dset_out,joinpath(run,"$j","Rep_$(i-1)","a_sorted"),   a[i,:])
+                write(h5dset_out,joinpath(run,"$j","Rep_$(i-1)","plaq_sorted"),p[i,:])
+                dS0   = read(h5dset,joinpath(run,"$j","Rep_$(i-1)","dS0"))
+                is_rm = read(h5dset,joinpath(run,"$j","Rep_$(i-1)","is_rm"))
+                write(h5dset_out,joinpath(run,"$j","Rep_$(i-1)","dS0")  ,dS0)
+                write(h5dset_out,joinpath(run,"$j","Rep_$(i-1)","is_rm"),is_rm)
             end
         end
-        h5write(h5file_out,joinpath(run,"N_replicas"),N_replicas)
-        h5write(h5file_out,joinpath(run,"N_repeats"),N_repeats)
-        h5write(h5file_out,joinpath(run,"Nt"),h5read(h5file_in,joinpath(run,"Nt")))
-        h5write(h5file_out,joinpath(run,"Nl"),h5read(h5file_in,joinpath(run,"Nl")))
+        write(h5dset_out,joinpath(run,"N_replicas"),N_replicas)
+        write(h5dset_out,joinpath(run,"N_repeats"),N_repeats)
+        write(h5dset_out,joinpath(run,"repeats"),repeats)
+        write(h5dset_out,joinpath(run,"Nt"),h5read(h5file_in,joinpath(run,"Nt")))
+        write(h5dset_out,joinpath(run,"Nl"),h5read(h5file_in,joinpath(run,"Nl")))
     end
 end
