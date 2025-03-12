@@ -7,20 +7,19 @@ path = "/home/fabian/Documents/Physics/Data/DataLLR"
 h5fileSp4 = "output/Sp4_llr_david.hdf5"
 h5fileSU3 = "output/SU3_llr_david.hdf5"
 h5fileSp4_new = "output/Sp4_llr_new.hdf5"
-h5fileSp4_sorted = "output/SU3_llr_david_sorted.hdf5"
-h5fileSp4_sorted = "output/SU3_llr_david_sorted.hdf5"
+h5fileSU3_sorted = "output/SU3_llr_david_sorted.hdf5"
+h5fileSp4_sorted = "output/Sp4_llr_david_sorted.hdf5"
 h5fileSU3_sorted_new = "output/Sp4_llr_new.hdf5"
 
-for dir in readdir(joinpath(path,"llr_sp4_cleaned"),join=true)
-    llr_dir_hdf5(dir,h5fileSp4)
+function llr_alldirs_hdf5(path,base_dir,file)
+    for dir in readdir(joinpath(path,base_dir),join=true)
+        llr_dir_hdf5(dir,file)
+    end
 end
-#for dir in readdir(joinpath(path,"llr_sp4_new_cleaned"),join=true)
-#    llr_dir_hdf5(dir,h5fileSp4_new)
-#end
-#for dir in readdir(joinpath(path,"llr_su3"),join=true)
-#    llr_dir_hdf5(dir,h5fileSU3)
-#end
 
+llr_alldirs_hdf5(path,"llr_sp4_new_cleaned",h5fileSp4_new)
+llr_alldirs_hdf5(path,"llr_sp4_cleaned",h5fileSp4)
+llr_alldirs_hdf5(path,"llr_su3",h5fileSU3)
 sort_by_central_energy_to_hdf5(h5fileSp4, h5fileSp4_sorted)
 sort_by_central_energy_to_hdf5(h5fileSU3, h5fileSU3_sorted)
 sort_by_central_energy_to_hdf5(h5fileSp4_new, h5fileSp4_sorted_new)

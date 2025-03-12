@@ -116,6 +116,10 @@ function llr_dir_hdf5(dir,h5file;suffix="")
     repeats      = sort(collect(keys(replica_dirs)),lt=natural)
     files        = _all_files_from_dict(dir,replica_dirs)
     N_repeats    = length(repeats)
+    if isempty(repeats)
+        @warn "No non-emtpy logfiles available for $dir"
+        return
+    end
     # assure the global lattice parameters are identical for all repeats and replicas
     N_replicas = only(unique([length(replica_dirs[r]) for r in repeats]))
     Nt = only(unique(first.(latticesize.(files))))  
