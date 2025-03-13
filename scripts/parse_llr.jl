@@ -9,7 +9,7 @@ h5fileSU3 = "output/SU3_llr_david.hdf5"
 h5fileSp4_new = "output/Sp4_llr_new.hdf5"
 h5fileSU3_sorted = "output/SU3_llr_david_sorted.hdf5"
 h5fileSp4_sorted = "output/Sp4_llr_david_sorted.hdf5"
-h5fileSU3_sorted_new = "output/Sp4_llr_new.hdf5"
+h5fileSp4_sorted_new = "output/Sp4_llr_new_sorted.hdf5"
 
 function llr_alldirs_hdf5(path,base_dir,file)
     for dir in readdir(joinpath(path,base_dir),join=true)

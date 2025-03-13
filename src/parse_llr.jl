@@ -157,26 +157,48 @@ function sort_by_central_energy_to_hdf5(h5file_in,h5file_out;skip_ens=nothing)
         end
         N_replicas = read(h5dset[run],"N_replicas")
         N_repeats  = read(h5dset[run],"N_repeats")
-        repeats    = read(h5dset[run],"repeats")
+        repeats    = read(h5dset[run],"repeats")        
         # read all last elements for a and the central action
         for j in repeats
-            ntraj = length(h5dset[run]["$j/Rep_0/is_rm"])
-            a   = zeros(N_replicas,ntraj)
-            S   = zeros(N_replicas,ntraj)
-            p   = zeros(N_replicas,ntraj)
-            is_rm = zeros(Bool,(ntraj))
+            # In rare cases the number of iteration steps does not match accross replicas 
+            # I assume that this can only happen in the inital thermalisation and NR steps, 
+            # since we do not need to wait for all replicase to perform a swap. 
+            # As a heuristic approach, I will determine the minimal `n_traj_min` and maximal 
+            # trajectory length 'n_traj_max' across all replicas, and then truncate to the last
+            # 'n_traj_min' steps across all replicas. The assumption behind this will be 
+            # violated if prallel tempering (aka replica exchange, aka umbrella method) is disabled
+            ntraj1 = [ length(h5dset[run]["$j/Rep_$i/a"]) for i in 0:N_replicas-1]
+            ntraj2 = [ length(h5dset[run]["$j/Rep_$i/S0"]) for i in 0:N_replicas-1]
+            ntraj3 = [ length(h5dset[run]["$j/Rep_$i/plaq"]) for i in 0:N_replicas-1]
+            ntraj4 = [ length(h5dset[run]["$j/Rep_$i/is_rm"]) for i in 0:N_replicas-1]
+            n_traj_min = minimum(hcat(ntraj1,ntraj2,ntraj3,ntraj4))
+            n_traj_max = maximum(hcat(ntraj1,ntraj2,ntraj3,ntraj4))
+            offset1 = @. ntraj1 - n_traj_min + 1
+            offset2 = @. ntraj2 - n_traj_min + 1
+            offset3 = @. ntraj3 - n_traj_min + 1
+            offset4 = @. ntraj4 - n_traj_min + 1
+            if n_traj_min < n_traj_max
+                @warn "Run $run, repeat $j: Non-matching taching trajectory length for different replicas.\
+                    The first entries have been discarded so that the trajectory length matches across replicas and observables"
+            end
+            a       = zeros(N_replicas,n_traj_min)
+            S       = zeros(N_replicas,n_traj_min)
+            p       = zeros(N_replicas,n_traj_min)
+            is_rm   = zeros(Bool,(N_replicas,n_traj_min))
             for i in 1:N_replicas
                 dset = joinpath(run,"$j/Rep_$(i-1)")
-                copyto!(a[i,:], h5dset[dset]["a"]) 
-                copyto!(S[i,:], h5dset[dset]["S0"])
-                copyto!(p[i,:], h5dset[dset]["plaq"])
+                copyto!(a[i,:]    ,h5dset[dset]["a"][offset1[i]:end]) 
+                copyto!(S[i,:]    ,h5dset[dset]["S0"][offset2[i]:end])
+                copyto!(p[i,:]    ,h5dset[dset]["plaq"][offset3[i]:end])
+                copyto!(is_rm[i,:],h5dset[dset]["is_rm"][offset4[i]:end])
             end
             ## Sort by the central action to account for different swaps
-            for j in 1:ntraj
+            for j in 1:n_traj_min
                 perm = sortperm(S[:,j])
                 S[:,j] = S[perm,j]
                 a[:,j] = a[perm,j]
                 p[:,j] = p[perm,j]
+                is_rm[:,j] = is_rm[perm,j]
             end
             ## make sure that the sorted central action alwas matches
             for i in 1:N_replicas
@@ -184,12 +206,11 @@ function sort_by_central_energy_to_hdf5(h5file_in,h5file_out;skip_ens=nothing)
                 dset    = create_group(h5dset_out, joinpath(run,"$j","Rep_$(i-1)"))
                 dset_in = h5dset[joinpath(run,"$j","Rep_$(i-1)")]
                 dS0 = read(dset_in,"dS0")
-                copyto!(is_rm,dset_in["is_rm"])
                 write(dset,"S0_sorted",  S[i,:])
                 write(dset,"a_sorted",   a[i,:])
                 write(dset,"plaq_sorted",p[i,:])
+                write(dset,"is_rm"      ,is_rm[i,:])
                 write(dset,"dS0"        ,dS0)
-                write(dset,"is_rm"      ,is_rm)
             end
         end
         write(h5dset_out,joinpath(run,"N_replicas"),N_replicas)
