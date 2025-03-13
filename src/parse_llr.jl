@@ -187,10 +187,10 @@ function sort_by_central_energy_to_hdf5(h5file_in,h5file_out;skip_ens=nothing)
             is_rm   = zeros(Bool,(N_replicas,n_traj_min))
             for i in 1:N_replicas
                 dset = joinpath(run,"$j/Rep_$(i-1)")
-                copyto!(a[i,:]    ,h5dset[dset]["a"][offset1[i]:end]) 
-                copyto!(S[i,:]    ,h5dset[dset]["S0"][offset2[i]:end])
-                copyto!(p[i,:]    ,h5dset[dset]["plaq"][offset3[i]:end])
-                copyto!(is_rm[i,:],h5dset[dset]["is_rm"][offset4[i]:end])
+                a[i,:]     = h5dset[dset]["a"][1:end+1-offset1[i]] 
+                S[i,:]     = h5dset[dset]["S0"][1:end+1-offset2[i]]
+                p[i,:]     = h5dset[dset]["plaq"][1:end+1-offset3[i]]
+                is_rm[i,:] = h5dset[dset]["is_rm"][1:end+1-offset4[i]]
             end
             ## Sort by the central action to account for different swaps
             for j in 1:n_traj_min
@@ -200,17 +200,24 @@ function sort_by_central_energy_to_hdf5(h5file_in,h5file_out;skip_ens=nothing)
                 p[:,j] = p[perm,j]
                 is_rm[:,j] = is_rm[perm,j]
             end
-            ## make sure that the sorted central action alwas matches
-            for i in 1:N_replicas
-                @assert allequal(S[i,:])
-                dset    = create_group(h5dset_out, joinpath(run,"$j","Rep_$(i-1)"))
-                dset_in = h5dset[joinpath(run,"$j","Rep_$(i-1)")]
-                dS0 = read(dset_in,"dS0")
-                write(dset,"S0_sorted",  S[i,:])
-                write(dset,"a_sorted",   a[i,:])
-                write(dset,"plaq_sorted",p[i,:])
-                write(dset,"is_rm"      ,is_rm[i,:])
-                write(dset,"dS0"        ,dS0)
+            ## make sure that the sorted central action alwas matches, if not, discard the repeat
+            keep_repeat = true
+            for i in 1:N_replicas 
+                keep_repeat = keep_repeat*allequal(S[i,:])
+            end
+            if keep_repeat
+                for i in 1:N_replicas
+                    dset    = create_group(h5dset_out, joinpath(run,"$j","Rep_$(i-1)"))
+                    dset_in = h5dset[joinpath(run,"$j","Rep_$(i-1)")]
+                    dS0 = read(dset_in,"dS0")
+                    write(dset,"S0_sorted",  S[i,:])
+                    write(dset,"a_sorted",   a[i,:])
+                    write(dset,"plaq_sorted",p[i,:])
+                    write(dset,"is_rm"      ,is_rm[i,:])
+                    write(dset,"dS0"        ,dS0)
+                end
+            else
+                @warn "Run $run, repeat $j: Central energies do not always match => discarded "
             end
         end
         write(h5dset_out,joinpath(run,"N_replicas"),N_replicas)
