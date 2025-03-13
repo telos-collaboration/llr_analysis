@@ -8,17 +8,22 @@ function a_vs_central_action(h5dset,run;ind=nothing)
     N_repeats = read(h5dset[run],"N_repeats")
     a_last = zeros(N_replicas,N_repeats)
     S_last = zeros(N_replicas,N_repeats)
+    repeat_indices = Int[]
     # read all last elements for a and the central action
     for i in 1:N_replicas, j in 1:N_repeats
-        n_steps = length(h5dset[run]["$(j-1)/Rep_$(i-1)/is_rm"])
-        ind = isnothing(ind) ? n_steps : min(ind,n_steps) 
-        a_last[i,j] = h5dset[run]["$(j-1)/Rep_$(i-1)/a_sorted"][ind]
-        S_last[i,j] = h5dset[run]["$(j-1)/Rep_$(i-1)/S0_sorted"][ind]
+        if haskey(h5dset[run],"$(j-1)")
+            n_steps = length(h5dset[run]["$(j-1)/Rep_$(i-1)/is_rm"])
+            ind = isnothing(ind) ? n_steps : min(ind,n_steps) 
+            a_last[i,j] = h5dset[run]["$(j-1)/Rep_$(i-1)/a_sorted"][ind]
+            S_last[i,j] = h5dset[run]["$(j-1)/Rep_$(i-1)/S0_sorted"][ind]
+            append!(repeat_indices,j)
+        end
     end
+    N_eff_repeats = length(repeat_indices)
     # average over all repeats
-    S0  = S_last[:,1]
-    a0  = dropdims(mean(a_last,dims=2),dims=2)
-    Δa0 = dropdims(std(a_last,dims=2),dims=2)/sqrt(N_repeats)
+    S0  = S_last[:,first(repeat_indices)]
+    a0  = dropdims(mean(a_last[:,repeat_indices],dims=2),dims=2)
+    Δa0 = dropdims(std(a_last[:,repeat_indices],dims=2),dims=2)/sqrt(N_eff_repeats)
     return a0, Δa0, S0, ind
 end
 function a_vs_central_action_plot(h5dset,runs;indices)
@@ -88,10 +93,14 @@ function a_trajectory(h5dset,run;replica=0)
     N_repeats = read(h5dset[run],"N_repeats")
     @assert replica < N_replicas
     a = [ Float64[] for i in 1:N_repeats]
+    repeat_indices = Int[]
     for j in 1:N_repeats
-        a[j] = vec(h5dset[run]["$(j-1)/Rep_$(replica)/a_sorted"][])
+        if haskey(h5dset[run],"$(j-1)")
+            a[j] = vec(h5dset[run]["$(j-1)/Rep_$(replica)/a_sorted"][])
+            append!(repeat_indices,j)
+        end
     end
-    return a
+    return a[repeat_indices]
 end
 function plot_a_trajectory_repeat!(plt,h5dset,run,repeat,replica)
     a    = a_trajectory(h5dset,run;replica)
@@ -106,6 +115,7 @@ end
 function plot_nr_rm_shading!(plt,h5dset,run,repeat,replica)
     isrm = read(h5dset[run],"$repeat/Rep_$replica/is_rm")
     nr, rm = findfirst(isrm), length(isrm)
+    nr = isnothing(nr) ? 0 : nr
     vspan!(plt,[1,nr+1], color = :green, alpha = 0.2, labels = "NR");
     vspan!(plt,[nr+1,rm],color = :blue,  alpha = 0.2, labels = "RM");
     return plt
@@ -151,15 +161,15 @@ h5file_out = "output/Sp4_llr_new_sorted.hdf5"
 
 h5dset = h5open(h5file_out)
 runs = keys(h5dset)
-run  = runs[1]
+run  = runs[end]
 
 # Plot 
 Nreplicas        = read(h5dset[run],"N_replicas")
 a0, Δa0, S0, ind = a_vs_central_action(h5dset,run)
-replica_id       = min(findmax(Δa0)[2],Nreplicas-1)
+replica_id       = Nreplicas÷2
 repeat_id        = 0
-plt1 = full_trajectory_plot(h5dset,run,repeat_id,replica_id,lens=true)
-plt2 = full_trajectory_plot(h5dset,run,repeat_id,Nreplicas-1)
-plt3 = full_trajectory_plot(h5dset,run,repeat_id,1)
+plt1 = full_trajectory_plot(h5dset,run,repeat_id,replica_id ,lens=false)
+plt2 = full_trajectory_plot(h5dset,run,repeat_id,Nreplicas-1,lens=false)
+plt3 = full_trajectory_plot(h5dset,run,repeat_id,1          ,lens=false)
 plot!(plt2,legend=:topleft)
 plt = plot(plt3, plt1, plt2, layout = grid(1, 3), size=(1400,1000))
