@@ -155,13 +155,12 @@ function full_trajectory_plot(h5dset,run,repeat_id,replica_id;lens=true)
     return plt
 end
 
-h5file_out = "output/SU3_llr_david_sorted.hdf5"
-h5file_out = "output/Sp4_llr_david_sorted.hdf5"
 h5file_out = "output/Sp4_llr_new_sorted.hdf5"
 
 h5dset = h5open(h5file_out)
 runs = keys(h5dset)
-run  = runs[end]
+run  = runs[2]
+runs
 
 # Plot 
 Nreplicas        = read(h5dset[run],"N_replicas")
