@@ -86,13 +86,13 @@ function a_variance_vs_central_action_plot!(plt,h5dset,run;index=nothing,highlig
 end
 function a_trajectory(h5dset,run;replica=0)
     N_replicas = read(h5dset[run],"N_replicas")
-    N_repeats = read(h5dset[run],"N_repeats")
+    repeats = read(h5dset[run],"repeats")
     @assert replica < N_replicas
-    a = [ Float64[] for i in 1:N_repeats]
+    a = [ Float64[] for _ in repeats]
     repeat_indices = Int[]
-    for j in 1:N_repeats
-        if haskey(h5dset[run],"$(j-1)")
-            a[j] = vec(h5dset[run]["$(j-1)/Rep_$(replica)/a_sorted"][])
+    for (j,repeat) in enumerate(repeats)
+        if haskey(h5dset[run],repeat)
+            a[j] = vec(h5dset[run]["$repeat/Rep_$(replica)/a_sorted"][])
             append!(repeat_indices,j)
         end
     end
@@ -118,6 +118,8 @@ function plot_nr_rm_shading!(plt,h5dset,run,repeat,replica)
 end
 function plot_a_repeat_average!(plt,h5dset,run;replica)
     a         = a_trajectory(h5dset,run;replica)
+    # remove repeats that have a zero-length trajectory
+    filter!(x->length(x)>0,a)
     a_last    = last.(a)
     N_repeats = length(a_last) 
     a0, Δa    = mean(a_last), std(a_last)/sqrt(N_repeats)
