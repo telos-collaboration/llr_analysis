@@ -22,4 +22,9 @@ S0_Rep2 = parse_llr_corrupted(file2)[2]
         ans2 = parse_llr_corrupted(file)
         @test ans1 == ans2
     end
+    @testset "Check identification of incomplete LLR update in logfile" begin
+        file = "./test_data/LLR_4x80_228_0_Rep1_out_0.txt"
+        invalid_lines = LLRParsing.find_invalid_llr_update_lines(file)
+        @test invalid_lines == [825, 826, 827]
+    end
 end

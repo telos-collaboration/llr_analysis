@@ -46,11 +46,11 @@ function _parse_data!(array,string;n)
         array[i] = Parsers.parse(Float64, io, opts)
     end
 end
-function parse_llr(file)
+function parse_llr(file; skiplines=Int[])
     pattern_poly = "[FUND_POLYAKOV][0]Polyakov direction 0 = "
     patternS0 = "[SWAP][10]New Rep Par S0 = "
     patternPl = r"^\[MAIN\]\[0\](NR )*Plaq a fixed ([0-9]+.[0-9]+)"
-    pattern_a = r"^\[MAIN\]\[0\](NR )*<a_rho\(.+\)>= ([0-9]+.[0-9]+)"    
+    pattern_a = r"^\[MAIN\]\[0\](NR )*<a_rho\(.+\)>= ([0-9]+.[0-9]+)"
     pos_poly  = length(pattern_poly)
     posS0 = length(patternS0)
     dS0 = parse_dS0(file)
@@ -68,8 +68,11 @@ function parse_llr(file)
     tmp_poly = zeros(2)
     is_fxa = false
 
-    for line in eachline(file)
-    
+    # keep track of line number so that we can skip them if specified by skiplines
+    for (line_no,line) in enumerate(eachline(file))            
+        # check if we want to skip the current line
+        line_no ∈ skiplines && continue
+        # then continue with the usual parsing
         if startswith(line,"[SYSTEM][0]Process finalized.")
             is_fxa = false
         end
