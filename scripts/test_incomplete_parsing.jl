@@ -55,30 +55,33 @@ end
 # Note, that David's script currently rename the configuration before reading by decreasing the configuration number by 1
 # The first occurence of a (read|save) pattern should be a save pattern
 # We declare a Robbins Monro trajectry number good if it appears between a 'read' and a 'save' pattern 
-function find_good_RM_trajectory_numbers(read_saved)
+function find_good_RM_trajectory_numbers(read_saved, types, numbers)
     good_trajectories = Int[]
-    old_type = ""
-    for id in read_saved
-        m = match(r"([0-9]+) (read|saved) (RM|NR)",id)
-        number = parse(Int,m.captures[1]) 
-        rs     = m.captures[2]
-        RM_NR  = m.captures[3]
-        @show number, rs, RM_NR
+    for i in eachindex(read_saved, types, numbers)
+        i == 1 && continue
+        if types[i] == "RM"
+            if read_saved[i] == "saved" && read_saved[i-1] == "read" 
+                r = numbers[i-1]+1:numbers[i]-1
+                append!(good_trajectories,r)
+            end
+        end
     end
+    return good_trajectories
+end
+function find_good_RM_trajectory_numbers(file)
+    read_saved, types, rs_number = traj_read_saved(file)
+    good_trajectories = find_good_RM_trajectory_numbers(read_saved, types, rs_number)
+    return good_trajectories
 end
 
-# Showcase to files where a remnant data corruption occurs
-# for i in [0,2]
-#     file = "output/LLRout/LLR_5x72_152/0/Rep_$i/out_0"
-#     dS0, S0, plaq, a, is_rm, S0_fxa, a_fxa, poly = parse_llr(file)
-#     numbers = traj_numbers(file)
-#     read_saved = traj_read_saved(file)
-#     @show i, size(S0), size(a), size(plaq), size(is_rm)
-# end
-
-file = "output/LLRout/LLR_5x72_152/0/Rep_0/out_0"
 file = "output/LLRout/LLR_5x72_152/0/Rep_2/out_0"
 dS0, S0, plaq, a, is_rm, S0_fxa, a_fxa, poly = parse_llr(file)
-numbers = traj_numbers(file)
-read_saved, types, rs_number = traj_read_saved(file)
-@show size(read_saved), size(types), size(rs_number)
+numbers           = traj_numbers(file)
+good_trajectories = find_good_RM_trajectory_numbers(file) 
+@show size(good_trajectories)
+
+file = "output/LLRout/LLR_5x72_152/0/Rep_0/out_0"
+dS0, S0, plaq, a, is_rm, S0_fxa, a_fxa, poly = parse_llr(file)
+numbers           = traj_numbers(file)
+good_trajectories = find_good_RM_trajectory_numbers(file) 
+@show size(good_trajectories)
