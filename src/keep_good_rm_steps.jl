@@ -88,7 +88,11 @@ end
 function parse_llr_corrupted(file)
     dS0, S0, plaq, a, is_rm, S0_fxa, a_fxa, poly = parse_llr(file)
     trajectories, types = traj_numbers(file)
-    @assert size(S0) == size(plaq) == size(a) == size(is_rm)
+    if !(size(S0) == size(plaq) == size(a) == size(is_rm))
+        @show file
+        @show size(S0), size(plaq), size(a), size(is_rm)
+        @assert size(S0) == size(plaq) == size(a) == size(is_rm)
+    end
     @assert size(S0) == size(trajectories) == size(types)
     good_trajectories = find_good_RM_trajectory_numbers(file) 
     inds = good_rm_indices(trajectories,types,good_trajectories)
