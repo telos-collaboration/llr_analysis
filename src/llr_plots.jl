@@ -8,11 +8,13 @@ function a_vs_central_action(h5dset,run;ind=nothing)
     for i in 1:N_replicas, j in 1:N_repeats
         if haskey(h5dset[run],"$(j-1)")
             n_steps = length(h5dset[run]["$(j-1)/Rep_$(i-1)/is_rm"])
-            ind = isnothing(ind) ? n_steps : min(ind,n_steps)
-            ind = max(1,ind)
-            a_last[i,j] = h5dset[run]["$(j-1)/Rep_$(i-1)/a_sorted"][ind]
-            S_last[i,j] = h5dset[run]["$(j-1)/Rep_$(i-1)/S0_sorted"][ind]
-            append!(repeat_indices,j)
+            if n_steps > 0
+                ind = isnothing(ind) ? n_steps : min(ind,n_steps)
+                ind = max(1,ind)
+                a_last[i,j] = h5dset[run]["$(j-1)/Rep_$(i-1)/a_sorted"][ind]
+                S_last[i,j] = h5dset[run]["$(j-1)/Rep_$(i-1)/S0_sorted"][ind]
+                append!(repeat_indices,j)
+            end
         end
     end
     N_eff_repeats = length(repeat_indices)
