@@ -12,6 +12,14 @@ S0_Rep0 = parse_llr_corrupted(file1)[2]
 S0_Rep2 = parse_llr_corrupted(file2)[2]
 
 @testset begin
-    @test length(S0_Rep0) == 58
-    @test length(S0_Rep2) == 58
+    @testset "Parse with data corruption in Robbins Monro update" begin
+        @test length(S0_Rep0) == 58
+        @test length(S0_Rep2) == 58
+    end
+    @testset "Check for regression on known uncorrupted file" begin 
+        file = "./test_data/4x20_0_Rep0_out_0.txt"
+        ans1 = parse_llr(file)
+        ans2 = parse_llr_corrupted(file)
+        @test ans1 == ans2
+    end
 end

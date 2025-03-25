@@ -58,6 +58,13 @@ end
 # We declare a Robbins Monro trajectry number good if it appears between a 'read' and a 'save' pattern 
 function find_good_RM_trajectory_numbers(read_saved, types, numbers)
     good_trajectories = Int[]
+    # if we haven't done any NR steps, the first time we save to disk will be a RM iteration without
+    # There will not be a matching configuration that we have read from disk
+    if read_saved[1] == "saved" && types[1] == "RM" 
+        r = 0:numbers[1]
+        append!(good_trajectories,r)
+    end
+    # Otherwise look for RM pairs of first reading and then saving
     for i in eachindex(read_saved, types, numbers)
         i == 1 && continue
         if types[i] == "RM"
@@ -93,7 +100,10 @@ function parse_llr_corrupted(file)
         @show size(S0), size(plaq), size(a), size(is_rm)
         @assert size(S0) == size(plaq) == size(a) == size(is_rm)
     end
-    @assert size(S0) == size(trajectories) == size(types)
+    if !(size(S0) == size(trajectories) == size(types))
+        @show size(S0), size(trajectories), size(types)
+        @assert size(S0) == size(trajectories) == size(types)
+    end
     good_trajectories = find_good_RM_trajectory_numbers(file) 
     inds = good_rm_indices(trajectories,types,good_trajectories)
     return dS0, S0[inds], plaq[inds], a[inds], is_rm[inds], S0_fxa, a_fxa, poly
