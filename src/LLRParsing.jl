@@ -10,6 +10,8 @@ using MadrasSokal
 using ProgressMeter
 using NaturalSort
 using Parsers
+using Plots
+using LaTeXStrings
 
 include("parse_std.jl")
 export importance_sampling_dir_hdf5
@@ -19,5 +21,7 @@ include("parse_llr.jl")
 export get_repeat_and_replica_dirs
 export parse_llr, llr_dir_hdf5
 export sort_by_central_energy_to_hdf5
+include("llr_plots.jl")
+export a_vs_central_action, full_trajectory_plot
 
 end # module LLRParsing
