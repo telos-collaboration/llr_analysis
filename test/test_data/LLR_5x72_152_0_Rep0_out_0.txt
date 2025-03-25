@@ -1,0 +1,2726 @@
+[SYSTEM][0]Gauge group: SP(4)
+[SYSTEM][0]Fermion representation: dim = 4
+[SYSTEM][0][RepID: 0][world_size: 1]
+[SYSTEM][0][MPI_ID: 0][MPI_size: 152]
+[SYSTEM][0]MACROS=-DBC_T_PERIODIC -DBC_X_PERIODIC -DBC_Y_PERIODIC -DBC_Z_PERIODIC -DWITH_EO -DNDEBUG -DIO_FLUSH -DWITH_MPI -DLLRHB_UM_BC -DLLRHBPARALLEL -DWITH_UMBRELLA -DLLRHB -DREPR_FUNDAMENTAL -DREPR_NAME=@REPR_FUNDAMENTAL@ -DGAUGE_SPN
+[GEOMETRY][0]WARNING: NO PARALLEL DIMENSIONS SPECIFIED!!!
+[GEOMETRY][0]WARNING: THE MPI CODE SHOULD NOT BE USED IN THIS CASE!!!
+[GEOMETRY][0]CId = 0 (0,0,0,0)
+[GEOMETRY_INIT][0]Global size is 5x72x72x72
+[GEOMETRY_INIT][0]Local size is 5x72x72x72
+[GEOMETRY_INIT][0]Extended local size is 5x72x72x72
+[GEOMETRY_INIT][0]The lattice borders are (0,0,0,0)
+[WARNING][0](int) GLB_VOL3*GLB_VOL3 overflows
+[GEOMETRY][0]Geometry variable checked
+[GEOMETRY][0]Gauge field: size 1866240 nbuffer 0 
+[GEOMETRY][0]Spinor field (EO): size 1866240 nbuffer 0 
+[GEOMETRY][0]Even Spinor field: size 933120 nbuffer 0 
+[GEOMETRY][0]Odd Spinor field: size 933120 nbuffer 0 
+[SETUP_RANDOM][0]RLXD [1,13350]
+[MAIN][0]LLR number of mc steps per RM: 700
+[MAIN][0]LLR number of therm steps per RM 300
+[MAIN][0]LLR Initial a 7.471890
+[MAIN][0]LLR RM start value iteration 1 and its iteration frequency 1 
+[MAIN][0]LLR S0 Central action 6578496.000000
+[MAIN][0]LLR Delta S 593.241850
+[MAIN][0]Number of heatbath steps 1, number of overrelaxation steps 0
+[MAIN][0]Number of fixed a steps 0
+[MAIN][0]Swap frequency for fixed a steps 0
+[MAIN][0]LLR Smin minimum action for all replicas 6578496.000000
+[MAIN][0]LLR Smax maximum action for all replicas 6623285.760000
+[MAIN][0]LLR Delta S 593.241850
+[MAIN][0]LLR dB 0.001000
+[MAIN][0]LLR number of intial NR iterations 1
+[MAIN][0]Compiled with domain decomposition 
+[READINPUT][0]Warning: input parameter [config dir] not found in [input_file]!
+[BCS][0]Gauge field: PERIODIC x PERIODIC PERIODIC PERIODIC
+[BCS][0]Fermion fields: PERIODIC x PERIODIC PERIODIC PERIODIC
+[FLOW][0]Starting a new run from a random conf!
+[MAIN][0]beta = 2.4000
+[MAIN][0]Number of thermalization cycles: 1000
+[MAIN][0]Number of hb-or iterations per cycle: 1
+[MAIN][0]Number of heatbaths per iteration: 1
+[MAIN][0]Number or overrelaxations per iteration: 0
+[MAIN][0]Initial plaquette: 2.93512019e-05
+[MAIN][0]Bringing the system to the interval (S0,dS) = (6578496.000000, 593.241850) ...
+[ANNEAL][0]Finished S = 6578614.733052, Smin = 6578199.379075, Smax = 6578792.620925, in 226 steps ...
+[ANNEAL][0]Check action S_an = 6578614.7330518700182438, S_ap = 6578614.7330251233652234
+[MAIN][0]System brought to the interval (S0,dS) = (6578496.000000, 593.241850)
+[llr][0]nth: 300 
+[MAIN][0]0...20...40...60...80...Thermalization done in [12272 sec 925111 usec].
+[MAIN][0]Measured energy 6571790.171481, stated energy 
+[MAIN][0]Initial NR iterations, N_nr: 1 0 
+[MAIN][0]NR Trajectory #0...
+[NEWTONRAPHSON][10]RM avr-S0: -5835.437233 delta_a: -0.198972 
+[NEWTONRAPHSON][10]RM var(S - S0): 1125484.927821 
+[SWAP][10]Starting Rep Par S0 = 6578496.000000 dS = 593.241850 a = 7.670862 
+[Boundary][10]a(1)_rm : 7.476028 and a(1)_bc : 7.476324 
+[Boundary][10]a(n-2)_rm : 7.509450 and a(n-2)_bc : 7.509578 
+[SWAP][10]Replicas 7 and 8 swapped!
+[SWAP][10]Replicas 15 and 16 swapped!
+[SWAP][10]Replicas 26 and 27 swapped!
+[SWAP][10]Replicas 32 and 33 swapped!
+[SWAP][10]Replicas 46 and 47 swapped!
+[SWAP][10]Replicas 48 and 49 swapped!
+[SWAP][10]Replicas 53 and 54 swapped!
+[SWAP][10]Replicas 58 and 59 swapped!
+[SWAP][10]Replicas 64 and 65 swapped!
+[SWAP][10]Replicas 67 and 68 swapped!
+[SWAP][10]Replicas 74 and 75 swapped!
+[SWAP][10]Replicas 80 and 81 swapped!
+[SWAP][10]Replicas 102 and 103 swapped!
+[SWAP][10]Replicas 122 and 123 swapped!
+[llr:setreplica][0]Updating OLD LLR Param: S0 6578496.000000,  a  7.670861598 , dS 593.241850  
+[llr:setreplica][0]New LLR Param: S0 6578496.000000,  a  7.475515181 , dS 593.241850  
+[SWAP][10]New Rep Par S0 = 6578496.000000 dS = 593.241850 a = 7.475515 
+[MAIN][0]Newton Raphson sequence #0: generated in [16810 sec 795320 usec]
+[MAIN][0]NR Plaq a fixed 0.587116 
+[MAIN][0]NR <a_rho(0,0,6578496.000000000)>= 7.475515181
+[MAIN][0]Newton Raphson update done.
+[MAIN][0]flow.start: 1, flow.end: 1, llr_var.it: 1 
+[MAIN][0]Robins Monro update done.
+[IO][0]Configuration [./run1_5x72x72x72nc4b2.400000n1] saved [2 sec 242308 usec]
+[MAIN][0]Saving rlxd state to file rand_state
+[IO][0]Ranlxd state [rand_state] saved [0 sec 14349 usec]
+[MAIN][0]Total simulation time =[36476 sec 22719 usec]
+[TEST][0]start of finalize_process 
+[TEST][0]free_ghmc 
+[TEST][0]free_BCs 
+[TEST][0]free_wrk_space 
+[SYSTEM][0]Process finalized.
+[SYSTEM][0]Gauge group: SP(4)
+[SYSTEM][0]Fermion representation: dim = 4
+[SYSTEM][0][RepID: 0][world_size: 1]
+[SYSTEM][0][MPI_ID: 0][MPI_size: 152]
+[SYSTEM][0]MACROS=-DBC_T_PERIODIC -DBC_X_PERIODIC -DBC_Y_PERIODIC -DBC_Z_PERIODIC -DWITH_EO -DNDEBUG -DIO_FLUSH -DWITH_MPI -DLLRHB_UM_BC -DLLRHBPARALLEL -DWITH_UMBRELLA -DLLRHB -DREPR_FUNDAMENTAL -DREPR_NAME=@REPR_FUNDAMENTAL@ -DGAUGE_SPN
+[GEOMETRY][0]WARNING: NO PARALLEL DIMENSIONS SPECIFIED!!!
+[GEOMETRY][0]WARNING: THE MPI CODE SHOULD NOT BE USED IN THIS CASE!!!
+[GEOMETRY][0]CId = 0 (0,0,0,0)
+[GEOMETRY_INIT][0]Global size is 5x72x72x72
+[GEOMETRY_INIT][0]Local size is 5x72x72x72
+[GEOMETRY_INIT][0]Extended local size is 5x72x72x72
+[GEOMETRY_INIT][0]The lattice borders are (0,0,0,0)
+[WARNING][0](int) GLB_VOL3*GLB_VOL3 overflows
+[GEOMETRY][0]Geometry variable checked
+[GEOMETRY][0]Gauge field: size 1866240 nbuffer 0 
+[GEOMETRY][0]Spinor field (EO): size 1866240 nbuffer 0 
+[GEOMETRY][0]Even Spinor field: size 933120 nbuffer 0 
+[GEOMETRY][0]Odd Spinor field: size 933120 nbuffer 0 
+[SETUP_RANDOM][0]RLXD [1,25816]
+[MAIN][0]LLR number of mc steps per RM: 700
+[MAIN][0]LLR number of therm steps per RM 300
+[MAIN][0]LLR Initial a 7.475515
+[MAIN][0]LLR RM start value iteration 1 and its iteration frequency 1 
+[MAIN][0]LLR S0 Central action 6578496.000000
+[MAIN][0]LLR Delta S 593.241850
+[MAIN][0]Number of heatbath steps 1, number of overrelaxation steps 0
+[MAIN][0]Number of fixed a steps 0
+[MAIN][0]Swap frequency for fixed a steps 0
+[MAIN][0]LLR Smin minimum action for all replicas 6578496.000000
+[MAIN][0]LLR Smax maximum action for all replicas 6623285.760000
+[MAIN][0]LLR Delta S 593.241850
+[MAIN][0]LLR dB 0.001000
+[MAIN][0]LLR number of intial NR iterations 3
+[MAIN][0]Compiled with domain decomposition 
+[READINPUT][0]Warning: input parameter [config dir] not found in [input_file]!
+[BCS][0]Gauge field: PERIODIC x PERIODIC PERIODIC PERIODIC
+[BCS][0]Fermion fields: PERIODIC x PERIODIC PERIODIC PERIODIC
+[FLOW][0]Starting from conf [run1_5x72x72x72nc4b2.400000n0]
+[IO][0]Configuration [./run1_5x72x72x72nc4b2.400000n0] read [5 sec 254993 usec] Plaquette=5.871155e-01
+[MAIN][0]beta = 2.4000
+[MAIN][0]Number of thermalization cycles: 0
+[MAIN][0]Number of hb-or iterations per cycle: 1
+[MAIN][0]Number of heatbaths per iteration: 1
+[MAIN][0]Number or overrelaxations per iteration: 0
+[MAIN][0]Initial plaquette: 5.87115542e-01
+[MAIN][0]Bringing the system to the interval (S0,dS) = (6578496.000000, 593.241850) ...
+[ANNEAL][0]Finished S = 6578265.255439, Smin = 6578199.379075, Smax = 6578792.620925, in 13 steps ...
+[ANNEAL][0]Check action S_an = 6578265.2554394388571382, S_ap = 6578265.2554355030879378
+[MAIN][0]System brought to the interval (S0,dS) = (6578496.000000, 593.241850)
+[llr][0]nth: 300 
+[MAIN][0]Thermalization done in [0 sec 0 usec].
+[MAIN][0]Measured energy 6578265.255436, stated energy 
+[MAIN][0]Initial NR iterations, N_nr: 3 0 
+[MAIN][0]NR Trajectory #0...
+[NEWTONRAPHSON][10]RM avr-S0: -1277.597101 delta_a: -0.043562 
+[NEWTONRAPHSON][10]RM var(S - S0): 826700.669700 
+[SWAP][10]Starting Rep Par S0 = 6578496.000000 dS = 593.241850 a = 7.519078 
+[Boundary][10]a(1)_rm : 7.476506 and a(1)_bc : 7.477249 
+[Boundary][10]a(n-2)_rm : 7.511573 and a(n-2)_bc : 7.512420 
+[SWAP][10]Replicas 1 and 3 swapped!
+[SWAP][10]Replicas 11 and 13 swapped!
+[SWAP][10]Replicas 19 and 20 swapped!
+[SWAP][10]Replicas 22 and 23 swapped!
+[SWAP][10]Replicas 24 and 25 swapped!
+[SWAP][10]Replicas 30 and 29 swapped!
+[SWAP][10]Replicas 51 and 52 swapped!
+[SWAP][10]Replicas 56 and 57 swapped!
+[SWAP][10]Replicas 60 and 62 swapped!
+[SWAP][10]Replicas 66 and 68 swapped!
+[SWAP][10]Replicas 78 and 79 swapped!
+[SWAP][10]Replicas 85 and 86 swapped!
+[SWAP][10]Replicas 93 and 95 swapped!
+[SWAP][10]Replicas 105 and 106 swapped!
+[SWAP][10]Replicas 107 and 109 swapped!
+[SWAP][10]Replicas 137 and 138 swapped!
+[llr:setreplica][0]Updating OLD LLR Param: S0 6578496.000000,  a  7.519077561 , dS 593.241850  
+[llr:setreplica][0]New LLR Param: S0 6578496.000000,  a  7.476274859 , dS 593.241850  
+[SWAP][10]New Rep Par S0 = 6578496.000000 dS = 593.241850 a = 7.476275 
+[MAIN][0]Newton Raphson sequence #0: generated in [13992 sec 912613 usec]
+[MAIN][0]NR Plaq a fixed 0.587356 
+[MAIN][0]NR <a_rho(0,0,6578496.000000000)>= 7.476274859
+[MAIN][0]NR Trajectory #1...
+[NEWTONRAPHSON][10]RM avr-S0: -680.590229 delta_a: -0.023206 
+[NEWTONRAPHSON][10]RM var(S - S0): 559135.086016 
+[SWAP][10]Starting Rep Par S0 = 6578496.000000 dS = 593.241850 a = 7.499481 
+[Boundary][10]a(1)_rm : 7.477038 and a(1)_bc : 7.476603 
+[Boundary][10]a(n-2)_rm : 7.511174 and a(n-2)_bc : 7.513844 
+[SWAP][10]Replicas 16 and 15 swapped!
+[SWAP][10]Replicas 23 and 22 swapped!
+[SWAP][10]Replicas 32 and 34 swapped!
+[SWAP][10]Replicas 52 and 51 swapped!
+[SWAP][10]Replicas 77 and 79 swapped!
+[SWAP][10]Replicas 90 and 92 swapped!
+[SWAP][10]Replicas 105 and 109 swapped!
+[SWAP][10]Replicas 111 and 110 swapped!
+[SWAP][10]Replicas 135 and 136 swapped!
+[SWAP][10]Replicas 145 and 144 swapped!
+[llr:setreplica][0]Updating OLD LLR Param: S0 6578496.000000,  a  7.499481025 , dS 593.241850  
+[llr:setreplica][0]New LLR Param: S0 6578496.000000,  a  7.477090294 , dS 593.241850  
+[SWAP][10]New Rep Par S0 = 6578496.000000 dS = 593.241850 a = 7.477090 
+[MAIN][0]Newton Raphson sequence #1: generated in [14381 sec 506262 usec]
+[MAIN][0]NR Plaq a fixed 0.587453 
+[MAIN][0]NR <a_rho(0,1,6578496.000000000)>= 7.477090294
+[MAIN][0]NR Trajectory #2...
+[NEWTONRAPHSON][10]RM avr-S0: -436.665215 delta_a: -0.014889 
+[NEWTONRAPHSON][10]RM var(S - S0): 339970.130999 
+[SWAP][10]Starting Rep Par S0 = 6578496.000000 dS = 593.241850 a = 7.491979 
+[Boundary][10]a(1)_rm : 7.476593 and a(1)_bc : 7.476120 
+[Boundary][10]a(n-2)_rm : 7.511179 and a(n-2)_bc : 7.512778 
+[SWAP][10]Replicas 1 and 3 swapped!
+[SWAP][10]Replicas 6 and 5 swapped!
+[SWAP][10]Replicas 9 and 12 swapped!
+[SWAP][10]Replicas 13 and 14 swapped!
+[SWAP][10]Replicas 11 and 15 swapped!
+[SWAP][10]Replicas 20 and 19 swapped!
+[SWAP][10]Replicas 42 and 41 swapped!
+[SWAP][10]Replicas 49 and 48 swapped!
+[SWAP][10]Replicas 51 and 52 swapped!
+[SWAP][10]Replicas 54 and 53 swapped!
+[SWAP][10]Replicas 58 and 56 swapped!
+[SWAP][10]Replicas 78 and 80 swapped!
+[SWAP][10]Replicas 93 and 94 swapped!
+[SWAP][10]Replicas 100 and 99 swapped!
+[SWAP][10]Replicas 102 and 104 swapped!
+[SWAP][10]Replicas 105 and 107 swapped!
+[SWAP][10]Replicas 115 and 114 swapped!
+[SWAP][10]Replicas 121 and 120 swapped!
+[SWAP][10]Replicas 129 and 131 swapped!
+[SWAP][10]Replicas 147 and 148 swapped!
+[llr:setreplica][0]Updating OLD LLR Param: S0 6578496.000000,  a  7.491979320 , dS 593.241850  
+[llr:setreplica][0]New LLR Param: S0 6578496.000000,  a  7.476713181 , dS 593.241850  
+[SWAP][10]New Rep Par S0 = 6578496.000000 dS = 593.241850 a = 7.476713 
+[MAIN][0]Newton Raphson sequence #2: generated in [14230 sec 125182 usec]
+[MAIN][0]NR Plaq a fixed 0.587501 
+[MAIN][0]NR <a_rho(0,2,6578496.000000000)>= 7.476713181
+[MAIN][0]Newton Raphson update done.
+[MAIN][0]flow.start: 1, flow.end: 1, llr_var.it: 1 
+[MAIN][0]Robins Monro update done.
+[IO][0]Configuration [./run1_5x72x72x72nc4b2.400000n1] saved [2 sec 197214 usec]
+[MAIN][0]Saving rlxd state to file rand_state
+[IO][0]Ranlxd state [rand_state] saved [0 sec 136 usec]
+[MAIN][0]Total simulation time =[42751 sec 104367 usec]
+[TEST][0]start of finalize_process 
+[TEST][0]free_ghmc 
+[TEST][0]free_BCs 
+[TEST][0]free_wrk_space 
+[SYSTEM][0]Process finalized.
+[SYSTEM][0]Gauge group: SP(4)
+[SYSTEM][0]Fermion representation: dim = 4
+[SYSTEM][0][RepID: 0][world_size: 1]
+[SYSTEM][0][MPI_ID: 0][MPI_size: 152]
+[SYSTEM][0]MACROS=-DBC_T_PERIODIC -DBC_X_PERIODIC -DBC_Y_PERIODIC -DBC_Z_PERIODIC -DWITH_EO -DNDEBUG -DIO_FLUSH -DWITH_MPI -DLLRHB_UM_BC -DLLRHBPARALLEL -DWITH_UMBRELLA -DLLRHB -DREPR_FUNDAMENTAL -DREPR_NAME=@REPR_FUNDAMENTAL@ -DGAUGE_SPN
+[GEOMETRY][0]WARNING: NO PARALLEL DIMENSIONS SPECIFIED!!!
+[GEOMETRY][0]WARNING: THE MPI CODE SHOULD NOT BE USED IN THIS CASE!!!
+[GEOMETRY][0]CId = 0 (0,0,0,0)
+[GEOMETRY_INIT][0]Global size is 5x72x72x72
+[GEOMETRY_INIT][0]Local size is 5x72x72x72
+[GEOMETRY_INIT][0]Extended local size is 5x72x72x72
+[GEOMETRY_INIT][0]The lattice borders are (0,0,0,0)
+[WARNING][0](int) GLB_VOL3*GLB_VOL3 overflows
+[GEOMETRY][0]Geometry variable checked
+[GEOMETRY][0]Gauge field: size 1866240 nbuffer 0 
+[GEOMETRY][0]Spinor field (EO): size 1866240 nbuffer 0 
+[GEOMETRY][0]Even Spinor field: size 933120 nbuffer 0 
+[GEOMETRY][0]Odd Spinor field: size 933120 nbuffer 0 
+[SETUP_RANDOM][0]RLXD [1,17351]
+[MAIN][0]LLR number of mc steps per RM: 700
+[MAIN][0]LLR number of therm steps per RM 300
+[MAIN][0]LLR Initial a 7.476713
+[MAIN][0]LLR RM start value iteration 1 and its iteration frequency 1 
+[MAIN][0]LLR S0 Central action 6578496.000000
+[MAIN][0]LLR Delta S 593.241850
+[MAIN][0]Number of heatbath steps 1, number of overrelaxation steps 0
+[MAIN][0]Number of fixed a steps 0
+[MAIN][0]Swap frequency for fixed a steps 0
+[MAIN][0]LLR Smin minimum action for all replicas 6578496.000000
+[MAIN][0]LLR Smax maximum action for all replicas 6623285.760000
+[MAIN][0]LLR Delta S 593.241850
+[MAIN][0]LLR dB 0.001000
+[MAIN][0]LLR number of intial NR iterations 3
+[MAIN][0]Compiled with domain decomposition 
+[READINPUT][0]Warning: input parameter [config dir] not found in [input_file]!
+[BCS][0]Gauge field: PERIODIC x PERIODIC PERIODIC PERIODIC
+[BCS][0]Fermion fields: PERIODIC x PERIODIC PERIODIC PERIODIC
+[FLOW][0]Starting from conf [run1_5x72x72x72nc4b2.400000n0]
+[IO][0]Configuration [./run1_5x72x72x72nc4b2.400000n0] read [2 sec 412794 usec] Plaquette=5.875015e-01
+[MAIN][0]beta = 2.4000
+[MAIN][0]Number of thermalization cycles: 0
+[MAIN][0]Number of hb-or iterations per cycle: 1
+[MAIN][0]Number of heatbaths per iteration: 1
+[MAIN][0]Number or overrelaxations per iteration: 0
+[MAIN][0]Initial plaquette: 5.87501489e-01
+[MAIN][0]Bringing the system to the interval (S0,dS) = (6578496.000000, 593.241850) ...
+[ANNEAL][0]Finished S = 6578512.671011, Smin = 6578199.379075, Smax = 6578792.620925, in 1 steps ...
+[ANNEAL][0]Check action S_an = 6578512.6710111452266574, S_ap = 6578512.6710111452266574
+[MAIN][0]System brought to the interval (S0,dS) = (6578496.000000, 593.241850)
+[llr][0]nth: 300 
+[MAIN][0]Thermalization done in [0 sec 0 usec].
+[MAIN][0]Measured energy 6578512.671011, stated energy 
+[MAIN][0]Initial NR iterations, N_nr: 3 0 
+[MAIN][0]NR Trajectory #0...
+[NEWTONRAPHSON][10]RM avr-S0: -469.561071 delta_a: -0.016011 
+[NEWTONRAPHSON][10]RM var(S - S0): 355982.160648 
+[SWAP][10]Starting Rep Par S0 = 6578496.000000 dS = 593.241850 a = 7.492724 
+[Boundary][10]a(1)_rm : 7.476411 and a(1)_bc : 7.474722 
+[Boundary][10]a(n-2)_rm : 7.511991 and a(n-2)_bc : 7.512781 
+[SWAP][10]Replicas 1 and 2 swapped!
+[SWAP][10]Replicas 5 and 6 swapped!
+[SWAP][10]Replicas 20 and 21 swapped!
+[SWAP][10]Replicas 30 and 29 swapped!
+[SWAP][10]Replicas 36 and 37 swapped!
+[SWAP][10]Replicas 38 and 40 swapped!
+[SWAP][10]Replicas 49 and 50 swapped!
+[SWAP][10]Replicas 52 and 51 swapped!
+[SWAP][10]Replicas 67 and 69 swapped!
+[SWAP][10]Replicas 75 and 76 swapped!
+[SWAP][10]Replicas 77 and 80 swapped!
+[SWAP][10]Replicas 84 and 85 swapped!
+[SWAP][10]Replicas 94 and 93 swapped!
+[SWAP][10]Replicas 99 and 100 swapped!
+[SWAP][10]Replicas 105 and 108 swapped!
+[SWAP][10]Replicas 132 and 134 swapped!
+[SWAP][10]Replicas 140 and 141 swapped!
+[SWAP][10]Replicas 144 and 145 swapped!
+[SWAP][10]Replicas 146 and 148 swapped!
+[SWAP][10]Replicas 150 and 149 swapped!
+[llr:setreplica][0]Updating OLD LLR Param: S0 6578496.000000,  a  7.492723861 , dS 593.241850  
+[llr:setreplica][0]New LLR Param: S0 6578496.000000,  a  7.476722644 , dS 593.241850  
+[SWAP][10]New Rep Par S0 = 6578496.000000 dS = 593.241850 a = 7.476723 
+[MAIN][0]Newton Raphson sequence #0: generated in [13848 sec 588909 usec]
+[MAIN][0]NR Plaq a fixed 0.587405 
+[MAIN][0]NR <a_rho(0,0,6578496.000000000)>= 7.476722644
+[MAIN][0]NR Trajectory #1...
+[NEWTONRAPHSON][10]RM avr-S0: -598.262539 delta_a: -0.020399 
+[NEWTONRAPHSON][10]RM var(S - S0): 458177.581178 
+[SWAP][10]Starting Rep Par S0 = 6578496.000000 dS = 593.241850 a = 7.497122 
+[Boundary][10]a(1)_rm : 7.475388 and a(1)_bc : 7.476160 
+[Boundary][10]a(n-2)_rm : 7.509636 and a(n-2)_bc : 7.513967 
+[SWAP][10]Replicas 18 and 19 swapped!
+[SWAP][10]Replicas 20 and 22 swapped!
+[SWAP][10]Replicas 27 and 28 swapped!
+[SWAP][10]Replicas 36 and 39 swapped!
+[SWAP][10]Replicas 45 and 43 swapped!
+[SWAP][10]Replicas 49 and 51 swapped!
+[SWAP][10]Replicas 53 and 54 swapped!
+[SWAP][10]Replicas 58 and 59 swapped!
+[SWAP][10]Replicas 60 and 62 swapped!
+[SWAP][10]Replicas 68 and 69 swapped!
+[SWAP][10]Replicas 76 and 75 swapped!
+[SWAP][10]Replicas 78 and 81 swapped!
+[SWAP][10]Replicas 84 and 87 swapped!
+[SWAP][10]Replicas 88 and 91 swapped!
+[SWAP][10]Replicas 89 and 92 swapped!
+[SWAP][10]Replicas 99 and 101 swapped!
+[SWAP][10]Replicas 107 and 109 swapped!
+[SWAP][10]Replicas 113 and 114 swapped!
+[llr:setreplica][0]Updating OLD LLR Param: S0 6578496.000000,  a  7.497121673 , dS 593.241850  
+[llr:setreplica][0]New LLR Param: S0 6578496.000000,  a  7.474404355 , dS 593.241850  
+[SWAP][10]New Rep Par S0 = 6578496.000000 dS = 593.241850 a = 7.474404 
+[MAIN][0]Newton Raphson sequence #1: generated in [14389 sec 550996 usec]
+[MAIN][0]NR Plaq a fixed 0.587502 
+[MAIN][0]NR <a_rho(0,1,6578496.000000000)>= 7.474404355
+[MAIN][0]NR Trajectory #2...
+[NEWTONRAPHSON][10]RM avr-S0: -2462.466974 delta_a: -0.083963 
+[NEWTONRAPHSON][10]RM var(S - S0): 1439063.241849 
+[SWAP][10]Starting Rep Par S0 = 6578496.000000 dS = 593.241850 a = 7.558367 
+[Boundary][10]a(1)_rm : 7.476094 and a(1)_bc : 7.476033 
+[Boundary][10]a(n-2)_rm : 7.509069 and a(n-2)_bc : 7.514253 
+[SWAP][10]Replicas 6 and 5 swapped!
+[SWAP][10]Replicas 16 and 17 swapped!
+[SWAP][10]Replicas 29 and 31 swapped!
+[SWAP][10]Replicas 37 and 34 swapped!
+[SWAP][10]Replicas 55 and 56 swapped!
+[SWAP][10]Replicas 66 and 69 swapped!
+[SWAP][10]Replicas 72 and 73 swapped!
+[SWAP][10]Replicas 85 and 87 swapped!
+[SWAP][10]Replicas 84 and 86 swapped!
+[SWAP][10]Replicas 92 and 89 swapped!
+[SWAP][10]Replicas 100 and 101 swapped!
+[SWAP][10]Replicas 104 and 103 swapped!
+[SWAP][10]Replicas 118 and 115 swapped!
+[SWAP][10]Replicas 122 and 126 swapped!
+[llr:setreplica][0]Updating OLD LLR Param: S0 6578496.000000,  a  7.558367385 , dS 593.241850  
+[llr:setreplica][0]New LLR Param: S0 6578496.000000,  a  7.475823934 , dS 593.241850  
+[SWAP][10]New Rep Par S0 = 6578496.000000 dS = 593.241850 a = 7.475824 
+[MAIN][0]Newton Raphson sequence #2: generated in [14378 sec 444730 usec]
+[MAIN][0]NR Plaq a fixed 0.587298 
+[MAIN][0]NR <a_rho(0,2,6578496.000000000)>= 7.475823934
+[MAIN][0]Newton Raphson update done.
+[MAIN][0]flow.start: 1, flow.end: 1, llr_var.it: 1 
+[MAIN][0]Robins Monro update done.
+[IO][0]Configuration [./run1_5x72x72x72nc4b2.400000n1] saved [2 sec 517975 usec]
+[MAIN][0]Saving rlxd state to file rand_state
+[IO][0]Ranlxd state [rand_state] saved [0 sec 1799 usec]
+[MAIN][0]Total simulation time =[42643 sec 941272 usec]
+[TEST][0]start of finalize_process 
+[TEST][0]free_ghmc 
+[TEST][0]free_BCs 
+[TEST][0]free_wrk_space 
+[SYSTEM][0]Process finalized.
+[SYSTEM][0]Gauge group: SP(4)
+[SYSTEM][0]Fermion representation: dim = 4
+[SYSTEM][0][RepID: 0][world_size: 1]
+[SYSTEM][0][MPI_ID: 0][MPI_size: 152]
+[SYSTEM][0]MACROS=-DBC_T_PERIODIC -DBC_X_PERIODIC -DBC_Y_PERIODIC -DBC_Z_PERIODIC -DWITH_EO -DNDEBUG -DIO_FLUSH -DWITH_MPI -DLLRHB_UM_BC -DLLRHBPARALLEL -DWITH_UMBRELLA -DLLRHB -DREPR_FUNDAMENTAL -DREPR_NAME=@REPR_FUNDAMENTAL@ -DGAUGE_SPN
+[GEOMETRY][0]WARNING: NO PARALLEL DIMENSIONS SPECIFIED!!!
+[GEOMETRY][0]WARNING: THE MPI CODE SHOULD NOT BE USED IN THIS CASE!!!
+[GEOMETRY][0]CId = 0 (0,0,0,0)
+[GEOMETRY_INIT][0]Global size is 5x72x72x72
+[GEOMETRY_INIT][0]Local size is 5x72x72x72
+[GEOMETRY_INIT][0]Extended local size is 5x72x72x72
+[GEOMETRY_INIT][0]The lattice borders are (0,0,0,0)
+[WARNING][0](int) GLB_VOL3*GLB_VOL3 overflows
+[GEOMETRY][0]Geometry variable checked
+[GEOMETRY][0]Gauge field: size 1866240 nbuffer 0 
+[GEOMETRY][0]Spinor field (EO): size 1866240 nbuffer 0 
+[GEOMETRY][0]Even Spinor field: size 933120 nbuffer 0 
+[GEOMETRY][0]Odd Spinor field: size 933120 nbuffer 0 
+[SETUP_RANDOM][0]RLXD [1,17352]
+[MAIN][0]LLR number of mc steps per RM: 700
+[MAIN][0]LLR number of therm steps per RM 300
+[MAIN][0]LLR Initial a 7.475824
+[MAIN][0]LLR RM start value iteration 1 and its iteration frequency 1 
+[MAIN][0]LLR S0 Central action 6578496.000000
+[MAIN][0]LLR Delta S 593.241850
+[MAIN][0]Number of heatbath steps 1, number of overrelaxation steps 0
+[MAIN][0]Number of fixed a steps 0
+[MAIN][0]Swap frequency for fixed a steps 0
+[MAIN][0]LLR Smin minimum action for all replicas 6578496.000000
+[MAIN][0]LLR Smax maximum action for all replicas 6623285.760000
+[MAIN][0]LLR Delta S 593.241850
+[MAIN][0]LLR dB 0.001000
+[MAIN][0]LLR number of intial NR iterations 3
+[MAIN][0]Compiled with domain decomposition 
+[READINPUT][0]Warning: input parameter [config dir] not found in [input_file]!
+[BCS][0]Gauge field: PERIODIC x PERIODIC PERIODIC PERIODIC
+[BCS][0]Fermion fields: PERIODIC x PERIODIC PERIODIC PERIODIC
+[FLOW][0]Starting from conf [run1_5x72x72x72nc4b2.400000n0]
+[IO][0]Configuration [./run1_5x72x72x72nc4b2.400000n0] read [16 sec 206890 usec] Plaquette=5.872985e-01
+[MAIN][0]beta = 2.4000
+[MAIN][0]Number of thermalization cycles: 0
+[MAIN][0]Number of hb-or iterations per cycle: 1
+[MAIN][0]Number of heatbaths per iteration: 1
+[MAIN][0]Number or overrelaxations per iteration: 0
+[MAIN][0]Initial plaquette: 5.87298496e-01
+[MAIN][0]Bringing the system to the interval (S0,dS) = (6578496.000000, 593.241850) ...
+[ANNEAL][0]Finished S = 6578324.866752, Smin = 6578199.379075, Smax = 6578792.620925, in 21 steps ...
+[ANNEAL][0]Check action S_an = 6578324.8667517872527242, S_ap = 6578324.8667540401220322
+[MAIN][0]System brought to the interval (S0,dS) = (6578496.000000, 593.241850)
+[llr][0]nth: 300 
+[MAIN][0]Thermalization done in [0 sec 0 usec].
+[MAIN][0]Measured energy 6578324.866754, stated energy 
+[MAIN][0]Initial NR iterations, N_nr: 3 0 
+[MAIN][0]NR Trajectory #0...
+[NEWTONRAPHSON][10]RM avr-S0: -948.504179 delta_a: -0.032341 
+[NEWTONRAPHSON][10]RM var(S - S0): 643968.862021 
+[SWAP][10]Starting Rep Par S0 = 6578496.000000 dS = 593.241850 a = 7.508165 
+[Boundary][10]a(1)_rm : 7.476940 and a(1)_bc : 7.476307 
+[Boundary][10]a(n-2)_rm : 7.510971 and a(n-2)_bc : 7.504254 
+[SWAP][10]Replicas 2 and 1 swapped!
+[SWAP][10]Replicas 10 and 7 swapped!
+[SWAP][10]Replicas 30 and 32 swapped!
+[SWAP][10]Replicas 37 and 39 swapped!
+[SWAP][10]Replicas 40 and 38 swapped!
+[SWAP][10]Replicas 54 and 57 swapped!
+[SWAP][10]Replicas 56 and 55 swapped!
+[SWAP][10]Replicas 61 and 60 swapped!
+[SWAP][10]Replicas 65 and 69 swapped!
+[SWAP][10]Replicas 83 and 87 swapped!
+[SWAP][10]Replicas 85 and 86 swapped!
+[SWAP][10]Replicas 105 and 111 swapped!
+[SWAP][10]Replicas 117 and 119 swapped!
+[SWAP][10]Replicas 121 and 126 swapped!
+[SWAP][10]Replicas 140 and 141 swapped!
+[llr:setreplica][0]Updating OLD LLR Param: S0 6578496.000000,  a  7.508165194 , dS 593.241850  
+[llr:setreplica][0]New LLR Param: S0 6578496.000000,  a  7.477288545 , dS 593.241850  
+[SWAP][10]New Rep Par S0 = 6578496.000000 dS = 593.241850 a = 7.477289 
+[MAIN][0]Newton Raphson sequence #0: generated in [14413 sec 739441 usec]
+[MAIN][0]NR Plaq a fixed 0.587301 
+[MAIN][0]NR <a_rho(0,0,6578496.000000000)>= 7.477288545
+[MAIN][0]NR Trajectory #1...
+[NEWTONRAPHSON][10]RM avr-S0: -419.233991 delta_a: -0.014295 
+[NEWTONRAPHSON][10]RM var(S - S0): 442355.833826 
+[SWAP][10]Starting Rep Par S0 = 6578496.000000 dS = 593.241850 a = 7.491583 
+[Boundary][10]a(1)_rm : 7.475900 and a(1)_bc : 7.475302 
+[Boundary][10]a(n-2)_rm : 7.510985 and a(n-2)_bc : 7.512068 
+[SWAP][10]Replicas 10 and 12 swapped!
+[SWAP][10]Replicas 20 and 22 swapped!
+[SWAP][10]Replicas 25 and 24 swapped!
+[SWAP][10]Replicas 42 and 43 swapped!
+[SWAP][10]Replicas 66 and 67 swapped!
+[SWAP][10]Replicas 79 and 80 swapped!
+[SWAP][10]Replicas 83 and 86 swapped!
+[SWAP][10]Replicas 88 and 91 swapped!
+[SWAP][10]Replicas 89 and 95 swapped!
+[SWAP][10]Replicas 94 and 98 swapped!
+[SWAP][10]Replicas 97 and 100 swapped!
+[SWAP][10]Replicas 106 and 108 swapped!
+[SWAP][10]Replicas 109 and 107 swapped!
+[SWAP][10]Replicas 117 and 120 swapped!
+[SWAP][10]Replicas 123 and 126 swapped!
+[SWAP][10]Replicas 132 and 136 swapped!
+[llr:setreplica][0]Updating OLD LLR Param: S0 6578496.000000,  a  7.491583216 , dS 593.241850  
+[llr:setreplica][0]New LLR Param: S0 6578496.000000,  a  7.475613678 , dS 593.241850  
+[SWAP][10]New Rep Par S0 = 6578496.000000 dS = 593.241850 a = 7.475614 
+[MAIN][0]Newton Raphson sequence #1: generated in [14407 sec 970878 usec]
+[MAIN][0]NR Plaq a fixed 0.587422 
+[MAIN][0]NR <a_rho(0,1,6578496.000000000)>= 7.475613678
+[MAIN][0]NR Trajectory #2...
+[NEWTONRAPHSON][10]RM avr-S0: -835.170217 delta_a: -0.028477 
+[NEWTONRAPHSON][10]RM var(S - S0): 614965.105034 
+[SWAP][10]Starting Rep Par S0 = 6578496.000000 dS = 593.241850 a = 7.504091 
+[Boundary][10]a(1)_rm : 7.476126 and a(1)_bc : 7.476548 
+[Boundary][10]a(n-2)_rm : 7.510595 and a(n-2)_bc : 7.502018 
+[SWAP][10]Replicas 8 and 2 swapped!
+[SWAP][10]Replicas 5 and 6 swapped!
+[SWAP][10]Replicas 17 and 15 swapped!
+[SWAP][10]Replicas 36 and 38 swapped!
+[SWAP][10]Replicas 51 and 50 swapped!
+[SWAP][10]Replicas 49 and 57 swapped!
+[SWAP][10]Replicas 60 and 61 swapped!
+[SWAP][10]Replicas 83 and 84 swapped!
+[SWAP][10]Replicas 89 and 92 swapped!
+[SWAP][10]Replicas 90 and 96 swapped!
+[SWAP][10]Replicas 94 and 101 swapped!
+[SWAP][10]Replicas 112 and 110 swapped!
+[SWAP][10]Replicas 119 and 120 swapped!
+[SWAP][10]Replicas 122 and 127 swapped!
+[SWAP][10]Replicas 130 and 131 swapped!
+[SWAP][10]Replicas 134 and 136 swapped!
+[llr:setreplica][0]Updating OLD LLR Param: S0 6578496.000000,  a  7.504090576 , dS 593.241850  
+[llr:setreplica][0]New LLR Param: S0 6578496.000000,  a  7.475578107 , dS 593.241850  
+[SWAP][10]New Rep Par S0 = 6578496.000000 dS = 593.241850 a = 7.475578 
+[MAIN][0]Newton Raphson sequence #2: generated in [14409 sec 860579 usec]
+[MAIN][0]NR Plaq a fixed 0.587475 
+[MAIN][0]NR <a_rho(0,2,6578496.000000000)>= 7.475578107
+[MAIN][0]Newton Raphson update done.
+[MAIN][0]flow.start: 1, flow.end: 1, llr_var.it: 1 
+[MAIN][0]Robins Monro update done.
+[IO][0]Configuration [./run1_5x72x72x72nc4b2.400000n1] saved [1 sec 553242 usec]
+[MAIN][0]Saving rlxd state to file rand_state
+[IO][0]Ranlxd state [rand_state] saved [0 sec 229 usec]
+[MAIN][0]Total simulation time =[43466 sec 516515 usec]
+[TEST][0]start of finalize_process 
+[TEST][0]free_ghmc 
+[TEST][0]free_BCs 
+[TEST][0]free_wrk_space 
+[SYSTEM][0]Process finalized.
+[SYSTEM][0]Gauge group: SP(4)
+[SYSTEM][0]Fermion representation: dim = 4
+[SYSTEM][0][RepID: 0][world_size: 1]
+[SYSTEM][0][MPI_ID: 0][MPI_size: 152]
+[SYSTEM][0]MACROS=-DBC_T_PERIODIC -DBC_X_PERIODIC -DBC_Y_PERIODIC -DBC_Z_PERIODIC -DWITH_EO -DNDEBUG -DIO_FLUSH -DWITH_MPI -DLLRHB_UM_BC -DLLRHBPARALLEL -DWITH_UMBRELLA -DLLRHB -DREPR_FUNDAMENTAL -DREPR_NAME=@REPR_FUNDAMENTAL@ -DGAUGE_SPN
+[GEOMETRY][0]WARNING: NO PARALLEL DIMENSIONS SPECIFIED!!!
+[GEOMETRY][0]WARNING: THE MPI CODE SHOULD NOT BE USED IN THIS CASE!!!
+[GEOMETRY][0]CId = 0 (0,0,0,0)
+[GEOMETRY_INIT][0]Global size is 5x72x72x72
+[GEOMETRY_INIT][0]Local size is 5x72x72x72
+[GEOMETRY_INIT][0]Extended local size is 5x72x72x72
+[GEOMETRY_INIT][0]The lattice borders are (0,0,0,0)
+[WARNING][0](int) GLB_VOL3*GLB_VOL3 overflows
+[GEOMETRY][0]Geometry variable checked
+[GEOMETRY][0]Gauge field: size 1866240 nbuffer 0 
+[GEOMETRY][0]Spinor field (EO): size 1866240 nbuffer 0 
+[GEOMETRY][0]Even Spinor field: size 933120 nbuffer 0 
+[GEOMETRY][0]Odd Spinor field: size 933120 nbuffer 0 
+[SETUP_RANDOM][0]RLXD [1,23470]
+[MAIN][0]LLR number of mc steps per RM: 700
+[MAIN][0]LLR number of therm steps per RM 300
+[MAIN][0]LLR Initial a 7.475578
+[MAIN][0]LLR RM start value iteration 1 and its iteration frequency 1 
+[MAIN][0]LLR S0 Central action 6578496.000000
+[MAIN][0]LLR Delta S 593.241850
+[MAIN][0]Number of heatbath steps 1, number of overrelaxation steps 0
+[MAIN][0]Number of fixed a steps 0
+[MAIN][0]Swap frequency for fixed a steps 0
+[MAIN][0]LLR Smin minimum action for all replicas 6578496.000000
+[MAIN][0]LLR Smax maximum action for all replicas 6623285.760000
+[MAIN][0]LLR Delta S 593.241850
+[MAIN][0]LLR dB 0.001000
+[MAIN][0]LLR number of intial NR iterations 0
+[MAIN][0]Compiled with domain decomposition 
+[READINPUT][0]Warning: input parameter [config dir] not found in [input_file]!
+[BCS][0]Gauge field: PERIODIC x PERIODIC PERIODIC PERIODIC
+[BCS][0]Fermion fields: PERIODIC x PERIODIC PERIODIC PERIODIC
+[FLOW][0]Starting from conf [run1_5x72x72x72nc4b2.400000n0]
+[IO][0]Configuration [./run1_5x72x72x72nc4b2.400000n0] read [6 sec 297803 usec] Plaquette=5.874750e-01
+[MAIN][0]beta = 2.4000
+[MAIN][0]Number of thermalization cycles: 0
+[MAIN][0]Number of hb-or iterations per cycle: 1
+[MAIN][0]Number of heatbaths per iteration: 1
+[MAIN][0]Number or overrelaxations per iteration: 0
+[MAIN][0]Initial plaquette: 5.87475018e-01
+[MAIN][0]Bringing the system to the interval (S0,dS) = (6578496.000000, 593.241850) ...
+[ANNEAL][0]Finished S = 6578216.267031, Smin = 6578199.379075, Smax = 6578792.620925, in 1 steps ...
+[ANNEAL][0]Check action S_an = 6578216.2670309823006392, S_ap = 6578216.2670309823006392
+[MAIN][0]System brought to the interval (S0,dS) = (6578496.000000, 593.241850)
+[llr][0]nth: 300 
+[MAIN][0]Thermalization done in [0 sec 0 usec].
+[MAIN][0]Measured energy 6578216.267031, stated energy 
+[MAIN][0]Initial NR iterations, N_nr: 0 0 
+[MAIN][0]Newton Raphson update done.
+[MAIN][0]flow.start: 1, flow.end: 5, llr_var.it: 1 
+[MAIN][0]Trajectory #1...
+[ROBBINSMONRO][10](S-S0)_sqr: 915804.867665 
+[ROBBINSMONRO][10]RM avr-S0: -690.985611 delta_a: -0.023561 
+[SWAP][10]Starting Rep Par S0 = 6578496.000000 dS = 593.241850 a = 7.475578 
+[Boundary][10]a(1)_rm : 7.476397 and a(1)_bc : 7.477164 
+[Boundary][10]a(n-2)_rm : 7.509918 and a(n-2)_bc : 7.499386 
+[SWAP][10]Replicas 1 and 2 swapped!
+[SWAP][10]Replicas 16 and 21 swapped!
+[SWAP][10]Replicas 23 and 25 swapped!
+[SWAP][10]Replicas 28 and 29 swapped!
+[SWAP][10]Replicas 35 and 34 swapped!
+[SWAP][10]Replicas 43 and 45 swapped!
+[SWAP][10]Replicas 54 and 56 swapped!
+[SWAP][10]Replicas 59 and 61 swapped!
+[SWAP][10]Replicas 86 and 84 swapped!
+[SWAP][10]Replicas 88 and 95 swapped!
+[SWAP][10]Replicas 93 and 96 swapped!
+[SWAP][10]Replicas 90 and 98 swapped!
+[SWAP][10]Replicas 101 and 94 swapped!
+[SWAP][10]Replicas 97 and 100 swapped!
+[SWAP][10]Replicas 111 and 105 swapped!
+[SWAP][10]Replicas 121 and 127 swapped!
+[SWAP][10]Replicas 131 and 130 swapped!
+[SWAP][10]Replicas 149 and 146 swapped!
+[llr:setreplica][0]Updating OLD LLR Param: S0 6578496.000000,  a  7.475578107 , dS 593.241850  
+[llr:setreplica][0]New LLR Param: S0 6578496.000000,  a  7.475912251 , dS 593.241850  
+[SWAP][10]New Rep Par S0 = 6578496.000000 dS = 593.241850 a = 7.475912 
+[MAIN][0]Robbins Monro sequence #1: generated in [14241 sec 695360 usec]
+[MAIN][0]Plaq a fixed 0.587362 
+[MAIN][0]<a_rho(0,1,6578496.000000000)>= 7.475912251
+[MAIN][0]Trajectory #2...
+[ROBBINSMONRO][10](S-S0)_sqr: 1121462.634013 
+[ROBBINSMONRO][10]RM avr-S0: -734.408549 delta_a: -0.012521 
+[SWAP][10]Starting Rep Par S0 = 6578496.000000 dS = 593.241850 a = 7.475912 
+[Boundary][10]a(1)_rm : 7.476607 and a(1)_bc : 7.476539 
+[Boundary][10]a(n-2)_rm : 7.509978 and a(n-2)_bc : 7.498226 
+[SWAP][10]Replicas 1 and 8 swapped!
+[SWAP][10]Replicas 7 and 10 swapped!
+[SWAP][10]Replicas 24 and 20 swapped!
+[SWAP][10]Replicas 42 and 45 swapped!
+[SWAP][10]Replicas 43 and 47 swapped!
+[SWAP][10]Replicas 65 and 67 swapped!
+[SWAP][10]Replicas 82 and 81 swapped!
+[SWAP][10]Replicas 84 and 86 swapped!
+[SWAP][10]Replicas 83 and 91 swapped!
+[SWAP][10]Replicas 95 and 88 swapped!
+[SWAP][10]Replicas 93 and 98 swapped!
+[SWAP][10]Replicas 90 and 94 swapped!
+[SWAP][10]Replicas 101 and 100 swapped!
+[SWAP][10]Replicas 115 and 114 swapped!
+[SWAP][10]Replicas 121 and 125 swapped!
+[SWAP][10]Replicas 124 and 130 swapped!
+[SWAP][10]Replicas 128 and 129 swapped!
+[llr:setreplica][0]Updating OLD LLR Param: S0 6578496.000000,  a  7.475912251 , dS 593.241850  
+[llr:setreplica][0]New LLR Param: S0 6578496.000000,  a  7.476511936 , dS 593.241850  
+[SWAP][10]New Rep Par S0 = 6578496.000000 dS = 593.241850 a = 7.476512 
+[MAIN][0]Robbins Monro sequence #2: generated in [14431 sec 926748 usec]
+[MAIN][0]Plaq a fixed 0.587456 
+[MAIN][0]<a_rho(0,2,6578496.000000000)>= 7.476511936
+[MAIN][0]Trajectory #3...
+[ROBBINSMONRO][10](S-S0)_sqr: 484043.155159 
+[ROBBINSMONRO][10]RM avr-S0: -413.173476 delta_a: -0.004696 
+[SWAP][10]Starting Rep Par S0 = 6578496.000000 dS = 593.241850 a = 7.476512 
+[Boundary][10]a(1)_rm : 7.476533 and a(1)_bc : 7.476506 
+[Boundary][10]a(n-2)_rm : 7.509970 and a(n-2)_bc : 7.497564 
+[SWAP][10]Replicas 3 and 2 swapped!
+[SWAP][10]Replicas 7 and 12 swapped!
+[SWAP][10]Replicas 20 and 24 swapped!
+[SWAP][10]Replicas 25 and 23 swapped!
+[SWAP][10]Replicas 35 and 39 swapped!
+[SWAP][10]Replicas 44 and 41 swapped!
+[SWAP][10]Replicas 56 and 53 swapped!
+[SWAP][10]Replicas 54 and 55 swapped!
+[SWAP][10]Replicas 73 and 70 swapped!
+[SWAP][10]Replicas 105 and 107 swapped!
+[SWAP][10]Replicas 129 and 128 swapped!
+[SWAP][10]Replicas 133 and 135 swapped!
+[llr:setreplica][0]Updating OLD LLR Param: S0 6578496.000000,  a  7.476511936 , dS 593.241850  
+[llr:setreplica][0]New LLR Param: S0 6578496.000000,  a  7.476443134 , dS 593.241850  
+[SWAP][10]New Rep Par S0 = 6578496.000000 dS = 593.241850 a = 7.476443 
+[MAIN][0]Robbins Monro sequence #3: generated in [14417 sec 80126 usec]
+[MAIN][0]Plaq a fixed 0.587449 
+[MAIN][0]<a_rho(0,3,6578496.000000000)>= 7.476443134
+[MAIN][0]Trajectory #4...
+[ROBBINSMONRO][10](S-S0)_sqr: 745537.316381 
+[ROBBINSMONRO][10]RM avr-S0: -562.426395 delta_a: -0.004794 
+[SWAP][10]Starting Rep Par S0 = 6578496.000000 dS = 593.241850 a = 7.476443 
+[Boundary][10]a(1)_rm : 7.476481 and a(1)_bc : 7.476279 
+[Boundary][10]a(n-2)_rm : 7.509775 and a(n-2)_bc : 7.501436 
+[SWAP][10]Replicas 10 and 5 swapped!
+[SWAP][10]Replicas 13 and 11 swapped!
+[SWAP][10]Replicas 30 and 32 swapped!
+[SWAP][10]Replicas 40 and 36 swapped!
+[SWAP][10]Replicas 44 and 45 swapped!
+[SWAP][10]Replicas 43 and 47 swapped!
+[SWAP][10]Replicas 58 and 61 swapped!
+[SWAP][10]Replicas 68 and 66 swapped!
+[SWAP][10]Replicas 76 and 74 swapped!
+[SWAP][10]Replicas 80 and 75 swapped!
+[SWAP][10]Replicas 83 and 88 swapped!
+[SWAP][10]Replicas 89 and 92 swapped!
+[SWAP][10]Replicas 96 and 98 swapped!
+[SWAP][10]Replicas 114 and 115 swapped!
+[SWAP][10]Replicas 124 and 130 swapped!
+[SWAP][10]Replicas 149 and 151 swapped!
+[llr:setreplica][0]Updating OLD LLR Param: S0 6578496.000000,  a  7.476443134 , dS 593.241850  
+[llr:setreplica][0]New LLR Param: S0 6578496.000000,  a  7.476392935 , dS 593.241850  
+[SWAP][10]New Rep Par S0 = 6578496.000000 dS = 593.241850 a = 7.476393 
+[MAIN][0]Robbins Monro sequence #4: generated in [14434 sec 444552 usec]
+[MAIN][0]Plaq a fixed 0.587475 
+[MAIN][0]<a_rho(0,4,6578496.000000000)>= 7.476392935
+[MAIN][0]Robins Monro update done.
+[IO][0]Configuration [./run1_5x72x72x72nc4b2.400000n5] saved [2 sec 866988 usec]
+[MAIN][0]Saving rlxd state to file rand_state
+[IO][0]Ranlxd state [rand_state] saved [0 sec 155 usec]
+[MAIN][0]Total simulation time =[58947 sec 175817 usec]
+[TEST][0]start of finalize_process 
+[TEST][0]free_ghmc 
+[TEST][0]free_BCs 
+[TEST][0]free_wrk_space 
+[SYSTEM][0]Process finalized.
+[SYSTEM][0]Gauge group: SP(4)
+[SYSTEM][0]Fermion representation: dim = 4
+[SYSTEM][0][RepID: 0][world_size: 1]
+[SYSTEM][0][MPI_ID: 0][MPI_size: 152]
+[SYSTEM][0]MACROS=-DBC_T_PERIODIC -DBC_X_PERIODIC -DBC_Y_PERIODIC -DBC_Z_PERIODIC -DWITH_EO -DNDEBUG -DIO_FLUSH -DWITH_MPI -DLLRHB_UM_BC -DLLRHBPARALLEL -DWITH_UMBRELLA -DLLRHB -DREPR_FUNDAMENTAL -DREPR_NAME=@REPR_FUNDAMENTAL@ -DGAUGE_SPN
+[GEOMETRY][0]WARNING: NO PARALLEL DIMENSIONS SPECIFIED!!!
+[GEOMETRY][0]WARNING: THE MPI CODE SHOULD NOT BE USED IN THIS CASE!!!
+[GEOMETRY][0]CId = 0 (0,0,0,0)
+[GEOMETRY_INIT][0]Global size is 5x72x72x72
+[GEOMETRY_INIT][0]Local size is 5x72x72x72
+[GEOMETRY_INIT][0]Extended local size is 5x72x72x72
+[GEOMETRY_INIT][0]The lattice borders are (0,0,0,0)
+[WARNING][0](int) GLB_VOL3*GLB_VOL3 overflows
+[GEOMETRY][0]Geometry variable checked
+[GEOMETRY][0]Gauge field: size 1866240 nbuffer 0 
+[GEOMETRY][0]Spinor field (EO): size 1866240 nbuffer 0 
+[GEOMETRY][0]Even Spinor field: size 933120 nbuffer 0 
+[GEOMETRY][0]Odd Spinor field: size 933120 nbuffer 0 
+[SETUP_RANDOM][0]RLXD [1,24286]
+[MAIN][0]LLR number of mc steps per RM: 700
+[MAIN][0]LLR number of therm steps per RM 300
+[MAIN][0]LLR Initial a 7.476393
+[MAIN][0]LLR RM start value iteration 1 and its iteration frequency 1 
+[MAIN][0]LLR S0 Central action 6578496.000000
+[MAIN][0]LLR Delta S 593.241850
+[MAIN][0]Number of heatbath steps 1, number of overrelaxation steps 0
+[MAIN][0]Number of fixed a steps 0
+[MAIN][0]Swap frequency for fixed a steps 0
+[MAIN][0]LLR Smin minimum action for all replicas 6578496.000000
+[MAIN][0]LLR Smax maximum action for all replicas 6623285.760000
+[MAIN][0]LLR Delta S 593.241850
+[MAIN][0]LLR dB 0.001000
+[MAIN][0]LLR number of intial NR iterations 0
+[MAIN][0]Compiled with domain decomposition 
+[READINPUT][0]Warning: input parameter [config dir] not found in [input_file]!
+[BCS][0]Gauge field: PERIODIC x PERIODIC PERIODIC PERIODIC
+[BCS][0]Fermion fields: PERIODIC x PERIODIC PERIODIC PERIODIC
+[FLOW][0]Starting from conf [run1_5x72x72x72nc4b2.400000n4]
+[IO][0]Configuration [./run1_5x72x72x72nc4b2.400000n4] read [14 sec 414528 usec] Plaquette=5.874746e-01
+[MAIN][0]beta = 2.4000
+[MAIN][0]Number of thermalization cycles: 0
+[MAIN][0]Number of hb-or iterations per cycle: 1
+[MAIN][0]Number of heatbaths per iteration: 1
+[MAIN][0]Number or overrelaxations per iteration: 0
+[MAIN][0]Initial plaquette: 5.87474590e-01
+[MAIN][0]Bringing the system to the interval (S0,dS) = (6578496.000000, 593.241850) ...
+[ANNEAL][0]Finished S = 6578211.475111, Smin = 6578199.379075, Smax = 6578792.620925, in 1 steps ...
+[ANNEAL][0]Check action S_an = 6578211.4751110747456551, S_ap = 6578211.4751110756769776
+[MAIN][0]System brought to the interval (S0,dS) = (6578496.000000, 593.241850)
+[llr][0]nth: 300 
+[MAIN][0]Thermalization done in [0 sec 0 usec].
+[MAIN][0]Measured energy 6578211.475111, stated energy 
+[MAIN][0]Initial NR iterations, N_nr: 0 0 
+[MAIN][0]Newton Raphson update done.
+[MAIN][0]flow.start: 5, flow.end: 9, llr_var.it: 5 
+[MAIN][0]Trajectory #5...
+[ROBBINSMONRO][10](S-S0)_sqr: 1030008.558100 
+[ROBBINSMONRO][10]RM avr-S0: -698.250595 delta_a: -0.004762 
+[SWAP][10]Starting Rep Par S0 = 6578496.000000 dS = 593.241850 a = 7.476393 
+[Boundary][10]a(1)_rm : 7.476596 and a(1)_bc : 7.476146 
+[Boundary][10]a(n-2)_rm : 7.509523 and a(n-2)_bc : 7.504004 
+[SWAP][10]Replicas 8 and 3 swapped!
+[SWAP][10]Replicas 12 and 7 swapped!
+[SWAP][10]Replicas 18 and 16 swapped!
+[SWAP][10]Replicas 26 and 29 swapped!
+[SWAP][10]Replicas 33 and 32 swapped!
+[SWAP][10]Replicas 45 and 44 swapped!
+[SWAP][10]Replicas 67 and 65 swapped!
+[SWAP][10]Replicas 75 and 80 swapped!
+[SWAP][10]Replicas 85 and 88 swapped!
+[SWAP][10]Replicas 117 and 126 swapped!
+[llr:setreplica][0]Updating OLD LLR Param: S0 6578496.000000,  a  7.476392935 , dS 593.241850  
+[llr:setreplica][0]New LLR Param: S0 6578496.000000,  a  7.476668601 , dS 593.241850  
+[SWAP][10]New Rep Par S0 = 6578496.000000 dS = 593.241850 a = 7.476669 
+[MAIN][0]Robbins Monro sequence #5: generated in [14455 sec 246327 usec]
+[MAIN][0]Plaq a fixed 0.587451 
+[MAIN][0]<a_rho(0,5,6578496.000000000)>= 7.476668601
+[MAIN][0]Trajectory #6...
+[ROBBINSMONRO][10](S-S0)_sqr: 377426.521849 
+[ROBBINSMONRO][10]RM avr-S0: -331.970862 delta_a: -0.001887 
+[SWAP][10]Starting Rep Par S0 = 6578496.000000 dS = 593.241850 a = 7.476669 
+[Boundary][10]a(1)_rm : 7.476524 and a(1)_bc : 7.476526 
+[Boundary][10]a(n-2)_rm : 7.509210 and a(n-2)_bc : 7.506082 
+[SWAP][10]Replicas 5 and 7 swapped!
+[SWAP][10]Replicas 13 and 17 swapped!
+[SWAP][10]Replicas 16 and 18 swapped!
+[SWAP][10]Replicas 20 and 25 swapped!
+[SWAP][10]Replicas 31 and 32 swapped!
+[SWAP][10]Replicas 30 and 34 swapped!
+[SWAP][10]Replicas 39 and 35 swapped!
+[SWAP][10]Replicas 38 and 40 swapped!
+[SWAP][10]Replicas 47 and 46 swapped!
+[SWAP][10]Replicas 52 and 51 swapped!
+[SWAP][10]Replicas 57 and 53 swapped!
+[SWAP][10]Replicas 54 and 61 swapped!
+[SWAP][10]Replicas 78 and 82 swapped!
+[SWAP][10]Replicas 87 and 86 swapped!
+[SWAP][10]Replicas 108 and 104 swapped!
+[SWAP][10]Replicas 111 and 110 swapped!
+[SWAP][10]Replicas 118 and 116 swapped!
+[SWAP][10]Replicas 115 and 114 swapped!
+[SWAP][10]Replicas 127 and 123 swapped!
+[SWAP][10]Replicas 146 and 151 swapped!
+[llr:setreplica][0]Updating OLD LLR Param: S0 6578496.000000,  a  7.476668601 , dS 593.241850  
+[llr:setreplica][0]New LLR Param: S0 6578496.000000,  a  7.476430228 , dS 593.241850  
+[SWAP][10]New Rep Par S0 = 6578496.000000 dS = 593.241850 a = 7.476430 
+[MAIN][0]Robbins Monro sequence #6: generated in [14465 sec 213355 usec]
+[MAIN][0]Plaq a fixed 0.587386 
+[MAIN][0]<a_rho(0,6,6578496.000000000)>= 7.476430228
+[MAIN][0]Trajectory #7...
+[ROBBINSMONRO][10](S-S0)_sqr: 600714.483508 
+[ROBBINSMONRO][10]RM avr-S0: -495.844219 delta_a: -0.002415 
+[SWAP][10]Starting Rep Par S0 = 6578496.000000 dS = 593.241850 a = 7.476430 
+[Boundary][10]a(1)_rm : 7.476402 and a(1)_bc : 7.476476 
+[Boundary][10]a(n-2)_rm : 7.508955 and a(n-2)_bc : 7.504567 
+[SWAP][10]Replicas 5 and 12 swapped!
+[SWAP][10]Replicas 13 and 14 swapped!
+[SWAP][10]Replicas 23 and 26 swapped!
+[SWAP][10]Replicas 32 and 31 swapped!
+[SWAP][10]Replicas 39 and 37 swapped!
+[SWAP][10]Replicas 68 and 66 swapped!
+[SWAP][10]Replicas 72 and 71 swapped!
+[SWAP][10]Replicas 74 and 80 swapped!
+[SWAP][10]Replicas 76 and 75 swapped!
+[SWAP][10]Replicas 78 and 86 swapped!
+[SWAP][10]Replicas 96 and 93 swapped!
+[SWAP][10]Replicas 102 and 103 swapped!
+[SWAP][10]Replicas 108 and 99 swapped!
+[SWAP][10]Replicas 116 and 118 swapped!
+[SWAP][10]Replicas 114 and 115 swapped!
+[SWAP][10]Replicas 130 and 124 swapped!
+[SWAP][10]Replicas 128 and 132 swapped!
+[SWAP][10]Replicas 139 and 143 swapped!
+[llr:setreplica][0]Updating OLD LLR Param: S0 6578496.000000,  a  7.476430228 , dS 593.241850  
+[llr:setreplica][0]New LLR Param: S0 6578496.000000,  a  7.476189429 , dS 593.241850  
+[SWAP][10]New Rep Par S0 = 6578496.000000 dS = 593.241850 a = 7.476189 
+[MAIN][0]Robbins Monro sequence #7: generated in [14494 sec 903606 usec]
+[MAIN][0]Plaq a fixed 0.587445 
+[MAIN][0]<a_rho(0,7,6578496.000000000)>= 7.476189429
+[MAIN][0]Trajectory #8...
+[ROBBINSMONRO][10](S-S0)_sqr: 1355461.210698 
+[ROBBINSMONRO][10]RM avr-S0: -854.194184 delta_a: -0.003641 
+[SWAP][10]Starting Rep Par S0 = 6578496.000000 dS = 593.241850 a = 7.476189 
+[Boundary][10]a(1)_rm : 7.476438 and a(1)_bc : 7.476512 
+[Boundary][10]a(n-2)_rm : 7.508720 and a(n-2)_bc : 7.503464 
+[SWAP][10]Replicas 3 and 1 swapped!
+[SWAP][10]Replicas 14 and 13 swapped!
+[SWAP][10]Replicas 22 and 21 swapped!
+[SWAP][10]Replicas 25 and 20 swapped!
+[SWAP][10]Replicas 37 and 39 swapped!
+[SWAP][10]Replicas 53 and 49 swapped!
+[SWAP][10]Replicas 57 and 56 swapped!
+[SWAP][10]Replicas 62 and 54 swapped!
+[SWAP][10]Replicas 65 and 66 swapped!
+[SWAP][10]Replicas 75 and 76 swapped!
+[SWAP][10]Replicas 77 and 81 swapped!
+[SWAP][10]Replicas 82 and 79 swapped!
+[SWAP][10]Replicas 85 and 83 swapped!
+[SWAP][10]Replicas 89 and 98 swapped!
+[SWAP][10]Replicas 101 and 90 swapped!
+[SWAP][10]Replicas 113 and 115 swapped!
+[SWAP][10]Replicas 132 and 128 swapped!
+[SWAP][10]Replicas 133 and 143 swapped!
+[SWAP][10]Replicas 146 and 149 swapped!
+[llr:setreplica][0]Updating OLD LLR Param: S0 6578496.000000,  a  7.476189429 , dS 593.241850  
+[llr:setreplica][0]New LLR Param: S0 6578496.000000,  a  7.476222521 , dS 593.241850  
+[SWAP][10]New Rep Par S0 = 6578496.000000 dS = 593.241850 a = 7.476223 
+[MAIN][0]Robbins Monro sequence #8: generated in [14495 sec 587011 usec]
+[MAIN][0]Plaq a fixed 0.587520 
+[MAIN][0]<a_rho(0,8,6578496.000000000)>= 7.476222521
+[MAIN][0]Robins Monro update done.
+[IO][0]Configuration [./run1_5x72x72x72nc4b2.400000n9] saved [1 sec 956855 usec]
+[MAIN][0]Saving rlxd state to file rand_state
+[IO][0]Ranlxd state [rand_state] saved [0 sec 136 usec]
+[MAIN][0]Total simulation time =[59899 sec 260807 usec]
+[TEST][0]start of finalize_process 
+[TEST][0]free_ghmc 
+[TEST][0]free_BCs 
+[TEST][0]free_wrk_space 
+[SYSTEM][0]Process finalized.
+[SYSTEM][0]Gauge group: SP(4)
+[SYSTEM][0]Fermion representation: dim = 4
+[SYSTEM][0][RepID: 0][world_size: 1]
+[SYSTEM][0][MPI_ID: 0][MPI_size: 152]
+[SYSTEM][0]MACROS=-DBC_T_PERIODIC -DBC_X_PERIODIC -DBC_Y_PERIODIC -DBC_Z_PERIODIC -DWITH_EO -DNDEBUG -DIO_FLUSH -DWITH_MPI -DLLRHB_UM_BC -DLLRHBPARALLEL -DWITH_UMBRELLA -DLLRHB -DREPR_FUNDAMENTAL -DREPR_NAME=@REPR_FUNDAMENTAL@ -DGAUGE_SPN
+[GEOMETRY][0]WARNING: NO PARALLEL DIMENSIONS SPECIFIED!!!
+[GEOMETRY][0]WARNING: THE MPI CODE SHOULD NOT BE USED IN THIS CASE!!!
+[GEOMETRY][0]CId = 0 (0,0,0,0)
+[GEOMETRY_INIT][0]Global size is 5x72x72x72
+[GEOMETRY_INIT][0]Local size is 5x72x72x72
+[GEOMETRY_INIT][0]Extended local size is 5x72x72x72
+[GEOMETRY_INIT][0]The lattice borders are (0,0,0,0)
+[WARNING][0](int) GLB_VOL3*GLB_VOL3 overflows
+[GEOMETRY][0]Geometry variable checked
+[GEOMETRY][0]Gauge field: size 1866240 nbuffer 0 
+[GEOMETRY][0]Spinor field (EO): size 1866240 nbuffer 0 
+[GEOMETRY][0]Even Spinor field: size 933120 nbuffer 0 
+[GEOMETRY][0]Odd Spinor field: size 933120 nbuffer 0 
+[SETUP_RANDOM][0]RLXD [1,24809]
+[MAIN][0]LLR number of mc steps per RM: 700
+[MAIN][0]LLR number of therm steps per RM 300
+[MAIN][0]LLR Initial a 7.476223
+[MAIN][0]LLR RM start value iteration 1 and its iteration frequency 1 
+[MAIN][0]LLR S0 Central action 6578496.000000
+[MAIN][0]LLR Delta S 593.241850
+[MAIN][0]Number of heatbath steps 1, number of overrelaxation steps 0
+[MAIN][0]Number of fixed a steps 0
+[MAIN][0]Swap frequency for fixed a steps 0
+[MAIN][0]LLR Smin minimum action for all replicas 6578496.000000
+[MAIN][0]LLR Smax maximum action for all replicas 6623285.760000
+[MAIN][0]LLR Delta S 593.241850
+[MAIN][0]LLR dB 0.001000
+[MAIN][0]LLR number of intial NR iterations 0
+[MAIN][0]Compiled with domain decomposition 
+[READINPUT][0]Warning: input parameter [config dir] not found in [input_file]!
+[BCS][0]Gauge field: PERIODIC x PERIODIC PERIODIC PERIODIC
+[BCS][0]Fermion fields: PERIODIC x PERIODIC PERIODIC PERIODIC
+[FLOW][0]Starting from conf [run1_5x72x72x72nc4b2.400000n8]
+[IO][0]Configuration [./run1_5x72x72x72nc4b2.400000n8] read [2 sec 994356 usec] Plaquette=5.875202e-01
+[MAIN][0]beta = 2.4000
+[MAIN][0]Number of thermalization cycles: 0
+[MAIN][0]Number of hb-or iterations per cycle: 1
+[MAIN][0]Number of heatbaths per iteration: 1
+[MAIN][0]Number or overrelaxations per iteration: 0
+[MAIN][0]Initial plaquette: 5.87520228e-01
+[MAIN][0]Bringing the system to the interval (S0,dS) = (6578496.000000, 593.241850) ...
+[ANNEAL][0]Finished S = 6578722.504442, Smin = 6578199.379075, Smax = 6578792.620925, in 1 steps ...
+[ANNEAL][0]Check action S_an = 6578722.5044424450024962, S_ap = 6578722.5044424459338188
+[MAIN][0]System brought to the interval (S0,dS) = (6578496.000000, 593.241850)
+[llr][0]nth: 300 
+[MAIN][0]Thermalization done in [0 sec 0 usec].
+[MAIN][0]Measured energy 6578722.504442, stated energy 
+[MAIN][0]Initial NR iterations, N_nr: 0 0 
+[MAIN][0]Newton Raphson update done.
+[MAIN][0]flow.start: 9, flow.end: 13, llr_var.it: 9 
+[MAIN][0]Trajectory #9...
+[ROBBINSMONRO][10](S-S0)_sqr: 1129080.767614 
+[ROBBINSMONRO][10]RM avr-S0: -729.098649 delta_a: -0.002762 
+[SWAP][10]Starting Rep Par S0 = 6578496.000000 dS = 593.241850 a = 7.476223 
+[Boundary][10]a(1)_rm : 7.476476 and a(1)_bc : 7.476436 
+[Boundary][10]a(n-2)_rm : 7.508138 and a(n-2)_bc : 7.503641 
+[SWAP][10]Replicas 2 and 1 swapped!
+[SWAP][10]Replicas 6 and 4 swapped!
+[SWAP][10]Replicas 17 and 11 swapped!
+[SWAP][10]Replicas 28 and 32 swapped!
+[SWAP][10]Replicas 34 and 35 swapped!
+[SWAP][10]Replicas 42 and 47 swapped!
+[SWAP][10]Replicas 52 and 49 swapped!
+[SWAP][10]Replicas 72 and 74 swapped!
+[SWAP][10]Replicas 79 and 82 swapped!
+[SWAP][10]Replicas 98 and 89 swapped!
+[SWAP][10]Replicas 101 and 94 swapped!
+[SWAP][10]Replicas 108 and 107 swapped!
+[SWAP][10]Replicas 106 and 110 swapped!
+[SWAP][10]Replicas 127 and 125 swapped!
+[SWAP][10]Replicas 121 and 124 swapped!
+[SWAP][10]Replicas 140 and 141 swapped!
+[SWAP][10]Replicas 145 and 144 swapped!
+[llr:setreplica][0]Updating OLD LLR Param: S0 6578496.000000,  a  7.476222521 , dS 593.241850  
+[llr:setreplica][0]New LLR Param: S0 6578496.000000,  a  7.476303183 , dS 593.241850  
+[SWAP][10]New Rep Par S0 = 6578496.000000 dS = 593.241850 a = 7.476303 
+[MAIN][0]Robbins Monro sequence #9: generated in [14484 sec 978644 usec]
+[MAIN][0]Plaq a fixed 0.587454 
+[MAIN][0]<a_rho(0,9,6578496.000000000)>= 7.476303183
+[MAIN][0]Trajectory #10...
+[ROBBINSMONRO][10](S-S0)_sqr: 1397947.153770 
+[ROBBINSMONRO][10]RM avr-S0: -852.879827 delta_a: -0.002908 
+[SWAP][10]Starting Rep Par S0 = 6578496.000000 dS = 593.241850 a = 7.476303 
+[Boundary][10]a(1)_rm : 7.476472 and a(1)_bc : 7.476459 
+[Boundary][10]a(n-2)_rm : 7.507613 and a(n-2)_bc : 7.503574 
+[SWAP][10]Replicas 14 and 19 swapped!
+[SWAP][10]Replicas 49 and 52 swapped!
+[SWAP][10]Replicas 53 and 57 swapped!
+[SWAP][10]Replicas 58 and 64 swapped!
+[SWAP][10]Replicas 68 and 71 swapped!
+[SWAP][10]Replicas 74 and 72 swapped!
+[SWAP][10]Replicas 79 and 86 swapped!
+[SWAP][10]Replicas 88 and 83 swapped!
+[SWAP][10]Replicas 89 and 98 swapped!
+[SWAP][10]Replicas 104 and 99 swapped!
+[SWAP][10]Replicas 107 and 108 swapped!
+[SWAP][10]Replicas 109 and 105 swapped!
+[SWAP][10]Replicas 113 and 119 swapped!
+[SWAP][10]Replicas 114 and 126 swapped!
+[SWAP][10]Replicas 121 and 122 swapped!
+[SWAP][10]Replicas 129 and 134 swapped!
+[llr:setreplica][0]Updating OLD LLR Param: S0 6578496.000000,  a  7.476303183 , dS 593.241850  
+[llr:setreplica][0]New LLR Param: S0 6578496.000000,  a  7.476318023 , dS 593.241850  
+[SWAP][10]New Rep Par S0 = 6578496.000000 dS = 593.241850 a = 7.476318 
+[MAIN][0]Robbins Monro sequence #10: generated in [14504 sec 81998 usec]
+[MAIN][0]Plaq a fixed 0.587371 
+[MAIN][0]<a_rho(0,10,6578496.000000000)>= 7.476318023
+[MAIN][0]Trajectory #11...
+[ROBBINSMONRO][10](S-S0)_sqr: 1273907.083196 
+[ROBBINSMONRO][10]RM avr-S0: -852.405466 delta_a: -0.002642 
+[SWAP][10]Starting Rep Par S0 = 6578496.000000 dS = 593.241850 a = 7.476318 
+[Boundary][10]a(1)_rm : 7.476500 and a(1)_bc : 7.476439 
+[Boundary][10]a(n-2)_rm : 7.507144 and a(n-2)_bc : 7.503522 
+[SWAP][10]Replicas 9 and 11 swapped!
+[SWAP][10]Replicas 17 and 13 swapped!
+[SWAP][10]Replicas 15 and 19 swapped!
+[SWAP][10]Replicas 25 and 20 swapped!
+[SWAP][10]Replicas 33 and 35 swapped!
+[SWAP][10]Replicas 30 and 39 swapped!
+[SWAP][10]Replicas 38 and 40 swapped!
+[SWAP][10]Replicas 61 and 59 swapped!
+[SWAP][10]Replicas 80 and 75 swapped!
+[SWAP][10]Replicas 83 and 88 swapped!
+[SWAP][10]Replicas 92 and 84 swapped!
+[SWAP][10]Replicas 89 and 93 swapped!
+[SWAP][10]Replicas 105 and 109 swapped!
+[SWAP][10]Replicas 115 and 119 swapped!
+[SWAP][10]Replicas 123 and 125 swapped!
+[SWAP][10]Replicas 124 and 122 swapped!
+[SWAP][10]Replicas 136 and 143 swapped!
+[SWAP][10]Replicas 138 and 137 swapped!
+[SWAP][10]Replicas 140 and 142 swapped!
+[llr:setreplica][0]Updating OLD LLR Param: S0 6578496.000000,  a  7.476318023 , dS 593.241850  
+[llr:setreplica][0]New LLR Param: S0 6578496.000000,  a  7.476364174 , dS 593.241850  
+[SWAP][10]New Rep Par S0 = 6578496.000000 dS = 593.241850 a = 7.476364 
+[MAIN][0]Robbins Monro sequence #11: generated in [14507 sec 725889 usec]
+[MAIN][0]Plaq a fixed 0.587416 
+[MAIN][0]<a_rho(0,11,6578496.000000000)>= 7.476364174
+[MAIN][0]Trajectory #12...
+[ROBBINSMONRO][10](S-S0)_sqr: 721304.093985 
+[ROBBINSMONRO][10]RM avr-S0: -555.979090 delta_a: -0.001580 
+[SWAP][10]Starting Rep Par S0 = 6578496.000000 dS = 593.241850 a = 7.476364 
+[Boundary][10]a(1)_rm : 7.476490 and a(1)_bc : 7.476365 
+[Boundary][10]a(n-2)_rm : 7.506739 and a(n-2)_bc : 7.503935 
+[SWAP][10]Replicas 1 and 3 swapped!
+[SWAP][10]Replicas 4 and 6 swapped!
+[SWAP][10]Replicas 33 and 34 swapped!
+[SWAP][10]Replicas 30 and 37 swapped!
+[SWAP][10]Replicas 45 and 44 swapped!
+[SWAP][10]Replicas 41 and 42 swapped!
+[SWAP][10]Replicas 61 and 64 swapped!
+[SWAP][10]Replicas 69 and 66 swapped!
+[SWAP][10]Replicas 77 and 82 swapped!
+[SWAP][10]Replicas 87 and 88 swapped!
+[SWAP][10]Replicas 107 and 108 swapped!
+[SWAP][10]Replicas 127 and 122 swapped!
+[SWAP][10]Replicas 124 and 121 swapped!
+[SWAP][10]Replicas 136 and 133 swapped!
+[llr:setreplica][0]Updating OLD LLR Param: S0 6578496.000000,  a  7.476364174 , dS 593.241850  
+[llr:setreplica][0]New LLR Param: S0 6578496.000000,  a  7.476369614 , dS 593.241850  
+[SWAP][10]New Rep Par S0 = 6578496.000000 dS = 593.241850 a = 7.476370 
+[MAIN][0]Robbins Monro sequence #12: generated in [14509 sec 758435 usec]
+[MAIN][0]Plaq a fixed 0.587491 
+[MAIN][0]<a_rho(0,12,6578496.000000000)>= 7.476369614
+[MAIN][0]Robins Monro update done.
+[IO][0]Configuration [./run1_5x72x72x72nc4b2.400000n13] saved [1 sec 974321 usec]
+[MAIN][0]Saving rlxd state to file rand_state
+[IO][0]Ranlxd state [rand_state] saved [0 sec 1442 usec]
+[MAIN][0]Total simulation time =[59586 sec 457610 usec]
+[TEST][0]start of finalize_process 
+[TEST][0]free_ghmc 
+[TEST][0]free_BCs 
+[TEST][0]free_wrk_space 
+[SYSTEM][0]Process finalized.
+[SYSTEM][0]Gauge group: SP(4)
+[SYSTEM][0]Fermion representation: dim = 4
+[SYSTEM][0][RepID: 0][world_size: 1]
+[SYSTEM][0][MPI_ID: 0][MPI_size: 152]
+[SYSTEM][0]MACROS=-DBC_T_PERIODIC -DBC_X_PERIODIC -DBC_Y_PERIODIC -DBC_Z_PERIODIC -DWITH_EO -DNDEBUG -DIO_FLUSH -DWITH_MPI -DLLRHB_UM_BC -DLLRHBPARALLEL -DWITH_UMBRELLA -DLLRHB -DREPR_FUNDAMENTAL -DREPR_NAME=@REPR_FUNDAMENTAL@ -DGAUGE_SPN
+[GEOMETRY][0]WARNING: NO PARALLEL DIMENSIONS SPECIFIED!!!
+[GEOMETRY][0]WARNING: THE MPI CODE SHOULD NOT BE USED IN THIS CASE!!!
+[GEOMETRY][0]CId = 0 (0,0,0,0)
+[GEOMETRY_INIT][0]Global size is 5x72x72x72
+[GEOMETRY_INIT][0]Local size is 5x72x72x72
+[GEOMETRY_INIT][0]Extended local size is 5x72x72x72
+[GEOMETRY_INIT][0]The lattice borders are (0,0,0,0)
+[WARNING][0](int) GLB_VOL3*GLB_VOL3 overflows
+[GEOMETRY][0]Geometry variable checked
+[GEOMETRY][0]Gauge field: size 1866240 nbuffer 0 
+[GEOMETRY][0]Spinor field (EO): size 1866240 nbuffer 0 
+[GEOMETRY][0]Even Spinor field: size 933120 nbuffer 0 
+[GEOMETRY][0]Odd Spinor field: size 933120 nbuffer 0 
+[SETUP_RANDOM][0]RLXD [1,37492]
+[MAIN][0]LLR number of mc steps per RM: 700
+[MAIN][0]LLR number of therm steps per RM 300
+[MAIN][0]LLR Initial a 7.476370
+[MAIN][0]LLR RM start value iteration 1 and its iteration frequency 1 
+[MAIN][0]LLR S0 Central action 6578496.000000
+[MAIN][0]LLR Delta S 593.241850
+[MAIN][0]Number of heatbath steps 1, number of overrelaxation steps 0
+[MAIN][0]Number of fixed a steps 0
+[MAIN][0]Swap frequency for fixed a steps 0
+[MAIN][0]LLR Smin minimum action for all replicas 6578496.000000
+[MAIN][0]LLR Smax maximum action for all replicas 6623285.760000
+[MAIN][0]LLR Delta S 593.241850
+[MAIN][0]LLR dB 0.001000
+[MAIN][0]LLR number of intial NR iterations 0
+[MAIN][0]Compiled with domain decomposition 
+[READINPUT][0]Warning: input parameter [config dir] not found in [input_file]!
+[BCS][0]Gauge field: PERIODIC x PERIODIC PERIODIC PERIODIC
+[BCS][0]Fermion fields: PERIODIC x PERIODIC PERIODIC PERIODIC
+[FLOW][0]Starting from conf [run1_5x72x72x72nc4b2.400000n12]
+[IO][0]Configuration [./run1_5x72x72x72nc4b2.400000n12] read [2 sec 766718 usec] Plaquette=5.874909e-01
+[MAIN][0]beta = 2.4000
+[MAIN][0]Number of thermalization cycles: 0
+[MAIN][0]Number of hb-or iterations per cycle: 1
+[MAIN][0]Number of heatbaths per iteration: 1
+[MAIN][0]Number or overrelaxations per iteration: 0
+[MAIN][0]Initial plaquette: 5.87490919e-01
+[MAIN][0]Bringing the system to the interval (S0,dS) = (6578496.000000, 593.241850) ...
+[ANNEAL][0]Finished S = 6578394.317262, Smin = 6578199.379075, Smax = 6578792.620925, in 1 steps ...
+[ANNEAL][0]Check action S_an = 6578394.3172618383541703, S_ap = 6578394.3172618392854929
+[MAIN][0]System brought to the interval (S0,dS) = (6578496.000000, 593.241850)
+[llr][0]nth: 300 
+[MAIN][0]Thermalization done in [0 sec 0 usec].
+[MAIN][0]Measured energy 6578394.317262, stated energy 
+[MAIN][0]Initial NR iterations, N_nr: 0 0 
+[MAIN][0]Newton Raphson update done.
+[MAIN][0]flow.start: 13, flow.end: 17, llr_var.it: 13 
+[MAIN][0]Trajectory #13...
+[ROBBINSMONRO][10](S-S0)_sqr: 1196791.201826 
+[ROBBINSMONRO][10]RM avr-S0: -798.197941 delta_a: -0.002094 
+[SWAP][10]Starting Rep Par S0 = 6578496.000000 dS = 593.241850 a = 7.476370 
+[Boundary][10]a(1)_rm : 7.476475 and a(1)_bc : 7.476426 
+[Boundary][10]a(n-2)_rm : 7.506413 and a(n-2)_bc : 7.504282 
+[SWAP][10]Replicas 8 and 2 swapped!
+[SWAP][10]Replicas 9 and 13 swapped!
+[SWAP][10]Replicas 19 and 15 swapped!
+[SWAP][10]Replicas 24 and 16 swapped!
+[SWAP][10]Replicas 27 and 31 swapped!
+[SWAP][10]Replicas 23 and 29 swapped!
+[SWAP][10]Replicas 39 and 37 swapped!
+[SWAP][10]Replicas 44 and 45 swapped!
+[SWAP][10]Replicas 49 and 56 swapped!
+[SWAP][10]Replicas 53 and 55 swapped!
+[SWAP][10]Replicas 70 and 71 swapped!
+[SWAP][10]Replicas 77 and 86 swapped!
+[SWAP][10]Replicas 92 and 95 swapped!
+[SWAP][10]Replicas 85 and 98 swapped!
+[SWAP][10]Replicas 89 and 96 swapped!
+[SWAP][10]Replicas 94 and 100 swapped!
+[SWAP][10]Replicas 97 and 102 swapped!
+[SWAP][10]Replicas 117 and 120 swapped!
+[SWAP][10]Replicas 124 and 130 swapped!
+[SWAP][10]Replicas 132 and 143 swapped!
+[SWAP][10]Replicas 136 and 139 swapped!
+[SWAP][10]Replicas 141 and 142 swapped!
+[llr:setreplica][0]Updating OLD LLR Param: S0 6578496.000000,  a  7.476369614 , dS 593.241850  
+[llr:setreplica][0]New LLR Param: S0 6578496.000000,  a  7.476309390 , dS 593.241850  
+[SWAP][10]New Rep Par S0 = 6578496.000000 dS = 593.241850 a = 7.476309 
+[MAIN][0]Robbins Monro sequence #13: generated in [14489 sec 724339 usec]
+[MAIN][0]Plaq a fixed 0.587514 
+[MAIN][0]<a_rho(0,13,6578496.000000000)>= 7.476309390
+[MAIN][0]Trajectory #14...
+[ROBBINSMONRO][10](S-S0)_sqr: 963871.345287 
+[ROBBINSMONRO][10]RM avr-S0: -687.326636 delta_a: -0.001674 
+[SWAP][10]Starting Rep Par S0 = 6578496.000000 dS = 593.241850 a = 7.476309 
+[Boundary][10]a(1)_rm : 7.476464 and a(1)_bc : 7.476396 
+[Boundary][10]a(n-2)_rm : 7.506098 and a(n-2)_bc : 7.504441 
+[SWAP][10]Replicas 0 and 2 swapped!
+[SWAP][10]Replicas 6 and 10 swapped!
+[SWAP][10]Replicas 13 and 9 swapped!
+[SWAP][10]Replicas 24 and 21 swapped!
+[SWAP][10]Replicas 44 and 42 swapped!
+[SWAP][10]Replicas 60 and 62 swapped!
+[SWAP][10]Replicas 54 and 59 swapped!
+[SWAP][10]Replicas 100 and 94 swapped!
+[SWAP][10]Replicas 99 and 104 swapped!
+[SWAP][10]Replicas 108 and 107 swapped!
+[SWAP][10]Replicas 110 and 106 swapped!
+[SWAP][10]Replicas 115 and 113 swapped!
+[SWAP][10]Replicas 117 and 123 swapped!
+[SWAP][10]Replicas 128 and 143 swapped!
+[SWAP][10]Replicas 144 and 140 swapped!
+[SWAP][10]Replicas 148 and 151 swapped!
+[SWAP][10]Replicas 147 and 149 swapped!
+[llr:setreplica][0]Updating OLD LLR Param: S0 6578496.000000,  a  7.476309390 , dS 593.241850  
+[llr:setreplica][0]New LLR Param: S0 6578792.620930,  a  7.476463983 , dS 593.241850  
+[SWAP][10]New Rep Par S0 = 6578792.620930 dS = 593.241850 a = 7.476464 
+[MAIN][0]Robbins Monro sequence #14: generated in [14507 sec 203839 usec]
+[MAIN][0]Plaq a fixed 0.587514 
+[MAIN][0]<a_rho(0,14,6578792.620930000)>= 7.476463983
+[MAIN][0]Trajectory #15...
+[ROBBINSMONRO][10](S-S0)_sqr: 28998.396485 
+[ROBBINSMONRO][10]RM avr-S0: 2.299229 delta_a: 0.000005 
+[SWAP][10]Starting Rep Par S0 = 6578792.620930 dS = 593.241850 a = 7.476459 
+[Boundary][10]a(1)_rm : 7.476459 and a(1)_bc : 7.476318 
+[Boundary][10]a(n-2)_rm : 7.505846 and a(n-2)_bc : 7.504074 
+[SWAP][10]Replicas 11 and 5 swapped!
+[SWAP][10]Replicas 21 and 24 swapped!
+[SWAP][10]Replicas 29 and 27 swapped!
+[SWAP][10]Replicas 51 and 46 swapped!
+[SWAP][10]Replicas 64 and 63 swapped!
+[SWAP][10]Replicas 61 and 58 swapped!
+[SWAP][10]Replicas 69 and 73 swapped!
+[SWAP][10]Replicas 81 and 82 swapped!
+[SWAP][10]Replicas 91 and 88 swapped!
+[SWAP][10]Replicas 112 and 118 swapped!
+[SWAP][10]Replicas 121 and 127 swapped!
+[SWAP][10]Replicas 131 and 143 swapped!
+[SWAP][10]Replicas 137 and 142 swapped!
+[llr:setreplica][0]Updating OLD LLR Param: S0 6578792.620930,  a  7.476458756 , dS 593.241850  
+[llr:setreplica][0]New LLR Param: S0 6578792.620930,  a  7.476458756 , dS 593.241850  
+[SWAP][10]New Rep Par S0 = 6578792.620930 dS = 593.241850 a = 7.476459 
+[MAIN][0]Robbins Monro sequence #15: generated in [14501 sec 731335 usec]
+[MAIN][0]Plaq a fixed 0.587525 
+[MAIN][0]<a_rho(0,15,6578792.620930000)>= 7.476458756
+[MAIN][0]Trajectory #16...
+[ROBBINSMONRO][10](S-S0)_sqr: 28751.626514 
+[ROBBINSMONRO][10]RM avr-S0: -3.685125 delta_a: -0.000008 
+[SWAP][10]Starting Rep Par S0 = 6578792.620930 dS = 593.241850 a = 7.476467 
+[Boundary][10]a(1)_rm : 7.476467 and a(1)_bc : 7.476279 
+[Boundary][10]a(n-2)_rm : 7.505593 and a(n-2)_bc : 7.503910 
+[SWAP][10]Replicas 1 and 6 swapped!
+[SWAP][10]Replicas 7 and 4 swapped!
+[SWAP][10]Replicas 15 and 17 swapped!
+[SWAP][10]Replicas 18 and 14 swapped!
+[SWAP][10]Replicas 37 and 39 swapped!
+[SWAP][10]Replicas 45 and 36 swapped!
+[SWAP][10]Replicas 52 and 57 swapped!
+[SWAP][10]Replicas 63 and 64 swapped!
+[SWAP][10]Replicas 80 and 75 swapped!
+[SWAP][10]Replicas 82 and 81 swapped!
+[SWAP][10]Replicas 87 and 84 swapped!
+[SWAP][10]Replicas 92 and 98 swapped!
+[SWAP][10]Replicas 94 and 100 swapped!
+[SWAP][10]Replicas 102 and 104 swapped!
+[SWAP][10]Replicas 116 and 115 swapped!
+[SWAP][10]Replicas 138 and 141 swapped!
+[llr:setreplica][0]Updating OLD LLR Param: S0 6578792.620930,  a  7.476466610 , dS 593.241850  
+[llr:setreplica][0]New LLR Param: S0 6578792.620930,  a  7.476466610 , dS 593.241850  
+[SWAP][10]New Rep Par S0 = 6578792.620930 dS = 593.241850 a = 7.476467 
+[MAIN][0]Robbins Monro sequence #16: generated in [14510 sec 996819 usec]
+[MAIN][0]Plaq a fixed 0.587511 
+[MAIN][0]<a_rho(0,16,6578792.620930000)>= 7.476466610
+[MAIN][0]Robins Monro update done.
+[IO][0]Configuration [./run1_5x72x72x72nc4b2.400000n17] saved [1 sec 877352 usec]
+[MAIN][0]Saving rlxd state to file rand_state
+[IO][0]Ranlxd state [rand_state] saved [0 sec 156 usec]
+[MAIN][0]Total simulation time =[58811 sec 452430 usec]
+[TEST][0]start of finalize_process 
+[TEST][0]free_ghmc 
+[TEST][0]free_BCs 
+[TEST][0]free_wrk_space 
+[SYSTEM][0]Process finalized.
+[SYSTEM][0]Gauge group: SP(4)
+[SYSTEM][0]Fermion representation: dim = 4
+[SYSTEM][0][RepID: 0][world_size: 1]
+[SYSTEM][0][MPI_ID: 0][MPI_size: 152]
+[SYSTEM][0]MACROS=-DBC_T_PERIODIC -DBC_X_PERIODIC -DBC_Y_PERIODIC -DBC_Z_PERIODIC -DWITH_EO -DNDEBUG -DIO_FLUSH -DWITH_MPI -DLLRHB_UM_BC -DLLRHBPARALLEL -DWITH_UMBRELLA -DLLRHB -DREPR_FUNDAMENTAL -DREPR_NAME=@REPR_FUNDAMENTAL@ -DGAUGE_SPN
+[GEOMETRY][0]WARNING: NO PARALLEL DIMENSIONS SPECIFIED!!!
+[GEOMETRY][0]WARNING: THE MPI CODE SHOULD NOT BE USED IN THIS CASE!!!
+[GEOMETRY][0]CId = 0 (0,0,0,0)
+[GEOMETRY_INIT][0]Global size is 5x72x72x72
+[GEOMETRY_INIT][0]Local size is 5x72x72x72
+[GEOMETRY_INIT][0]Extended local size is 5x72x72x72
+[GEOMETRY_INIT][0]The lattice borders are (0,0,0,0)
+[WARNING][0](int) GLB_VOL3*GLB_VOL3 overflows
+[GEOMETRY][0]Geometry variable checked
+[GEOMETRY][0]Gauge field: size 1866240 nbuffer 0 
+[GEOMETRY][0]Spinor field (EO): size 1866240 nbuffer 0 
+[GEOMETRY][0]Even Spinor field: size 933120 nbuffer 0 
+[GEOMETRY][0]Odd Spinor field: size 933120 nbuffer 0 
+[SETUP_RANDOM][0]RLXD [1,22783]
+[MAIN][0]LLR number of mc steps per RM: 700
+[MAIN][0]LLR number of therm steps per RM 300
+[MAIN][0]LLR Initial a 7.476467
+[MAIN][0]LLR RM start value iteration 1 and its iteration frequency 1 
+[MAIN][0]LLR S0 Central action 6578792.620930
+[MAIN][0]LLR Delta S 593.241850
+[MAIN][0]Number of heatbath steps 1, number of overrelaxation steps 0
+[MAIN][0]Number of fixed a steps 0
+[MAIN][0]Swap frequency for fixed a steps 0
+[MAIN][0]LLR Smin minimum action for all replicas 6578496.000000
+[MAIN][0]LLR Smax maximum action for all replicas 6623285.760000
+[MAIN][0]LLR Delta S 593.241850
+[MAIN][0]LLR dB 0.001000
+[MAIN][0]LLR number of intial NR iterations 0
+[MAIN][0]Compiled with domain decomposition 
+[READINPUT][0]Warning: input parameter [config dir] not found in [input_file]!
+[BCS][0]Gauge field: PERIODIC x PERIODIC PERIODIC PERIODIC
+[BCS][0]Fermion fields: PERIODIC x PERIODIC PERIODIC PERIODIC
+[FLOW][0]Starting from conf [run1_5x72x72x72nc4b2.400000n16]
+[IO][0]Configuration [./run1_5x72x72x72nc4b2.400000n16] read [5 sec 539027 usec] Plaquette=5.875107e-01
+[MAIN][0]beta = 2.4000
+[MAIN][0]Number of thermalization cycles: 0
+[MAIN][0]Number of hb-or iterations per cycle: 1
+[MAIN][0]Number of heatbaths per iteration: 1
+[MAIN][0]Number or overrelaxations per iteration: 0
+[MAIN][0]Initial plaquette: 5.87510655e-01
+[MAIN][0]Bringing the system to the interval (S0,dS) = (6578792.620930, 593.241850) ...
+[ANNEAL][0]Finished S = 6578615.303589, Smin = 6578496.000005, Smax = 6579089.241855, in 1 steps ...
+[ANNEAL][0]Check action S_an = 6578615.3035890795290470, S_ap = 6578615.3035890785977244
+[MAIN][0]System brought to the interval (S0,dS) = (6578792.620930, 593.241850)
+[llr][0]nth: 300 
+[MAIN][0]Thermalization done in [0 sec 0 usec].
+[MAIN][0]Measured energy 6578615.303589, stated energy 
+[MAIN][0]Initial NR iterations, N_nr: 0 0 
+[MAIN][0]Newton Raphson update done.
+[MAIN][0]flow.start: 17, flow.end: 21, llr_var.it: 17 
+[MAIN][0]Trajectory #17...
+[ROBBINSMONRO][10](S-S0)_sqr: 29142.619143 
+[ROBBINSMONRO][10]RM avr-S0: 4.435660 delta_a: 0.000009 
+[SWAP][10]Starting Rep Par S0 = 6578792.620930 dS = 593.241850 a = 7.476458 
+[Boundary][10]a(1)_rm : 7.476458 and a(1)_bc : 7.476230 
+[Boundary][10]a(n-2)_rm : 7.505395 and a(n-2)_bc : 7.503837 
+[SWAP][10]Replicas 11 and 9 swapped!
+[SWAP][10]Replicas 16 and 24 swapped!
+[SWAP][10]Replicas 28 and 32 swapped!
+[SWAP][10]Replicas 34 and 35 swapped!
+[SWAP][10]Replicas 37 and 38 swapped!
+[SWAP][10]Replicas 36 and 45 swapped!
+[SWAP][10]Replicas 50 and 41 swapped!
+[SWAP][10]Replicas 56 and 57 swapped!
+[SWAP][10]Replicas 64 and 63 swapped!
+[SWAP][10]Replicas 66 and 73 swapped!
+[SWAP][10]Replicas 70 and 74 swapped!
+[SWAP][10]Replicas 82 and 86 swapped!
+[SWAP][10]Replicas 92 and 93 swapped!
+[SWAP][10]Replicas 90 and 100 swapped!
+[SWAP][10]Replicas 102 and 99 swapped!
+[SWAP][10]Replicas 111 and 118 swapped!
+[SWAP][10]Replicas 127 and 121 swapped!
+[SWAP][10]Replicas 131 and 143 swapped!
+[SWAP][10]Replicas 138 and 140 swapped!
+[llr:setreplica][0]Updating OLD LLR Param: S0 6578792.620930,  a  7.476457713 , dS 593.241850  
+[llr:setreplica][0]New LLR Param: S0 6579089.241850,  a  7.476578636 , dS 593.241850  
+[SWAP][10]New Rep Par S0 = 6579089.241850 dS = 593.241850 a = 7.476579 
+[MAIN][0]Robbins Monro sequence #17: generated in [13905 sec 79041 usec]
+[MAIN][0]Plaq a fixed 0.587529 
+[MAIN][0]<a_rho(0,17,6579089.241850000)>= 7.476578636
+[MAIN][0]Trajectory #18...
+[ROBBINSMONRO][10](S-S0)_sqr: 28674.914794 
+[ROBBINSMONRO][10]RM avr-S0: -6.104251 delta_a: -0.000012 
+[SWAP][10]Starting Rep Par S0 = 6579089.241850 dS = 593.241850 a = 7.476590 
+[Boundary][10]a(1)_rm : 7.476448 and a(1)_bc : 7.476242 
+[Boundary][10]a(n-2)_rm : 7.505191 and a(n-2)_bc : 7.503840 
+[SWAP][10]Replicas 6 and 10 swapped!
+[SWAP][10]Replicas 15 and 14 swapped!
+[SWAP][10]Replicas 16 and 21 swapped!
+[SWAP][10]Replicas 36 and 42 swapped!
+[SWAP][10]Replicas 57 and 56 swapped!
+[SWAP][10]Replicas 49 and 62 swapped!
+[SWAP][10]Replicas 58 and 67 swapped!
+[SWAP][10]Replicas 75 and 81 swapped!
+[SWAP][10]Replicas 87 and 95 swapped!
+[SWAP][10]Replicas 92 and 85 swapped!
+[SWAP][10]Replicas 101 and 100 swapped!
+[SWAP][10]Replicas 103 and 94 swapped!
+[SWAP][10]Replicas 108 and 109 swapped!
+[SWAP][10]Replicas 111 and 119 swapped!
+[SWAP][10]Replicas 123 and 126 swapped!
+[SWAP][10]Replicas 121 and 127 swapped!
+[SWAP][10]Replicas 133 and 132 swapped!
+[SWAP][10]Replicas 138 and 151 swapped!
+[SWAP][10]Replicas 149 and 147 swapped!
+[llr:setreplica][0]Updating OLD LLR Param: S0 6579089.241850,  a  7.476590199 , dS 593.241850  
+[llr:setreplica][0]New LLR Param: S0 6578792.620930,  a  7.476447699 , dS 593.241850  
+[SWAP][10]New Rep Par S0 = 6578792.620930 dS = 593.241850 a = 7.476448 
+[MAIN][0]Robbins Monro sequence #18: generated in [14405 sec 479223 usec]
+[MAIN][0]Plaq a fixed 0.587548 
+[MAIN][0]<a_rho(0,18,6578792.620930000)>= 7.476447699
+[MAIN][0]Trajectory #19...
+[ROBBINSMONRO][10](S-S0)_sqr: 27981.063844 
+[ROBBINSMONRO][10]RM avr-S0: -2.575151 delta_a: -0.000005 
+[SWAP][10]Starting Rep Par S0 = 6578792.620930 dS = 593.241850 a = 7.476452 
+[Boundary][10]a(1)_rm : 7.476452 and a(1)_bc : 7.476293 
+[Boundary][10]a(n-2)_rm : 7.504999 and a(n-2)_bc : 7.503715 
+[SWAP][10]Replicas 5 and 12 swapped!
+[SWAP][10]Replicas 9 and 13 swapped!
+[SWAP][10]Replicas 15 and 18 swapped!
+[SWAP][10]Replicas 31 and 26 swapped!
+[SWAP][10]Replicas 38 and 37 swapped!
+[SWAP][10]Replicas 55 and 62 swapped!
+[SWAP][10]Replicas 61 and 67 swapped!
+[SWAP][10]Replicas 71 and 74 swapped!
+[SWAP][10]Replicas 70 and 81 swapped!
+[SWAP][10]Replicas 88 and 79 swapped!
+[SWAP][10]Replicas 103 and 104 swapped!
+[SWAP][10]Replicas 110 and 106 swapped!
+[SWAP][10]Replicas 118 and 119 swapped!
+[SWAP][10]Replicas 125 and 122 swapped!
+[SWAP][10]Replicas 127 and 121 swapped!
+[SWAP][10]Replicas 144 and 145 swapped!
+[llr:setreplica][0]Updating OLD LLR Param: S0 6578792.620930,  a  7.476452321 , dS 593.241850  
+[llr:setreplica][0]New LLR Param: S0 6578792.620930,  a  7.476452321 , dS 593.241850  
+[SWAP][10]New Rep Par S0 = 6578792.620930 dS = 593.241850 a = 7.476452 
+[MAIN][0]Robbins Monro sequence #19: generated in [14439 sec 612843 usec]
+[MAIN][0]Plaq a fixed 0.587529 
+[MAIN][0]<a_rho(0,19,6578792.620930000)>= 7.476452321
+[MAIN][0]Trajectory #20...
+[ROBBINSMONRO][10](S-S0)_sqr: 28052.998255 
+[ROBBINSMONRO][10]RM avr-S0: -21.200995 delta_a: -0.000036 
+[SWAP][10]Starting Rep Par S0 = 6578792.620930 dS = 593.241850 a = 7.476488 
+[Boundary][10]a(1)_rm : 7.476488 and a(1)_bc : 7.476304 
+[Boundary][10]a(n-2)_rm : 7.504846 and a(n-2)_bc : 7.503619 
+[SWAP][10]Replicas 0 and 8 swapped!
+[SWAP][10]Replicas 20 and 22 swapped!
+[SWAP][10]Replicas 25 and 26 swapped!
+[SWAP][10]Replicas 31 and 23 swapped!
+[SWAP][10]Replicas 28 and 32 swapped!
+[SWAP][10]Replicas 38 and 30 swapped!
+[SWAP][10]Replicas 40 and 45 swapped!
+[SWAP][10]Replicas 36 and 43 swapped!
+[SWAP][10]Replicas 50 and 41 swapped!
+[SWAP][10]Replicas 56 and 57 swapped!
+[SWAP][10]Replicas 62 and 55 swapped!
+[SWAP][10]Replicas 88 and 84 swapped!
+[SWAP][10]Replicas 103 and 99 swapped!
+[SWAP][10]Replicas 106 and 110 swapped!
+[SWAP][10]Replicas 120 and 126 swapped!
+[SWAP][10]Replicas 123 and 117 swapped!
+[SWAP][10]Replicas 127 and 129 swapped!
+[SWAP][10]Replicas 143 and 131 swapped!
+[SWAP][10]Replicas 136 and 133 swapped!
+[SWAP][10]Replicas 140 and 151 swapped!
+[llr:setreplica][0]Updating OLD LLR Param: S0 6578792.620930,  a  7.476488465 , dS 593.241850  
+[llr:setreplica][0]New LLR Param: S0 6579089.241850,  a  7.476616643 , dS 593.241850  
+[SWAP][10]New Rep Par S0 = 6579089.241850 dS = 593.241850 a = 7.476617 
+[MAIN][0]Robbins Monro sequence #20: generated in [14401 sec 391156 usec]
+[MAIN][0]Plaq a fixed 0.587533 
+[MAIN][0]<a_rho(0,20,6579089.241850000)>= 7.476616643
+[MAIN][0]Robins Monro update done.
+[IO][0]Configuration [./run1_5x72x72x72nc4b2.400000n21] saved [2 sec 316463 usec]
+[MAIN][0]Saving rlxd state to file rand_state
+[IO][0]Ranlxd state [rand_state] saved [0 sec 128 usec]
+[MAIN][0]Total simulation time =[57939 sec 441745 usec]
+[TEST][0]start of finalize_process 
+[TEST][0]free_ghmc 
+[TEST][0]free_BCs 
+[TEST][0]free_wrk_space 
+[SYSTEM][0]Process finalized.
+[SYSTEM][0]Gauge group: SP(4)
+[SYSTEM][0]Fermion representation: dim = 4
+[SYSTEM][0][RepID: 0][world_size: 1]
+[SYSTEM][0][MPI_ID: 0][MPI_size: 152]
+[SYSTEM][0]MACROS=-DBC_T_PERIODIC -DBC_X_PERIODIC -DBC_Y_PERIODIC -DBC_Z_PERIODIC -DWITH_EO -DNDEBUG -DIO_FLUSH -DWITH_MPI -DLLRHB_UM_BC -DLLRHBPARALLEL -DWITH_UMBRELLA -DLLRHB -DREPR_FUNDAMENTAL -DREPR_NAME=@REPR_FUNDAMENTAL@ -DGAUGE_SPN
+[GEOMETRY][0]WARNING: NO PARALLEL DIMENSIONS SPECIFIED!!!
+[GEOMETRY][0]WARNING: THE MPI CODE SHOULD NOT BE USED IN THIS CASE!!!
+[GEOMETRY][0]CId = 0 (0,0,0,0)
+[GEOMETRY_INIT][0]Global size is 5x72x72x72
+[GEOMETRY_INIT][0]Local size is 5x72x72x72
+[GEOMETRY_INIT][0]Extended local size is 5x72x72x72
+[GEOMETRY_INIT][0]The lattice borders are (0,0,0,0)
+[WARNING][0](int) GLB_VOL3*GLB_VOL3 overflows
+[GEOMETRY][0]Geometry variable checked
+[GEOMETRY][0]Gauge field: size 1866240 nbuffer 0 
+[GEOMETRY][0]Spinor field (EO): size 1866240 nbuffer 0 
+[GEOMETRY][0]Even Spinor field: size 933120 nbuffer 0 
+[GEOMETRY][0]Odd Spinor field: size 933120 nbuffer 0 
+[SETUP_RANDOM][0]RLXD [1,39324]
+[MAIN][0]LLR number of mc steps per RM: 700
+[MAIN][0]LLR number of therm steps per RM 300
+[MAIN][0]LLR Initial a 7.476953
+[MAIN][0]LLR RM start value iteration 1 and its iteration frequency 1 
+[MAIN][0]LLR S0 Central action 6579385.862780
+[MAIN][0]LLR Delta S 593.241850
+[MAIN][0]Number of heatbath steps 1, number of overrelaxation steps 0
+[MAIN][0]Number of fixed a steps 0
+[MAIN][0]Swap frequency for fixed a steps 0
+[MAIN][0]LLR Smin minimum action for all replicas 6578496.000000
+[MAIN][0]LLR Smax maximum action for all replicas 6623285.760000
+[MAIN][0]LLR Delta S 593.241850
+[MAIN][0]LLR dB 0.001000
+[MAIN][0]LLR number of intial NR iterations 0
+[MAIN][0]Compiled with domain decomposition 
+[READINPUT][0]Warning: input parameter [config dir] not found in [input_file]!
+[BCS][0]Gauge field: PERIODIC x PERIODIC PERIODIC PERIODIC
+[BCS][0]Fermion fields: PERIODIC x PERIODIC PERIODIC PERIODIC
+[FLOW][0]Starting from conf [run1_5x72x72x72nc4b2.400000n25]
+[IO][0]Configuration [./run1_5x72x72x72nc4b2.400000n25] read [7 sec 578873 usec] Plaquette=5.875326e-01
+[MAIN][0]beta = 2.4000
+[MAIN][0]Number of thermalization cycles: 0
+[MAIN][0]Number of hb-or iterations per cycle: 1
+[MAIN][0]Number of heatbaths per iteration: 1
+[MAIN][0]Number or overrelaxations per iteration: 0
+[MAIN][0]Initial plaquette: 5.87532593e-01
+[MAIN][0]Bringing the system to the interval (S0,dS) = (6579385.862780, 593.241850) ...
+[ANNEAL][0]Finished S = 6579325.177697, Smin = 6579089.241855, Smax = 6579682.483705, in 2 steps ...
+[ANNEAL][0]Check action S_an = 6579325.1776973372325301, S_ap = 6579325.1776997372508049
+[MAIN][0]System brought to the interval (S0,dS) = (6579385.862780, 593.241850)
+[llr][0]nth: 300 
+[MAIN][0]Thermalization done in [0 sec 0 usec].
+[MAIN][0]Measured energy 6579325.177700, stated energy 
+[MAIN][0]Initial NR iterations, N_nr: 0 0 
+[MAIN][0]Newton Raphson update done.
+[MAIN][0]flow.start: 26, flow.end: 30, llr_var.it: 26 
+[MAIN][0]Trajectory #26...
+[ROBBINSMONRO][10](S-S0)_sqr: 29152.922288 
+[ROBBINSMONRO][10]RM avr-S0: 10.147782 delta_a: 0.000013 
+[SWAP][10]Starting Rep Par S0 = 6579385.862780 dS = 593.241850 a = 7.476939 
+[Boundary][10]a(1)_rm : 7.476435 and a(1)_bc : 7.476290 
+[Boundary][10]a(n-2)_rm : 7.504200 and a(n-2)_bc : 7.503292 
+[SWAP][10]Replicas 16 and 24 swapped!
+[SWAP][10]Replicas 35 and 37 swapped!
+[SWAP][10]Replicas 40 and 43 swapped!
+[SWAP][10]Replicas 42 and 45 swapped!
+[SWAP][10]Replicas 57 and 46 swapped!
+[SWAP][10]Replicas 51 and 52 swapped!
+[SWAP][10]Replicas 62 and 53 swapped!
+[SWAP][10]Replicas 73 and 66 swapped!
+[SWAP][10]Replicas 81 and 70 swapped!
+[SWAP][10]Replicas 78 and 84 swapped!
+[SWAP][10]Replicas 87 and 91 swapped!
+[SWAP][10]Replicas 93 and 98 swapped!
+[SWAP][10]Replicas 102 and 90 swapped!
+[SWAP][10]Replicas 131 and 136 swapped!
+[SWAP][10]Replicas 133 and 139 swapped!
+[SWAP][10]Replicas 149 and 146 swapped!
+[llr:setreplica][0]Updating OLD LLR Param: S0 6579385.862780,  a  7.476939335 , dS 593.241850  
+[llr:setreplica][0]New LLR Param: S0 6579385.862780,  a  7.476939335 , dS 593.241850  
+[SWAP][10]New Rep Par S0 = 6579385.862780 dS = 593.241850 a = 7.476939 
+[MAIN][0]Robbins Monro sequence #26: generated in [13889 sec 711065 usec]
+[MAIN][0]Plaq a fixed 0.587564 
+[MAIN][0]<a_rho(0,26,6579385.862780000)>= 7.476939335
+[MAIN][0]Trajectory #27...
+[ROBBINSMONRO][10](S-S0)_sqr: 30070.887485 
+[ROBBINSMONRO][10]RM avr-S0: 6.001923 delta_a: 0.000008 
+[SWAP][10]Starting Rep Par S0 = 6579385.862780 dS = 593.241850 a = 7.476932 
+[Boundary][10]a(1)_rm : 7.476434 and a(1)_bc : 7.476271 
+[Boundary][10]a(n-2)_rm : 7.504135 and a(n-2)_bc : 7.503308 
+[SWAP][10]Replicas 3 and 8 swapped!
+[SWAP][10]Replicas 12 and 5 swapped!
+[SWAP][10]Replicas 27 and 20 swapped!
+[SWAP][10]Replicas 43 and 40 swapped!
+[SWAP][10]Replicas 42 and 47 swapped!
+[SWAP][10]Replicas 44 and 36 swapped!
+[SWAP][10]Replicas 56 and 48 swapped!
+[SWAP][10]Replicas 72 and 68 swapped!
+[SWAP][10]Replicas 71 and 65 swapped!
+[SWAP][10]Replicas 77 and 76 swapped!
+[SWAP][10]Replicas 91 and 87 swapped!
+[SWAP][10]Replicas 100 and 94 swapped!
+[SWAP][10]Replicas 102 and 97 swapped!
+[SWAP][10]Replicas 109 and 119 swapped!
+[SWAP][10]Replicas 138 and 140 swapped!
+[llr:setreplica][0]Updating OLD LLR Param: S0 6579385.862780,  a  7.476931755 , dS 593.241850  
+[llr:setreplica][0]New LLR Param: S0 6579385.862780,  a  7.476931755 , dS 593.241850  
+[SWAP][10]New Rep Par S0 = 6579385.862780 dS = 593.241850 a = 7.476932 
+[MAIN][0]Robbins Monro sequence #27: generated in [13903 sec 459081 usec]
+[MAIN][0]Plaq a fixed 0.587558 
+[MAIN][0]<a_rho(0,27,6579385.862780000)>= 7.476931755
+[MAIN][0]Trajectory #28...
+[ROBBINSMONRO][10](S-S0)_sqr: 29434.165236 
+[ROBBINSMONRO][10]RM avr-S0: 8.137000 delta_a: 0.000010 
+[SWAP][10]Starting Rep Par S0 = 6579385.862780 dS = 593.241850 a = 7.476922 
+[Boundary][10]a(1)_rm : 7.476444 and a(1)_bc : 7.476284 
+[Boundary][10]a(n-2)_rm : 7.504091 and a(n-2)_bc : 7.503326 
+[SWAP][10]Replicas 8 and 3 swapped!
+[SWAP][10]Replicas 15 and 14 swapped!
+[SWAP][10]Replicas 26 and 25 swapped!
+[SWAP][10]Replicas 29 and 31 swapped!
+[SWAP][10]Replicas 34 and 39 swapped!
+[SWAP][10]Replicas 38 and 40 swapped!
+[SWAP][10]Replicas 47 and 42 swapped!
+[SWAP][10]Replicas 46 and 57 swapped!
+[SWAP][10]Replicas 49 and 60 swapped!
+[SWAP][10]Replicas 58 and 73 swapped!
+[SWAP][10]Replicas 65 and 71 swapped!
+[SWAP][10]Replicas 84 and 79 swapped!
+[SWAP][10]Replicas 103 and 108 swapped!
+[SWAP][10]Replicas 106 and 119 swapped!
+[SWAP][10]Replicas 116 and 118 swapped!
+[SWAP][10]Replicas 120 and 114 swapped!
+[SWAP][10]Replicas 127 and 130 swapped!
+[SWAP][10]Replicas 124 and 143 swapped!
+[SWAP][10]Replicas 135 and 137 swapped!
+[SWAP][10]Replicas 142 and 140 swapped!
+[SWAP][10]Replicas 147 and 148 swapped!
+[llr:setreplica][0]Updating OLD LLR Param: S0 6579385.862780,  a  7.476921846 , dS 593.241850  
+[llr:setreplica][0]New LLR Param: S0 6579682.483710,  a  7.477100552 , dS 593.241850  
+[SWAP][10]New Rep Par S0 = 6579682.483710 dS = 593.241850 a = 7.477101 
+[MAIN][0]Robbins Monro sequence #28: generated in [13906 sec 567535 usec]
+[MAIN][0]Plaq a fixed 0.587599 
+[MAIN][0]<a_rho(0,28,6579682.483710000)>= 7.477100552
+[MAIN][0]Trajectory #29...
+[ROBBINSMONRO][10](S-S0)_sqr: 28313.378672 
+[ROBBINSMONRO][10]RM avr-S0: -13.308928 delta_a: -0.000016 
+[SWAP][10]Starting Rep Par S0 = 6579682.483710 dS = 593.241850 a = 7.477116 
+[Boundary][10]a(1)_rm : 7.476449 and a(1)_bc : 7.476288 
+[Boundary][10]a(n-2)_rm : 7.504000 and a(n-2)_bc : 7.503230 
+[SWAP][10]Replicas 15 and 24 swapped!
+[SWAP][10]Replicas 21 and 16 swapped!
+[SWAP][10]Replicas 22 and 27 swapped!
+[SWAP][10]Replicas 40 and 38 swapped!
+[SWAP][10]Replicas 42 and 47 swapped!
+[SWAP][10]Replicas 46 and 48 swapped!
+[SWAP][10]Replicas 49 and 59 swapped!
+[SWAP][10]Replicas 64 and 67 swapped!
+[SWAP][10]Replicas 81 and 70 swapped!
+[SWAP][10]Replicas 80 and 76 swapped!
+[SWAP][10]Replicas 90 and 104 swapped!
+[SWAP][10]Replicas 137 and 135 swapped!
+[SWAP][10]Replicas 147 and 145 swapped!
+[llr:setreplica][0]Updating OLD LLR Param: S0 6579682.483710,  a  7.477116200 , dS 593.241850  
+[llr:setreplica][0]New LLR Param: S0 6579682.483710,  a  7.477116200 , dS 593.241850  
+[SWAP][10]New Rep Par S0 = 6579682.483710 dS = 593.241850 a = 7.477116 
+[MAIN][0]Robbins Monro sequence #29: generated in [13898 sec 593715 usec]
+[MAIN][0]Plaq a fixed 0.587610 
+[MAIN][0]<a_rho(0,29,6579682.483710000)>= 7.477116200
+[MAIN][0]Robins Monro update done.
+[IO][0]Configuration [./run1_5x72x72x72nc4b2.400000n30] saved [2 sec 351785 usec]
+[MAIN][0]Saving rlxd state to file rand_state
+[IO][0]Ranlxd state [rand_state] saved [0 sec 122 usec]
+[MAIN][0]Total simulation time =[56978 sec 131635 usec]
+[TEST][0]start of finalize_process 
+[TEST][0]free_ghmc 
+[TEST][0]free_BCs 
+[TEST][0]free_wrk_space 
+[SYSTEM][0]Process finalized.
+[SYSTEM][0]Gauge group: SP(4)
+[SYSTEM][0]Fermion representation: dim = 4
+[SYSTEM][0][RepID: 0][world_size: 1]
+[SYSTEM][0][MPI_ID: 0][MPI_size: 152]
+[SYSTEM][0]MACROS=-DBC_T_PERIODIC -DBC_X_PERIODIC -DBC_Y_PERIODIC -DBC_Z_PERIODIC -DWITH_EO -DNDEBUG -DIO_FLUSH -DWITH_MPI -DLLRHB_UM_BC -DLLRHBPARALLEL -DWITH_UMBRELLA -DLLRHB -DREPR_FUNDAMENTAL -DREPR_NAME=@REPR_FUNDAMENTAL@ -DGAUGE_SPN
+[GEOMETRY][0]WARNING: NO PARALLEL DIMENSIONS SPECIFIED!!!
+[GEOMETRY][0]WARNING: THE MPI CODE SHOULD NOT BE USED IN THIS CASE!!!
+[GEOMETRY][0]CId = 0 (0,0,0,0)
+[GEOMETRY_INIT][0]Global size is 5x72x72x72
+[GEOMETRY_INIT][0]Local size is 5x72x72x72
+[GEOMETRY_INIT][0]Extended local size is 5x72x72x72
+[GEOMETRY_INIT][0]The lattice borders are (0,0,0,0)
+[WARNING][0](int) GLB_VOL3*GLB_VOL3 overflows
+[GEOMETRY][0]Geometry variable checked
+[GEOMETRY][0]Gauge field: size 1866240 nbuffer 0 
+[GEOMETRY][0]Spinor field (EO): size 1866240 nbuffer 0 
+[GEOMETRY][0]Even Spinor field: size 933120 nbuffer 0 
+[GEOMETRY][0]Odd Spinor field: size 933120 nbuffer 0 
+[SETUP_RANDOM][0]RLXD [1,27365]
+[MAIN][0]LLR number of mc steps per RM: 700
+[MAIN][0]LLR number of therm steps per RM 300
+[MAIN][0]LLR Initial a 7.477120
+[MAIN][0]LLR RM start value iteration 1 and its iteration frequency 1 
+[MAIN][0]LLR S0 Central action 6579682.483710
+[MAIN][0]LLR Delta S 593.241850
+[MAIN][0]Number of heatbath steps 1, number of overrelaxation steps 0
+[MAIN][0]Number of fixed a steps 0
+[MAIN][0]Swap frequency for fixed a steps 0
+[MAIN][0]LLR Smin minimum action for all replicas 6578496.000000
+[MAIN][0]LLR Smax maximum action for all replicas 6623285.760000
+[MAIN][0]LLR Delta S 593.241850
+[MAIN][0]LLR dB 0.001000
+[MAIN][0]LLR number of intial NR iterations 0
+[MAIN][0]Compiled with domain decomposition 
+[READINPUT][0]Warning: input parameter [config dir] not found in [input_file]!
+[BCS][0]Gauge field: PERIODIC x PERIODIC PERIODIC PERIODIC
+[BCS][0]Fermion fields: PERIODIC x PERIODIC PERIODIC PERIODIC
+[FLOW][0]Starting from conf [run1_5x72x72x72nc4b2.400000n32]
+[IO][0]Configuration [./run1_5x72x72x72nc4b2.400000n32] read [4 sec 253390 usec] Plaquette=5.876096e-01
+[MAIN][0]beta = 2.4000
+[MAIN][0]Number of thermalization cycles: 0
+[MAIN][0]Number of hb-or iterations per cycle: 1
+[MAIN][0]Number of heatbaths per iteration: 1
+[MAIN][0]Number or overrelaxations per iteration: 0
+[MAIN][0]Initial plaquette: 5.87609572e-01
+[MAIN][0]Bringing the system to the interval (S0,dS) = (6579682.483710, 593.241850) ...
+[ANNEAL][0]Finished S = 6579722.921828, Smin = 6579385.862785, Smax = 6579979.104635, in 1 steps ...
+[ANNEAL][0]Check action S_an = 6579722.9218277502804995, S_ap = 6579722.9218277493491769
+[MAIN][0]System brought to the interval (S0,dS) = (6579682.483710, 593.241850)
+[llr][0]nth: 300 
+[MAIN][0]Thermalization done in [0 sec 0 usec].
+[MAIN][0]Measured energy 6579722.921828, stated energy 
+[MAIN][0]Initial NR iterations, N_nr: 0 0 
+[MAIN][0]Newton Raphson update done.
+[MAIN][0]flow.start: 33, flow.end: 37, llr_var.it: 33 
+[MAIN][0]Trajectory #33...
+[ROBBINSMONRO][10](S-S0)_sqr: 29875.022565 
+[ROBBINSMONRO][10]RM avr-S0: 2.645466 delta_a: 0.000003 
+[SWAP][10]Starting Rep Par S0 = 6579682.483710 dS = 593.241850 a = 7.477117 
+[Boundary][10]a(1)_rm : 7.476439 and a(1)_bc : 7.476283 
+[Boundary][10]a(n-2)_rm : 7.503761 and a(n-2)_bc : 7.503114 
+[SWAP][10]Replicas 6 and 7 swapped!
+[SWAP][10]Replicas 18 and 13 swapped!
+[SWAP][10]Replicas 15 and 21 swapped!
+[SWAP][10]Replicas 23 and 32 swapped!
+[SWAP][10]Replicas 30 and 43 swapped!
+[SWAP][10]Replicas 45 and 42 swapped!
+[SWAP][10]Replicas 60 and 53 swapped!
+[SWAP][10]Replicas 61 and 73 swapped!
+[SWAP][10]Replicas 74 and 66 swapped!
+[SWAP][10]Replicas 75 and 70 swapped!
+[SWAP][10]Replicas 80 and 82 swapped!
+[SWAP][10]Replicas 79 and 95 swapped!
+[SWAP][10]Replicas 84 and 98 swapped!
+[SWAP][10]Replicas 104 and 100 swapped!
+[SWAP][10]Replicas 97 and 90 swapped!
+[SWAP][10]Replicas 103 and 119 swapped!
+[SWAP][10]Replicas 105 and 106 swapped!
+[SWAP][10]Replicas 109 and 116 swapped!
+[SWAP][10]Replicas 111 and 115 swapped!
+[SWAP][10]Replicas 120 and 122 swapped!
+[SWAP][10]Replicas 138 and 144 swapped!
+[SWAP][10]Replicas 148 and 145 swapped!
+[llr:setreplica][0]Updating OLD LLR Param: S0 6579682.483710,  a  7.477116782 , dS 593.241850  
+[llr:setreplica][0]New LLR Param: S0 6579682.483710,  a  7.477116782 , dS 593.241850  
+[SWAP][10]New Rep Par S0 = 6579682.483710 dS = 593.241850 a = 7.477117 
+[MAIN][0]Robbins Monro sequence #33: generated in [13918 sec 320150 usec]
+[MAIN][0]Plaq a fixed 0.587614 
+[MAIN][0]<a_rho(0,33,6579682.483710000)>= 7.477116782
+[MAIN][0]Trajectory #34...
+[ROBBINSMONRO][10](S-S0)_sqr: 29218.694678 
+[ROBBINSMONRO][10]RM avr-S0: 11.259915 delta_a: 0.000011 
+[SWAP][10]Starting Rep Par S0 = 6579682.483710 dS = 593.241850 a = 7.477105 
+[Boundary][10]a(1)_rm : 7.476447 and a(1)_bc : 7.476260 
+[Boundary][10]a(n-2)_rm : 7.503706 and a(n-2)_bc : 7.503099 
+[SWAP][10]Replicas 2 and 8 swapped!
+[SWAP][10]Replicas 6 and 10 swapped!
+[SWAP][10]Replicas 38 and 37 swapped!
+[SWAP][10]Replicas 46 and 57 swapped!
+[SWAP][10]Replicas 54 and 59 swapped!
+[SWAP][10]Replicas 73 and 61 swapped!
+[SWAP][10]Replicas 71 and 68 swapped!
+[SWAP][10]Replicas 92 and 83 swapped!
+[SWAP][10]Replicas 103 and 110 swapped!
+[SWAP][10]Replicas 115 and 111 swapped!
+[SWAP][10]Replicas 120 and 129 swapped!
+[SWAP][10]Replicas 131 and 136 swapped!
+[SWAP][10]Replicas 139 and 132 swapped!
+[SWAP][10]Replicas 138 and 151 swapped!
+[llr:setreplica][0]Updating OLD LLR Param: S0 6579682.483710,  a  7.477105490 , dS 593.241850  
+[llr:setreplica][0]New LLR Param: S0 6579682.483710,  a  7.477105490 , dS 593.241850  
+[SWAP][10]New Rep Par S0 = 6579682.483710 dS = 593.241850 a = 7.477105 
+[MAIN][0]Robbins Monro sequence #34: generated in [13924 sec 916075 usec]
+[MAIN][0]Plaq a fixed 0.587616 
+[MAIN][0]<a_rho(0,34,6579682.483710000)>= 7.477105490
+[MAIN][0]Trajectory #35...
+[ROBBINSMONRO][10](S-S0)_sqr: 31263.383796 
+[ROBBINSMONRO][10]RM avr-S0: -18.709284 delta_a: -0.000018 
+[SWAP][10]Starting Rep Par S0 = 6579682.483710 dS = 593.241850 a = 7.477124 
+[Boundary][10]a(1)_rm : 7.476448 and a(1)_bc : 7.476268 
+[Boundary][10]a(n-2)_rm : 7.503651 and a(n-2)_bc : 7.503037 
+[SWAP][10]Replicas 7 and 10 swapped!
+[SWAP][10]Replicas 18 and 11 swapped!
+[SWAP][10]Replicas 15 and 22 swapped!
+[SWAP][10]Replicas 25 and 26 swapped!
+[SWAP][10]Replicas 37 and 38 swapped!
+[SWAP][10]Replicas 30 and 47 swapped!
+[SWAP][10]Replicas 44 and 45 swapped!
+[SWAP][10]Replicas 55 and 59 swapped!
+[SWAP][10]Replicas 66 and 74 swapped!
+[SWAP][10]Replicas 80 and 78 swapped!
+[SWAP][10]Replicas 84 and 87 swapped!
+[SWAP][10]Replicas 85 and 83 swapped!
+[SWAP][10]Replicas 97 and 99 swapped!
+[SWAP][10]Replicas 106 and 112 swapped!
+[SWAP][10]Replicas 116 and 118 swapped!
+[SWAP][10]Replicas 115 and 114 swapped!
+[SWAP][10]Replicas 121 and 123 swapped!
+[SWAP][10]Replicas 139 and 135 swapped!
+[llr:setreplica][0]Updating OLD LLR Param: S0 6579682.483710,  a  7.477123716 , dS 593.241850  
+[llr:setreplica][0]New LLR Param: S0 6579682.483710,  a  7.477123716 , dS 593.241850  
+[SWAP][10]New Rep Par S0 = 6579682.483710 dS = 593.241850 a = 7.477124 
+[MAIN][0]Robbins Monro sequence #35: generated in [13926 sec 217469 usec]
+[MAIN][0]Plaq a fixed 0.587628 
+[MAIN][0]<a_rho(0,35,6579682.483710000)>= 7.477123716
+[MAIN][0]Trajectory #36...
+[ROBBINSMONRO][10](S-S0)_sqr: 26840.409568 
+[ROBBINSMONRO][10]RM avr-S0: 10.496543 delta_a: 0.000010 
+[SWAP][10]Starting Rep Par S0 = 6579682.483710 dS = 593.241850 a = 7.477114 
+[Boundary][10]a(1)_rm : 7.476455 and a(1)_bc : 7.476254 
+[Boundary][10]a(n-2)_rm : 7.503601 and a(n-2)_bc : 7.502965 
+[SWAP][10]Replicas 8 and 2 swapped!
+[SWAP][10]Replicas 7 and 6 swapped!
+[SWAP][10]Replicas 5 and 4 swapped!
+[SWAP][10]Replicas 11 and 18 swapped!
+[SWAP][10]Replicas 31 and 34 swapped!
+[SWAP][10]Replicas 39 and 29 swapped!
+[SWAP][10]Replicas 37 and 43 swapped!
+[SWAP][10]Replicas 60 and 52 swapped!
+[SWAP][10]Replicas 49 and 62 swapped!
+[SWAP][10]Replicas 74 and 66 swapped!
+[SWAP][10]Replicas 68 and 72 swapped!
+[SWAP][10]Replicas 82 and 76 swapped!
+[SWAP][10]Replicas 95 and 77 swapped!
+[SWAP][10]Replicas 94 and 100 swapped!
+[SWAP][10]Replicas 99 and 97 swapped!
+[SWAP][10]Replicas 108 and 107 swapped!
+[SWAP][10]Replicas 105 and 118 swapped!
+[SWAP][10]Replicas 136 and 133 swapped!
+[SWAP][10]Replicas 145 and 148 swapped!
+[llr:setreplica][0]Updating OLD LLR Param: S0 6579682.483710,  a  7.477113774 , dS 593.241850  
+[llr:setreplica][0]New LLR Param: S0 6579682.483710,  a  7.477113774 , dS 593.241850  
+[SWAP][10]New Rep Par S0 = 6579682.483710 dS = 593.241850 a = 7.477114 
+[MAIN][0]Robbins Monro sequence #36: generated in [13927 sec 373962 usec]
+[MAIN][0]Plaq a fixed 0.587581 
+[MAIN][0]<a_rho(0,36,6579682.483710000)>= 7.477113774
+[MAIN][0]Robins Monro update done.
+[IO][0]Configuration [./run1_5x72x72x72nc4b2.400000n37] saved [2 sec 518961 usec]
+[MAIN][0]Saving rlxd state to file rand_state
+[IO][0]Ranlxd state [rand_state] saved [0 sec 120 usec]
+[MAIN][0]Total simulation time =[56489 sec 856844 usec]
+[TEST][0]start of finalize_process 
+[TEST][0]free_ghmc 
+[TEST][0]free_BCs 
+[TEST][0]free_wrk_space 
+[SYSTEM][0]Process finalized.
+[SYSTEM][0]Gauge group: SP(4)
+[SYSTEM][0]Fermion representation: dim = 4
+[SYSTEM][0][RepID: 0][world_size: 1]
+[SYSTEM][0][MPI_ID: 0][MPI_size: 152]
+[SYSTEM][0]MACROS=-DBC_T_PERIODIC -DBC_X_PERIODIC -DBC_Y_PERIODIC -DBC_Z_PERIODIC -DWITH_EO -DNDEBUG -DIO_FLUSH -DWITH_MPI -DLLRHB_UM_BC -DLLRHBPARALLEL -DWITH_UMBRELLA -DLLRHB -DREPR_FUNDAMENTAL -DREPR_NAME=@REPR_FUNDAMENTAL@ -DGAUGE_SPN
+[GEOMETRY][0]WARNING: NO PARALLEL DIMENSIONS SPECIFIED!!!
+[GEOMETRY][0]WARNING: THE MPI CODE SHOULD NOT BE USED IN THIS CASE!!!
+[GEOMETRY][0]CId = 0 (0,0,0,0)
+[GEOMETRY_INIT][0]Global size is 5x72x72x72
+[GEOMETRY_INIT][0]Local size is 5x72x72x72
+[GEOMETRY_INIT][0]Extended local size is 5x72x72x72
+[GEOMETRY_INIT][0]The lattice borders are (0,0,0,0)
+[WARNING][0](int) GLB_VOL3*GLB_VOL3 overflows
+[GEOMETRY][0]Geometry variable checked
+[GEOMETRY][0]Gauge field: size 1866240 nbuffer 0 
+[GEOMETRY][0]Spinor field (EO): size 1866240 nbuffer 0 
+[GEOMETRY][0]Even Spinor field: size 933120 nbuffer 0 
+[GEOMETRY][0]Odd Spinor field: size 933120 nbuffer 0 
+[SETUP_RANDOM][0]RLXD [1,34002]
+[MAIN][0]LLR number of mc steps per RM: 700
+[MAIN][0]LLR number of therm steps per RM 300
+[MAIN][0]LLR Initial a 7.477121
+[MAIN][0]LLR RM start value iteration 1 and its iteration frequency 1 
+[MAIN][0]LLR S0 Central action 6579682.483710
+[MAIN][0]LLR Delta S 593.241850
+[MAIN][0]Number of heatbath steps 1, number of overrelaxation steps 0
+[MAIN][0]Number of fixed a steps 0
+[MAIN][0]Swap frequency for fixed a steps 0
+[MAIN][0]LLR Smin minimum action for all replicas 6578496.000000
+[MAIN][0]LLR Smax maximum action for all replicas 6623285.760000
+[MAIN][0]LLR Delta S 593.241850
+[MAIN][0]LLR dB 0.001000
+[MAIN][0]LLR number of intial NR iterations 0
+[MAIN][0]Compiled with domain decomposition 
+[READINPUT][0]Warning: input parameter [config dir] not found in [input_file]!
+[BCS][0]Gauge field: PERIODIC x PERIODIC PERIODIC PERIODIC
+[BCS][0]Fermion fields: PERIODIC x PERIODIC PERIODIC PERIODIC
+[FLOW][0]Starting from conf [run1_5x72x72x72nc4b2.400000n41]
+[IO][0]Configuration [./run1_5x72x72x72nc4b2.400000n41] read [3 sec 874761 usec] Plaquette=5.875810e-01
+[MAIN][0]beta = 2.4000
+[MAIN][0]Number of thermalization cycles: 0
+[MAIN][0]Number of hb-or iterations per cycle: 1
+[MAIN][0]Number of heatbaths per iteration: 1
+[MAIN][0]Number or overrelaxations per iteration: 0
+[MAIN][0]Initial plaquette: 5.87581004e-01
+[MAIN][0]Bringing the system to the interval (S0,dS) = (6579682.483710, 593.241850) ...
+[ANNEAL][0]Finished S = 6579403.036121, Smin = 6579385.862785, Smax = 6579979.104635, in 1 steps ...
+[ANNEAL][0]Check action S_an = 6579403.0361209698021412, S_ap = 6579403.0361209688708186
+[MAIN][0]System brought to the interval (S0,dS) = (6579682.483710, 593.241850)
+[llr][0]nth: 300 
+[MAIN][0]Thermalization done in [0 sec 1 usec].
+[MAIN][0]Measured energy 6579403.036121, stated energy 
+[MAIN][0]Initial NR iterations, N_nr: 0 0 
+[MAIN][0]Newton Raphson update done.
+[MAIN][0]flow.start: 42, flow.end: 46, llr_var.it: 42 
+[MAIN][0]Trajectory #42...
+[ROBBINSMONRO][10](S-S0)_sqr: 27902.392751 
+[ROBBINSMONRO][10]RM avr-S0: 13.080782 delta_a: 0.000011 
+[SWAP][10]Starting Rep Par S0 = 6579682.483710 dS = 593.241850 a = 7.477110 
+[Boundary][10]a(1)_rm : 7.476466 and a(1)_bc : 7.476323 
+[Boundary][10]a(n-2)_rm : 7.503338 and a(n-2)_bc : 7.502795 
+[SWAP][10]Replicas 6 and 7 swapped!
+[SWAP][10]Replicas 9 and 18 swapped!
+[SWAP][10]Replicas 34 and 28 swapped!
+[SWAP][10]Replicas 33 and 39 swapped!
+[SWAP][10]Replicas 36 and 37 swapped!
+[SWAP][10]Replicas 51 and 62 swapped!
+[SWAP][10]Replicas 64 and 73 swapped!
+[SWAP][10]Replicas 74 and 67 swapped!
+[SWAP][10]Replicas 70 and 68 swapped!
+[SWAP][10]Replicas 77 and 95 swapped!
+[SWAP][10]Replicas 84 and 87 swapped!
+[SWAP][10]Replicas 89 and 100 swapped!
+[SWAP][10]Replicas 125 and 117 swapped!
+[SWAP][10]Replicas 121 and 134 swapped!
+[SWAP][10]Replicas 136 and 124 swapped!
+[SWAP][10]Replicas 135 and 132 swapped!
+[SWAP][10]Replicas 128 and 139 swapped!
+[SWAP][10]Replicas 141 and 142 swapped!
+[llr:setreplica][0]Updating OLD LLR Param: S0 6579682.483710,  a  7.477110347 , dS 593.241850  
+[llr:setreplica][0]New LLR Param: S0 6579682.483710,  a  7.477110347 , dS 593.241850  
+[SWAP][10]New Rep Par S0 = 6579682.483710 dS = 593.241850 a = 7.477110 
+[MAIN][0]Robbins Monro sequence #42: generated in [14194 sec 212401 usec]
+[MAIN][0]Plaq a fixed 0.587623 
+[MAIN][0]<a_rho(0,42,6579682.483710000)>= 7.477110347
+[MAIN][0]Trajectory #43...
+[ROBBINSMONRO][10](S-S0)_sqr: 29019.233835 
+[ROBBINSMONRO][10]RM avr-S0: 9.549533 delta_a: 0.000008 
+[SWAP][10]Starting Rep Par S0 = 6579682.483710 dS = 593.241850 a = 7.477103 
+[Boundary][10]a(1)_rm : 7.476452 and a(1)_bc : 7.476299 
+[Boundary][10]a(n-2)_rm : 7.503286 and a(n-2)_bc : 7.502790 
+[SWAP][10]Replicas 19 and 18 swapped!
+[SWAP][10]Replicas 15 and 20 swapped!
+[SWAP][10]Replicas 43 and 37 swapped!
+[SWAP][10]Replicas 45 and 42 swapped!
+[SWAP][10]Replicas 50 and 48 swapped!
+[SWAP][10]Replicas 46 and 52 swapped!
+[SWAP][10]Replicas 75 and 88 swapped!
+[SWAP][10]Replicas 78 and 80 swapped!
+[SWAP][10]Replicas 79 and 87 swapped!
+[SWAP][10]Replicas 83 and 85 swapped!
+[SWAP][10]Replicas 90 and 104 swapped!
+[SWAP][10]Replicas 99 and 107 swapped!
+[SWAP][10]Replicas 102 and 119 swapped!
+[SWAP][10]Replicas 108 and 110 swapped!
+[SWAP][10]Replicas 121 and 131 swapped!
+[SWAP][10]Replicas 124 and 136 swapped!
+[llr:setreplica][0]Updating OLD LLR Param: S0 6579682.483710,  a  7.477102774 , dS 593.241850  
+[llr:setreplica][0]New LLR Param: S0 6579682.483710,  a  7.477102774 , dS 593.241850  
+[SWAP][10]New Rep Par S0 = 6579682.483710 dS = 593.241850 a = 7.477103 
+[MAIN][0]Robbins Monro sequence #43: generated in [14200 sec 826679 usec]
+[MAIN][0]Plaq a fixed 0.587613 
+[MAIN][0]<a_rho(0,43,6579682.483710000)>= 7.477102774
+[MAIN][0]Trajectory #44...
+[ROBBINSMONRO][10](S-S0)_sqr: 29572.328749 
+[ROBBINSMONRO][10]RM avr-S0: -5.179344 delta_a: -0.000004 
+[SWAP][10]Starting Rep Par S0 = 6579682.483710 dS = 593.241850 a = 7.477107 
+[Boundary][10]a(1)_rm : 7.476445 and a(1)_bc : 7.476303 
+[Boundary][10]a(n-2)_rm : 7.503233 and a(n-2)_bc : 7.502775 
+[SWAP][10]Replicas 1 and 10 swapped!
+[SWAP][10]Replicas 6 and 5 swapped!
+[SWAP][10]Replicas 18 and 19 swapped!
+[SWAP][10]Replicas 27 and 26 swapped!
+[SWAP][10]Replicas 34 and 32 swapped!
+[SWAP][10]Replicas 37 and 43 swapped!
+[SWAP][10]Replicas 36 and 30 swapped!
+[SWAP][10]Replicas 69 and 81 swapped!
+[SWAP][10]Replicas 84 and 91 swapped!
+[SWAP][10]Replicas 89 and 94 swapped!
+[SWAP][10]Replicas 107 and 99 swapped!
+[SWAP][10]Replicas 103 and 118 swapped!
+[SWAP][10]Replicas 105 and 115 swapped!
+[SWAP][10]Replicas 109 and 114 swapped!
+[SWAP][10]Replicas 126 and 122 swapped!
+[SWAP][10]Replicas 125 and 123 swapped!
+[SWAP][10]Replicas 133 and 132 swapped!
+[SWAP][10]Replicas 128 and 139 swapped!
+[SWAP][10]Replicas 142 and 141 swapped!
+[llr:setreplica][0]Updating OLD LLR Param: S0 6579682.483710,  a  7.477106788 , dS 593.241850  
+[llr:setreplica][0]New LLR Param: S0 6579682.483710,  a  7.477106788 , dS 593.241850  
+[SWAP][10]New Rep Par S0 = 6579682.483710 dS = 593.241850 a = 7.477107 
+[MAIN][0]Robbins Monro sequence #44: generated in [14198 sec 79295 usec]
+[MAIN][0]Plaq a fixed 0.587630 
+[MAIN][0]<a_rho(0,44,6579682.483710000)>= 7.477106788
+[MAIN][0]Trajectory #45...
+[ROBBINSMONRO][10](S-S0)_sqr: 28519.968775 
+[ROBBINSMONRO][10]RM avr-S0: 12.902598 delta_a: 0.000010 
+[SWAP][10]Starting Rep Par S0 = 6579682.483710 dS = 593.241850 a = 7.477097 
+[Boundary][10]a(1)_rm : 7.476444 and a(1)_bc : 7.476353 
+[Boundary][10]a(n-2)_rm : 7.503191 and a(n-2)_bc : 7.502802 
+[SWAP][10]Replicas 3 and 2 swapped!
+[SWAP][10]Replicas 4 and 12 swapped!
+[SWAP][10]Replicas 18 and 9 swapped!
+[SWAP][10]Replicas 21 and 14 swapped!
+[SWAP][10]Replicas 39 and 33 swapped!
+[SWAP][10]Replicas 43 and 37 swapped!
+[SWAP][10]Replicas 40 and 47 swapped!
+[SWAP][10]Replicas 57 and 41 swapped!
+[SWAP][10]Replicas 52 and 56 swapped!
+[SWAP][10]Replicas 59 and 54 swapped!
+[SWAP][10]Replicas 63 and 64 swapped!
+[SWAP][10]Replicas 81 and 69 swapped!
+[SWAP][10]Replicas 93 and 96 swapped!
+[SWAP][10]Replicas 107 and 119 swapped!
+[SWAP][10]Replicas 115 and 105 swapped!
+[SWAP][10]Replicas 121 and 143 swapped!
+[SWAP][10]Replicas 151 and 146 swapped!
+[llr:setreplica][0]Updating OLD LLR Param: S0 6579682.483710,  a  7.477097011 , dS 593.241850  
+[llr:setreplica][0]New LLR Param: S0 6579979.104640,  a  7.477370042 , dS 593.241850  
+[SWAP][10]New Rep Par S0 = 6579979.104640 dS = 593.241850 a = 7.477370 
+[MAIN][0]Robbins Monro sequence #45: generated in [14197 sec 951930 usec]
+[MAIN][0]Plaq a fixed 0.587622 
+[MAIN][0]<a_rho(0,45,6579979.104640000)>= 7.477370042
+[MAIN][0]Robins Monro update done.
+[IO][0]Configuration [./run1_5x72x72x72nc4b2.400000n46] saved [2 sec 633016 usec]
+[MAIN][0]Saving rlxd state to file rand_state
+[IO][0]Ranlxd state [rand_state] saved [0 sec 382 usec]
+[MAIN][0]Total simulation time =[58040 sec 346449 usec]
+[TEST][0]start of finalize_process 
+[TEST][0]free_ghmc 
+[TEST][0]free_BCs 
+[TEST][0]free_wrk_space 
+[SYSTEM][0]Process finalized.
+[SYSTEM][0]Gauge group: SP(4)
+[SYSTEM][0]Fermion representation: dim = 4
+[SYSTEM][0][RepID: 0][world_size: 1]
+[SYSTEM][0][MPI_ID: 0][MPI_size: 152]
+[SYSTEM][0]MACROS=-DBC_T_PERIODIC -DBC_X_PERIODIC -DBC_Y_PERIODIC -DBC_Z_PERIODIC -DWITH_EO -DNDEBUG -DIO_FLUSH -DWITH_MPI -DLLRHB_UM_BC -DLLRHBPARALLEL -DWITH_UMBRELLA -DLLRHB -DREPR_FUNDAMENTAL -DREPR_NAME=@REPR_FUNDAMENTAL@ -DGAUGE_SPN
+[GEOMETRY][0]WARNING: NO PARALLEL DIMENSIONS SPECIFIED!!!
+[GEOMETRY][0]WARNING: THE MPI CODE SHOULD NOT BE USED IN THIS CASE!!!
+[GEOMETRY][0]CId = 0 (0,0,0,0)
+[GEOMETRY_INIT][0]Global size is 5x72x72x72
+[GEOMETRY_INIT][0]Local size is 5x72x72x72
+[GEOMETRY_INIT][0]Extended local size is 5x72x72x72
+[GEOMETRY_INIT][0]The lattice borders are (0,0,0,0)
+[WARNING][0](int) GLB_VOL3*GLB_VOL3 overflows
+[GEOMETRY][0]Geometry variable checked
+[GEOMETRY][0]Gauge field: size 1866240 nbuffer 0 
+[GEOMETRY][0]Spinor field (EO): size 1866240 nbuffer 0 
+[GEOMETRY][0]Even Spinor field: size 933120 nbuffer 0 
+[GEOMETRY][0]Odd Spinor field: size 933120 nbuffer 0 
+[SETUP_RANDOM][0]RLXD [1,40309]
+[MAIN][0]LLR number of mc steps per RM: 700
+[MAIN][0]LLR number of therm steps per RM 300
+[MAIN][0]LLR Initial a 7.477370
+[MAIN][0]LLR RM start value iteration 1 and its iteration frequency 1 
+[MAIN][0]LLR S0 Central action 6579979.104640
+[MAIN][0]LLR Delta S 593.241850
+[MAIN][0]Number of heatbath steps 1, number of overrelaxation steps 0
+[MAIN][0]Number of fixed a steps 0
+[MAIN][0]Swap frequency for fixed a steps 0
+[MAIN][0]LLR Smin minimum action for all replicas 6578496.000000
+[MAIN][0]LLR Smax maximum action for all replicas 6623285.760000
+[MAIN][0]LLR Delta S 593.241850
+[MAIN][0]LLR dB 0.001000
+[MAIN][0]LLR number of intial NR iterations 0
+[MAIN][0]Compiled with domain decomposition 
+[READINPUT][0]Warning: input parameter [config dir] not found in [input_file]!
+[BCS][0]Gauge field: PERIODIC x PERIODIC PERIODIC PERIODIC
+[BCS][0]Fermion fields: PERIODIC x PERIODIC PERIODIC PERIODIC
+[FLOW][0]Starting from conf [run1_5x72x72x72nc4b2.400000n45]
+[IO][0]Configuration [./run1_5x72x72x72nc4b2.400000n45] read [2 sec 420059 usec] Plaquette=5.876220e-01
+[MAIN][0]beta = 2.4000
+[MAIN][0]Number of thermalization cycles: 0
+[MAIN][0]Number of hb-or iterations per cycle: 1
+[MAIN][0]Number of heatbaths per iteration: 1
+[MAIN][0]Number or overrelaxations per iteration: 0
+[MAIN][0]Initial plaquette: 5.87621967e-01
+[MAIN][0]Bringing the system to the interval (S0,dS) = (6579979.104640, 593.241850) ...
+[ANNEAL][0]Finished S = 6579861.715617, Smin = 6579682.483715, Smax = 6580275.725565, in 1 steps ...
+[ANNEAL][0]Check action S_an = 6579861.7156170029193163, S_ap = 6579861.7156170029193163
+[MAIN][0]System brought to the interval (S0,dS) = (6579979.104640, 593.241850)
+[llr][0]nth: 300 
+[MAIN][0]Thermalization done in [0 sec 0 usec].
+[MAIN][0]Measured energy 6579861.715617, stated energy 
+[MAIN][0]Initial NR iterations, N_nr: 0 0 
+[MAIN][0]Newton Raphson update done.
+[MAIN][0]flow.start: 46, flow.end: 50, llr_var.it: 46 
+[MAIN][0]Trajectory #46...
+[ROBBINSMONRO][10](S-S0)_sqr: 28960.279537 
+[ROBBINSMONRO][10]RM avr-S0: -7.846396 delta_a: -0.000006 
+[SWAP][10]Starting Rep Par S0 = 6579979.104640 dS = 593.241850 a = 7.477376 
+[Boundary][10]a(1)_rm : 7.476438 and a(1)_bc : 7.476345 
+[Boundary][10]a(n-2)_rm : 7.503158 and a(n-2)_bc : 7.502816 
+[SWAP][10]Replicas 9 and 18 swapped!
+[SWAP][10]Replicas 17 and 14 swapped!
+[SWAP][10]Replicas 35 and 31 swapped!
+[SWAP][10]Replicas 37 and 43 swapped!
+[SWAP][10]Replicas 56 and 52 swapped!
+[SWAP][10]Replicas 60 and 49 swapped!
+[SWAP][10]Replicas 55 and 64 swapped!
+[SWAP][10]Replicas 74 and 66 swapped!
+[SWAP][10]Replicas 86 and 80 swapped!
+[SWAP][10]Replicas 84 and 91 swapped!
+[SWAP][10]Replicas 96 and 93 swapped!
+[SWAP][10]Replicas 97 and 101 swapped!
+[SWAP][10]Replicas 108 and 103 swapped!
+[SWAP][10]Replicas 111 and 106 swapped!
+[SWAP][10]Replicas 114 and 129 swapped!
+[SWAP][10]Replicas 131 and 143 swapped!
+[SWAP][10]Replicas 132 and 124 swapped!
+[SWAP][10]Replicas 147 and 138 swapped!
+[llr:setreplica][0]Updating OLD LLR Param: S0 6579979.104640,  a  7.477375858 , dS 593.241850  
+[llr:setreplica][0]New LLR Param: S0 6579682.483710,  a  7.477093528 , dS 593.241850  
+[SWAP][10]New Rep Par S0 = 6579682.483710 dS = 593.241850 a = 7.477094 
+[MAIN][0]Robbins Monro sequence #46: generated in [14217 sec 158167 usec]
+[MAIN][0]Plaq a fixed 0.587609 
+[MAIN][0]<a_rho(0,46,6579682.483710000)>= 7.477093528
+[MAIN][0]Trajectory #47...
+[ROBBINSMONRO][10](S-S0)_sqr: 27216.328927 
+[ROBBINSMONRO][10]RM avr-S0: 0.689180 delta_a: 0.000000 
+[SWAP][10]Starting Rep Par S0 = 6579682.483710 dS = 593.241850 a = 7.477093 
+[Boundary][10]a(1)_rm : 7.476445 and a(1)_bc : 7.476348 
+[Boundary][10]a(n-2)_rm : 7.503131 and a(n-2)_bc : 7.502847 
+[SWAP][10]Replicas 8 and 7 swapped!
+[SWAP][10]Replicas 14 and 17 swapped!
+[SWAP][10]Replicas 21 and 16 swapped!
+[SWAP][10]Replicas 15 and 25 swapped!
+[SWAP][10]Replicas 29 and 43 swapped!
+[SWAP][10]Replicas 30 and 36 swapped!
+[SWAP][10]Replicas 57 and 52 swapped!
+[SWAP][10]Replicas 88 and 65 swapped!
+[SWAP][10]Replicas 86 and 78 swapped!
+[SWAP][10]Replicas 93 and 96 swapped!
+[SWAP][10]Replicas 100 and 94 swapped!
+[SWAP][10]Replicas 107 and 102 swapped!
+[SWAP][10]Replicas 108 and 112 swapped!
+[SWAP][10]Replicas 133 and 139 swapped!
+[llr:setreplica][0]Updating OLD LLR Param: S0 6579682.483710,  a  7.477093028 , dS 593.241850  
+[llr:setreplica][0]New LLR Param: S0 6579682.483710,  a  7.477093028 , dS 593.241850  
+[SWAP][10]New Rep Par S0 = 6579682.483710 dS = 593.241850 a = 7.477093 
+[MAIN][0]Robbins Monro sequence #47: generated in [14187 sec 611170 usec]
+[MAIN][0]Plaq a fixed 0.587626 
+[MAIN][0]<a_rho(0,47,6579682.483710000)>= 7.477093028
+[MAIN][0]Trajectory #48...
+[ROBBINSMONRO][10](S-S0)_sqr: 29127.407527 
+[ROBBINSMONRO][10]RM avr-S0: -0.773644 delta_a: -0.000001 
+[SWAP][10]Starting Rep Par S0 = 6579682.483710 dS = 593.241850 a = 7.477094 
+[Boundary][10]a(1)_rm : 7.476428 and a(1)_bc : 7.476339 
+[Boundary][10]a(n-2)_rm : 7.503107 and a(n-2)_bc : 7.502805 
+[SWAP][10]Replicas 35 and 39 swapped!
+[SWAP][10]Replicas 29 and 37 swapped!
+[SWAP][10]Replicas 50 and 44 swapped!
+[SWAP][10]Replicas 57 and 56 swapped!
+[SWAP][10]Replicas 63 and 73 swapped!
+[SWAP][10]Replicas 67 and 61 swapped!
+[SWAP][10]Replicas 85 and 83 swapped!
+[SWAP][10]Replicas 100 and 89 swapped!
+[SWAP][10]Replicas 107 and 110 swapped!
+[SWAP][10]Replicas 106 and 111 swapped!
+[SWAP][10]Replicas 126 and 120 swapped!
+[SWAP][10]Replicas 123 and 130 swapped!
+[SWAP][10]Replicas 125 and 134 swapped!
+[SWAP][10]Replicas 136 and 127 swapped!
+[SWAP][10]Replicas 139 and 133 swapped!
+[SWAP][10]Replicas 137 and 148 swapped!
+[llr:setreplica][0]Updating OLD LLR Param: S0 6579682.483710,  a  7.477093578 , dS 593.241850  
+[llr:setreplica][0]New LLR Param: S0 6579385.862780,  a  7.476909414 , dS 593.241850  
+[SWAP][10]New Rep Par S0 = 6579385.862780 dS = 593.241850 a = 7.476909 
+[MAIN][0]Robbins Monro sequence #48: generated in [14214 sec 669941 usec]
+[MAIN][0]Plaq a fixed 0.587596 
+[MAIN][0]<a_rho(0,48,6579385.862780000)>= 7.476909414
+[MAIN][0]Trajectory #49...
+[ROBBINSMONRO][10](S-S0)_sqr: 29328.402534 
+[ROBBINSMONRO][10]RM avr-S0: -8.960944 delta_a: -0.000006 
+[SWAP][10]Starting Rep Par S0 = 6579385.862780 dS = 593.241850 a = 7.476916 
+[Boundary][10]a(1)_rm : 7.476427 and a(1)_bc : 7.476345 
+[Boundary][10]a(n-2)_rm : 7.503062 and a(n-2)_bc : 7.502826 
+[SWAP][10]Replicas 27 and 26 swapped!
+[SWAP][10]Replicas 23 and 32 swapped!
+[SWAP][10]Replicas 28 and 34 swapped!
+[SWAP][10]Replicas 44 and 50 swapped!
+[SWAP][10]Replicas 61 and 67 swapped!
+[SWAP][10]Replicas 91 and 84 swapped!
+[SWAP][10]Replicas 83 and 85 swapped!
+[SWAP][10]Replicas 96 and 93 swapped!
+[SWAP][10]Replicas 114 and 109 swapped!
+[SWAP][10]Replicas 125 and 131 swapped!
+[SWAP][10]Replicas 136 and 132 swapped!
+[SWAP][10]Replicas 128 and 142 swapped!
+[SWAP][10]Replicas 141 and 140 swapped!
+[llr:setreplica][0]Updating OLD LLR Param: S0 6579385.862780,  a  7.476915649 , dS 593.241850  
+[llr:setreplica][0]New LLR Param: S0 6579089.241850,  a  7.476630453 , dS 593.241850  
+[SWAP][10]New Rep Par S0 = 6579089.241850 dS = 593.241850 a = 7.476630 
+[MAIN][0]Robbins Monro sequence #49: generated in [14190 sec 727020 usec]
+[MAIN][0]Plaq a fixed 0.587573 
+[MAIN][0]<a_rho(0,49,6579089.241850000)>= 7.476630453
+[MAIN][0]Robins Monro update done.
+[IO][0]Configuration [./run1_5x72x72x72nc4b2.400000n50] saved [2 sec 556876 usec]
+[MAIN][0]Saving rlxd state to file rand_state
+[IO][0]Ranlxd state [rand_state] saved [0 sec 1490 usec]
+[MAIN][0]Total simulation time =[56905 sec 816683 usec]
+[TEST][0]start of finalize_process 
+[TEST][0]free_ghmc 
+[TEST][0]free_BCs 
+[TEST][0]free_wrk_space 
+[SYSTEM][0]Process finalized.
+[SYSTEM][0]Gauge group: SP(4)
+[SYSTEM][0]Fermion representation: dim = 4
+[SYSTEM][0][RepID: 0][world_size: 1]
+[SYSTEM][0][MPI_ID: 0][MPI_size: 152]
+[SYSTEM][0]MACROS=-DBC_T_PERIODIC -DBC_X_PERIODIC -DBC_Y_PERIODIC -DBC_Z_PERIODIC -DWITH_EO -DNDEBUG -DIO_FLUSH -DWITH_MPI -DLLRHB_UM_BC -DLLRHBPARALLEL -DWITH_UMBRELLA -DLLRHB -DREPR_FUNDAMENTAL -DREPR_NAME=@REPR_FUNDAMENTAL@ -DGAUGE_SPN
+[GEOMETRY][0]WARNING: NO PARALLEL DIMENSIONS SPECIFIED!!!
+[GEOMETRY][0]WARNING: THE MPI CODE SHOULD NOT BE USED IN THIS CASE!!!
+[GEOMETRY][0]CId = 0 (0,0,0,0)
+[GEOMETRY_INIT][0]Global size is 5x72x72x72
+[GEOMETRY_INIT][0]Local size is 5x72x72x72
+[GEOMETRY_INIT][0]Extended local size is 5x72x72x72
+[GEOMETRY_INIT][0]The lattice borders are (0,0,0,0)
+[WARNING][0](int) GLB_VOL3*GLB_VOL3 overflows
+[GEOMETRY][0]Geometry variable checked
+[GEOMETRY][0]Gauge field: size 1866240 nbuffer 0 
+[GEOMETRY][0]Spinor field (EO): size 1866240 nbuffer 0 
+[GEOMETRY][0]Even Spinor field: size 933120 nbuffer 0 
+[GEOMETRY][0]Odd Spinor field: size 933120 nbuffer 0 
+[SETUP_RANDOM][0]RLXD [1,32248]
+[MAIN][0]LLR number of mc steps per RM: 700
+[MAIN][0]LLR number of therm steps per RM 300
+[MAIN][0]LLR Initial a 7.476630
+[MAIN][0]LLR RM start value iteration 1 and its iteration frequency 1 
+[MAIN][0]LLR S0 Central action 6579089.241850
+[MAIN][0]LLR Delta S 593.241850
+[MAIN][0]Number of heatbath steps 1, number of overrelaxation steps 0
+[MAIN][0]Number of fixed a steps 0
+[MAIN][0]Swap frequency for fixed a steps 0
+[MAIN][0]LLR Smin minimum action for all replicas 6578496.000000
+[MAIN][0]LLR Smax maximum action for all replicas 6623285.760000
+[MAIN][0]LLR Delta S 593.241850
+[MAIN][0]LLR dB 0.001000
+[MAIN][0]LLR number of intial NR iterations 0
+[MAIN][0]Compiled with domain decomposition 
+[READINPUT][0]Warning: input parameter [config dir] not found in [input_file]!
+[BCS][0]Gauge field: PERIODIC x PERIODIC PERIODIC PERIODIC
+[BCS][0]Fermion fields: PERIODIC x PERIODIC PERIODIC PERIODIC
+[FLOW][0]Starting from conf [run1_5x72x72x72nc4b2.400000n49]
+[IO][0]Configuration [./run1_5x72x72x72nc4b2.400000n49] read [2 sec 420486 usec] Plaquette=5.875729e-01
+[MAIN][0]beta = 2.4000
+[MAIN][0]Number of thermalization cycles: 0
+[MAIN][0]Number of hb-or iterations per cycle: 1
+[MAIN][0]Number of heatbaths per iteration: 1
+[MAIN][0]Number or overrelaxations per iteration: 0
+[MAIN][0]Initial plaquette: 5.87572948e-01
+[MAIN][0]Bringing the system to the interval (S0,dS) = (6579089.241850, 593.241850) ...
+[ANNEAL][0]Finished S = 6579312.829606, Smin = 6578792.620925, Smax = 6579385.862775, in 1 steps ...
+[ANNEAL][0]Check action S_an = 6579312.8296062396839261, S_ap = 6579312.8296062406152487
+[MAIN][0]System brought to the interval (S0,dS) = (6579089.241850, 593.241850)
+[llr][0]nth: 300 
+[MAIN][0]Thermalization done in [0 sec 0 usec].
+[MAIN][0]Measured energy 6579312.829606, stated energy 
+[MAIN][0]Initial NR iterations, N_nr: 0 0 
+[MAIN][0]Newton Raphson update done.
+[MAIN][0]flow.start: 50, flow.end: 54, llr_var.it: 50 
+[MAIN][0]Trajectory #50...
+[ROBBINSMONRO][10](S-S0)_sqr: 28848.850374 
+[ROBBINSMONRO][10]RM avr-S0: -10.271678 delta_a: -0.000007 
+[SWAP][10]Starting Rep Par S0 = 6579089.241850 dS = 593.241850 a = 7.476637 
+[Boundary][10]a(1)_rm : 7.476426 and a(1)_bc : 7.476368 
+[Boundary][10]a(n-2)_rm : 7.503032 and a(n-2)_bc : 7.502802 
+[SWAP][10]Replicas 4 and 18 swapped!
+[SWAP][10]Replicas 14 and 24 swapped!
+[SWAP][10]Replicas 25 and 15 swapped!
+[SWAP][10]Replicas 41 and 46 swapped!
+[SWAP][10]Replicas 66 and 63 swapped!
+[SWAP][10]Replicas 72 and 67 swapped!
+[SWAP][10]Replicas 68 and 65 swapped!
+[SWAP][10]Replicas 75 and 78 swapped!
+[SWAP][10]Replicas 98 and 82 swapped!
+[SWAP][10]Replicas 87 and 77 swapped!
+[SWAP][10]Replicas 119 and 110 swapped!
+[SWAP][10]Replicas 133 and 124 swapped!
+[SWAP][10]Replicas 139 and 142 swapped!
+[SWAP][10]Replicas 138 and 146 swapped!
+[SWAP][10]Replicas 147 and 145 swapped!
+[llr:setreplica][0]Updating OLD LLR Param: S0 6579089.241850,  a  7.476637458 , dS 593.241850  
+[llr:setreplica][0]New LLR Param: S0 6579089.241850,  a  7.476637458 , dS 593.241850  
+[SWAP][10]New Rep Par S0 = 6579089.241850 dS = 593.241850 a = 7.476637 
+[MAIN][0]Robbins Monro sequence #50: generated in [14195 sec 495253 usec]
+[MAIN][0]Plaq a fixed 0.587568 
+[MAIN][0]<a_rho(0,50,6579089.241850000)>= 7.476637458
+[MAIN][0]Trajectory #51...
+[ROBBINSMONRO][10](S-S0)_sqr: 28939.503040 
+[ROBBINSMONRO][10]RM avr-S0: -12.405748 delta_a: -0.000008 
+[SWAP][10]Starting Rep Par S0 = 6579089.241850 dS = 593.241850 a = 7.476646 
+[Boundary][10]a(1)_rm : 7.476428 and a(1)_bc : 7.476378 
+[Boundary][10]a(n-2)_rm : 7.502998 and a(n-2)_bc : 7.502788 
+[SWAP][10]Replicas 4 and 13 swapped!
+[SWAP][10]Replicas 22 and 20 swapped!
+[SWAP][10]Replicas 40 and 44 swapped!
+[SWAP][10]Replicas 59 and 54 swapped!
+[SWAP][10]Replicas 89 and 101 swapped!
+[SWAP][10]Replicas 125 and 143 swapped!
+[SWAP][10]Replicas 127 and 121 swapped!
+[SWAP][10]Replicas 140 and 128 swapped!
+[SWAP][10]Replicas 141 and 137 swapped!
+[llr:setreplica][0]Updating OLD LLR Param: S0 6579089.241850,  a  7.476645752 , dS 593.241850  
+[llr:setreplica][0]New LLR Param: S0 6579089.241850,  a  7.476645752 , dS 593.241850  
+[SWAP][10]New Rep Par S0 = 6579089.241850 dS = 593.241850 a = 7.476646 
+[MAIN][0]Robbins Monro sequence #51: generated in [14182 sec 543815 usec]
+[MAIN][0]Plaq a fixed 0.587566 
+[MAIN][0]<a_rho(0,51,6579089.241850000)>= 7.476645752
+[MAIN][0]Trajectory #52...
+[ROBBINSMONRO][10](S-S0)_sqr: 29704.054638 
+[ROBBINSMONRO][10]RM avr-S0: 9.887836 delta_a: 0.000006 
+[SWAP][10]Starting Rep Par S0 = 6579089.241850 dS = 593.241850 a = 7.476639 
+[Boundary][10]a(1)_rm : 7.476436 and a(1)_bc : 7.476362 
+[Boundary][10]a(n-2)_rm : 7.502972 and a(n-2)_bc : 7.502794 
+[SWAP][10]Replicas 0 and 7 swapped!
+[SWAP][10]Replicas 6 and 18 swapped!
+[SWAP][10]Replicas 16 and 14 swapped!
+[SWAP][10]Replicas 11 and 20 swapped!
+[SWAP][10]Replicas 26 and 32 swapped!
+[SWAP][10]Replicas 31 and 35 swapped!
+[SWAP][10]Replicas 29 and 37 swapped!
+[SWAP][10]Replicas 30 and 42 swapped!
+[SWAP][10]Replicas 44 and 40 swapped!
+[SWAP][10]Replicas 46 and 52 swapped!
+[SWAP][10]Replicas 57 and 56 swapped!
+[SWAP][10]Replicas 60 and 51 swapped!
+[SWAP][10]Replicas 74 and 67 swapped!
+[SWAP][10]Replicas 70 and 71 swapped!
+[SWAP][10]Replicas 68 and 88 swapped!
+[SWAP][10]Replicas 76 and 75 swapped!
+[SWAP][10]Replicas 77 and 87 swapped!
+[SWAP][10]Replicas 79 and 84 swapped!
+[SWAP][10]Replicas 85 and 91 swapped!
+[SWAP][10]Replicas 93 and 83 swapped!
+[SWAP][10]Replicas 116 and 118 swapped!
+[SWAP][10]Replicas 129 and 114 swapped!
+[SWAP][10]Replicas 130 and 126 swapped!
+[SWAP][10]Replicas 123 and 134 swapped!
+[SWAP][10]Replicas 121 and 127 swapped!
+[SWAP][10]Replicas 136 and 133 swapped!
+[SWAP][10]Replicas 140 and 137 swapped!
+[SWAP][10]Replicas 148 and 146 swapped!
+[llr:setreplica][0]Updating OLD LLR Param: S0 6579089.241850,  a  7.476639268 , dS 593.241850  
+[llr:setreplica][0]New LLR Param: S0 6579385.862780,  a  7.476916507 , dS 593.241850  
+[SWAP][10]New Rep Par S0 = 6579385.862780 dS = 593.241850 a = 7.476917 
+[MAIN][0]Robbins Monro sequence #52: generated in [14268 sec 359594 usec]
+[MAIN][0]Plaq a fixed 0.587553 
+[MAIN][0]<a_rho(0,52,6579385.862780000)>= 7.476916507
+[MAIN][0]Trajectory #53...
+[ROBBINSMONRO][10](S-S0)_sqr: 29045.029316 
+[ROBBINSMONRO][10]RM avr-S0: -7.355392 delta_a: -0.000005 
+[SWAP][10]Starting Rep Par S0 = 6579385.862780 dS = 593.241850 a = 7.476921 
+[Boundary][10]a(1)_rm : 7.476426 and a(1)_bc : 7.476382 
+[Boundary][10]a(n-2)_rm : 7.502960 and a(n-2)_bc : 7.502766 
+[SWAP][10]Replicas 13 and 4 swapped!
+[SWAP][10]Replicas 28 and 34 swapped!
+[SWAP][10]Replicas 35 and 31 swapped!
+[SWAP][10]Replicas 44 and 50 swapped!
+[SWAP][10]Replicas 52 and 46 swapped!
+[SWAP][10]Replicas 55 and 64 swapped!
+[SWAP][10]Replicas 84 and 79 swapped!
+[SWAP][10]Replicas 104 and 100 swapped!
+[SWAP][10]Replicas 106 and 115 swapped!
+[SWAP][10]Replicas 114 and 129 swapped!
+[SWAP][10]Replicas 120 and 126 swapped!
+[SWAP][10]Replicas 127 and 121 swapped!
+[SWAP][10]Replicas 133 and 136 swapped!
+[llr:setreplica][0]Updating OLD LLR Param: S0 6579385.862780,  a  7.476921239 , dS 593.241850  
+[llr:setreplica][0]New LLR Param: S0 6579089.241850,  a  7.476651620 , dS 593.241850  
+[SWAP][10]New Rep Par S0 = 6579089.241850 dS = 593.241850 a = 7.476652 
+[MAIN][0]Robbins Monro sequence #53: generated in [14175 sec 719760 usec]
+[MAIN][0]Plaq a fixed 0.587567 
+[MAIN][0]<a_rho(0,53,6579089.241850000)>= 7.476651620
+[MAIN][0]Robins Monro update done.
+[IO][0]Configuration [./run1_5x72x72x72nc4b2.400000n54] saved [2 sec 746309 usec]
+[MAIN][0]Saving rlxd state to file rand_state
+[IO][0]Ranlxd state [rand_state] saved [0 sec 13174 usec]
+[MAIN][0]Total simulation time =[57030 sec 704273 usec]
+[TEST][0]start of finalize_process 
+[TEST][0]free_ghmc 
+[TEST][0]free_BCs 
+[TEST][0]free_wrk_space 
+[SYSTEM][0]Process finalized.
+[SYSTEM][0]Gauge group: SP(4)
+[SYSTEM][0]Fermion representation: dim = 4
+[SYSTEM][0][RepID: 0][world_size: 1]
+[SYSTEM][0][MPI_ID: 0][MPI_size: 152]
+[SYSTEM][0]MACROS=-DBC_T_PERIODIC -DBC_X_PERIODIC -DBC_Y_PERIODIC -DBC_Z_PERIODIC -DWITH_EO -DNDEBUG -DIO_FLUSH -DWITH_MPI -DLLRHB_UM_BC -DLLRHBPARALLEL -DWITH_UMBRELLA -DLLRHB -DREPR_FUNDAMENTAL -DREPR_NAME=@REPR_FUNDAMENTAL@ -DGAUGE_SPN
+[GEOMETRY][0]WARNING: NO PARALLEL DIMENSIONS SPECIFIED!!!
+[GEOMETRY][0]WARNING: THE MPI CODE SHOULD NOT BE USED IN THIS CASE!!!
+[GEOMETRY][0]CId = 0 (0,0,0,0)
+[GEOMETRY_INIT][0]Global size is 5x72x72x72
+[GEOMETRY_INIT][0]Local size is 5x72x72x72
+[GEOMETRY_INIT][0]Extended local size is 5x72x72x72
+[GEOMETRY_INIT][0]The lattice borders are (0,0,0,0)
+[WARNING][0](int) GLB_VOL3*GLB_VOL3 overflows
+[GEOMETRY][0]Geometry variable checked
+[GEOMETRY][0]Gauge field: size 1866240 nbuffer 0 
+[GEOMETRY][0]Spinor field (EO): size 1866240 nbuffer 0 
+[GEOMETRY][0]Even Spinor field: size 933120 nbuffer 0 
+[GEOMETRY][0]Odd Spinor field: size 933120 nbuffer 0 
+[SETUP_RANDOM][0]RLXD [1,16262]
+[MAIN][0]LLR number of mc steps per RM: 700
+[MAIN][0]LLR number of therm steps per RM 300
+[MAIN][0]LLR Initial a 7.476652
+[MAIN][0]LLR RM start value iteration 1 and its iteration frequency 1 
+[MAIN][0]LLR S0 Central action 6579089.241850
+[MAIN][0]LLR Delta S 593.241850
+[MAIN][0]Number of heatbath steps 1, number of overrelaxation steps 0
+[MAIN][0]Number of fixed a steps 0
+[MAIN][0]Swap frequency for fixed a steps 0
+[MAIN][0]LLR Smin minimum action for all replicas 6578496.000000
+[MAIN][0]LLR Smax maximum action for all replicas 6623285.760000
+[MAIN][0]LLR Delta S 593.241850
+[MAIN][0]LLR dB 0.001000
+[MAIN][0]LLR number of intial NR iterations 0
+[MAIN][0]Compiled with domain decomposition 
+[READINPUT][0]Warning: input parameter [config dir] not found in [input_file]!
+[BCS][0]Gauge field: PERIODIC x PERIODIC PERIODIC PERIODIC
+[BCS][0]Fermion fields: PERIODIC x PERIODIC PERIODIC PERIODIC
+[FLOW][0]Starting from conf [run1_5x72x72x72nc4b2.400000n53]
+[IO][0]Configuration [./run1_5x72x72x72nc4b2.400000n53] read [11 sec 497815 usec] Plaquette=5.875670e-01
+[MAIN][0]beta = 2.4000
+[MAIN][0]Number of thermalization cycles: 0
+[MAIN][0]Number of hb-or iterations per cycle: 1
+[MAIN][0]Number of heatbaths per iteration: 1
+[MAIN][0]Number or overrelaxations per iteration: 0
+[MAIN][0]Initial plaquette: 5.87566985e-01
+[MAIN][0]Bringing the system to the interval (S0,dS) = (6579089.241850, 593.241850) ...
+[ANNEAL][0]Finished S = 6579246.061383, Smin = 6578792.620925, Smax = 6579385.862775, in 1 steps ...
+[ANNEAL][0]Check action S_an = 6579246.0613830350339413, S_ap = 6579246.0613830341026187
+[MAIN][0]System brought to the interval (S0,dS) = (6579089.241850, 593.241850)
+[llr][0]nth: 300 
+[MAIN][0]Thermalization done in [0 sec 0 usec].
+[MAIN][0]Measured energy 6579246.061383, stated energy 
+[MAIN][0]Initial NR iterations, N_nr: 0 0 
+[MAIN][0]Newton Raphson update done.
+[MAIN][0]flow.start: 54, flow.end: 58, llr_var.it: 54 
+[MAIN][0]Trajectory #54...
+[ROBBINSMONRO][10](S-S0)_sqr: 29446.492807 
+[ROBBINSMONRO][10]RM avr-S0: 8.644635 delta_a: 0.000005 
+[SWAP][10]Starting Rep Par S0 = 6579089.241850 dS = 593.241850 a = 7.476646 
+[Boundary][10]a(1)_rm : 7.476434 and a(1)_bc : 7.476373 
+[Boundary][10]a(n-2)_rm : 7.502923 and a(n-2)_bc : 7.502798 
+[SWAP][10]Replicas 12 and 1 swapped!
+[SWAP][10]Replicas 43 and 33 swapped!
+[SWAP][10]Replicas 47 and 40 swapped!
+[SWAP][10]Replicas 52 and 56 swapped!
+[SWAP][10]Replicas 57 and 49 swapped!
+[SWAP][10]Replicas 62 and 51 swapped!
+[SWAP][10]Replicas 54 and 60 swapped!
+[SWAP][10]Replicas 53 and 55 swapped!
+[SWAP][10]Replicas 73 and 66 swapped!
+[SWAP][10]Replicas 72 and 69 swapped!
+[SWAP][10]Replicas 81 and 70 swapped!
+[SWAP][10]Replicas 71 and 65 swapped!
+[SWAP][10]Replicas 79 and 84 swapped!
+[SWAP][10]Replicas 119 and 90 swapped!
+[SWAP][10]Replicas 107 and 103 swapped!
+[SWAP][10]Replicas 105 and 115 swapped!
+[SWAP][10]Replicas 106 and 109 swapped!
+[SWAP][10]Replicas 120 and 130 swapped!
+[SWAP][10]Replicas 143 and 131 swapped!
+[llr:setreplica][0]Updating OLD LLR Param: S0 6579089.241850,  a  7.476646162 , dS 593.241850  
+[llr:setreplica][0]New LLR Param: S0 6578792.620930,  a  7.476433743 , dS 593.241850  
+[SWAP][10]New Rep Par S0 = 6578792.620930 dS = 593.241850 a = 7.476434 
+[MAIN][0]Robbins Monro sequence #54: generated in [13973 sec 88038 usec]
+[MAIN][0]Plaq a fixed 0.587531 
+[MAIN][0]<a_rho(0,54,6578792.620930000)>= 7.476433743
+[MAIN][0]Trajectory #55...
+[ROBBINSMONRO][10](S-S0)_sqr: 28240.146284 
+[ROBBINSMONRO][10]RM avr-S0: -1.115101 delta_a: -0.000001 
+[SWAP][10]Starting Rep Par S0 = 6578792.620930 dS = 593.241850 a = 7.476434 
+[Boundary][10]a(1)_rm : 7.476434 and a(1)_bc : 7.476380 
+[Boundary][10]a(n-2)_rm : 7.502897 and a(n-2)_bc : 7.502813 
+[SWAP][10]Replicas 0 and 10 swapped!
+[SWAP][10]Replicas 13 and 19 swapped!
+[SWAP][10]Replicas 17 and 21 swapped!
+[SWAP][10]Replicas 32 and 26 swapped!
+[SWAP][10]Replicas 35 and 38 swapped!
+[SWAP][10]Replicas 50 and 44 swapped!
+[SWAP][10]Replicas 48 and 41 swapped!
+[SWAP][10]Replicas 62 and 60 swapped!
+[SWAP][10]Replicas 74 and 69 swapped!
+[SWAP][10]Replicas 75 and 80 swapped!
+[SWAP][10]Replicas 98 and 82 swapped!
+[SWAP][10]Replicas 116 and 111 swapped!
+[SWAP][10]Replicas 108 and 115 swapped!
+[SWAP][10]Replicas 122 and 126 swapped!
+[SWAP][10]Replicas 117 and 134 swapped!
+[SWAP][10]Replicas 133 and 128 swapped!
+[SWAP][10]Replicas 146 and 148 swapped!
+[SWAP][10]Replicas 149 and 151 swapped!
+[llr:setreplica][0]Updating OLD LLR Param: S0 6578792.620930,  a  7.476434435 , dS 593.241850  
+[llr:setreplica][0]New LLR Param: S0 6579089.241850,  a  7.476644120 , dS 593.241850  
+[SWAP][10]New Rep Par S0 = 6579089.241850 dS = 593.241850 a = 7.476644 
+[MAIN][0]Robbins Monro sequence #55: generated in [13971 sec 889807 usec]
+[MAIN][0]Plaq a fixed 0.587528 
+[MAIN][0]<a_rho(0,55,6579089.241850000)>= 7.476644120
+[MAIN][0]Trajectory #56...
+[ROBBINSMONRO][10](S-S0)_sqr: 28884.452369 
+[ROBBINSMONRO][10]RM avr-S0: -0.586962 delta_a: -0.000000 
+[SWAP][10]Starting Rep Par S0 = 6579089.241850 dS = 593.241850 a = 7.476644 
+[Boundary][10]a(1)_rm : 7.476438 and a(1)_bc : 7.476382 
+[Boundary][10]a(n-2)_rm : 7.502879 and a(n-2)_bc : 7.502792 
+[SWAP][10]Replicas 8 and 7 swapped!
+[SWAP][10]Replicas 9 and 24 swapped!
+[SWAP][10]Replicas 17 and 14 swapped!
+[SWAP][10]Replicas 25 and 27 swapped!
+[SWAP][10]Replicas 32 and 34 swapped!
+[SWAP][10]Replicas 33 and 29 swapped!
+[SWAP][10]Replicas 45 and 36 swapped!
+[SWAP][10]Replicas 56 and 46 swapped!
+[SWAP][10]Replicas 62 and 54 swapped!
+[SWAP][10]Replicas 66 and 61 swapped!
+[SWAP][10]Replicas 63 and 67 swapped!
+[SWAP][10]Replicas 95 and 82 swapped!
+[SWAP][10]Replicas 79 and 91 swapped!
+[SWAP][10]Replicas 92 and 94 swapped!
+[SWAP][10]Replicas 100 and 104 swapped!
+[SWAP][10]Replicas 110 and 103 swapped!
+[SWAP][10]Replicas 116 and 115 swapped!
+[SWAP][10]Replicas 130 and 120 swapped!
+[SWAP][10]Replicas 139 and 137 swapped!
+[llr:setreplica][0]Updating OLD LLR Param: S0 6579089.241850,  a  7.476644477 , dS 593.241850  
+[llr:setreplica][0]New LLR Param: S0 6579089.241850,  a  7.476644477 , dS 593.241850  
+[SWAP][10]New Rep Par S0 = 6579089.241850 dS = 593.241850 a = 7.476644 
+[MAIN][0]Robbins Monro sequence #56: generated in [13973 sec 160238 usec]
+[MAIN][0]Plaq a fixed 0.587538 
+[MAIN][0]<a_rho(0,56,6579089.241850000)>= 7.476644477
+[MAIN][0]Trajectory #57...
+[ROBBINSMONRO][10](S-S0)_sqr: 29983.669316 
+[ROBBINSMONRO][10]RM avr-S0: -12.823239 delta_a: -0.000008 
+[SWAP][10]Starting Rep Par S0 = 6579089.241850 dS = 593.241850 a = 7.476652 
+[Boundary][10]a(1)_rm : 7.476446 and a(1)_bc : 7.476391 
+[Boundary][10]a(n-2)_rm : 7.502862 and a(n-2)_bc : 7.502760 
+[SWAP][10]Replicas 18 and 12 swapped!
+[SWAP][10]Replicas 9 and 21 swapped!
+[SWAP][10]Replicas 11 and 27 swapped!
+[SWAP][10]Replicas 35 and 29 swapped!
+[SWAP][10]Replicas 36 and 45 swapped!
+[SWAP][10]Replicas 50 and 41 swapped!
+[SWAP][10]Replicas 52 and 57 swapped!
+[SWAP][10]Replicas 49 and 60 swapped!
+[SWAP][10]Replicas 62 and 53 swapped!
+[SWAP][10]Replicas 64 and 73 swapped!
+[SWAP][10]Replicas 71 and 58 swapped!
+[SWAP][10]Replicas 82 and 95 swapped!
+[SWAP][10]Replicas 96 and 101 swapped!
+[SWAP][10]Replicas 92 and 89 swapped!
+[SWAP][10]Replicas 131 and 143 swapped!
+[SWAP][10]Replicas 125 and 121 swapped!
+[SWAP][10]Replicas 136 and 128 swapped!
+[SWAP][10]Replicas 142 and 133 swapped!
+[SWAP][10]Replicas 141 and 140 swapped!
+[llr:setreplica][0]Updating OLD LLR Param: S0 6579089.241850,  a  7.476652148 , dS 593.241850  
+[llr:setreplica][0]New LLR Param: S0 6579089.241850,  a  7.476652148 , dS 593.241850  
+[SWAP][10]New Rep Par S0 = 6579089.241850 dS = 593.241850 a = 7.476652 
+[MAIN][0]Robbins Monro sequence #57: generated in [13973 sec 156263 usec]
+[MAIN][0]Plaq a fixed 0.587561 
+[MAIN][0]<a_rho(0,57,6579089.241850000)>= 7.476652148
+[MAIN][0]Robins Monro update done.
+[IO][0]Configuration [./run1_5x72x72x72nc4b2.400000n58] saved [2 sec 741288 usec]
+[MAIN][0]Saving rlxd state to file rand_state
+[IO][0]Ranlxd state [rand_state] saved [0 sec 225 usec]
+[MAIN][0]Total simulation time =[56099 sec 345131 usec]
+[TEST][0]start of finalize_process 
+[TEST][0]free_ghmc 
+[TEST][0]free_BCs 
+[TEST][0]free_wrk_space 
+[SYSTEM][0]Process finalized.
+[SYSTEM][0]Gauge group: SP(4)
+[SYSTEM][0]Fermion representation: dim = 4
+[SYSTEM][0][RepID: 0][world_size: 1]
+[SYSTEM][0][MPI_ID: 0][MPI_size: 152]
+[SYSTEM][0]MACROS=-DBC_T_PERIODIC -DBC_X_PERIODIC -DBC_Y_PERIODIC -DBC_Z_PERIODIC -DWITH_EO -DNDEBUG -DIO_FLUSH -DWITH_MPI -DLLRHB_UM_BC -DLLRHBPARALLEL -DWITH_UMBRELLA -DLLRHB -DREPR_FUNDAMENTAL -DREPR_NAME=@REPR_FUNDAMENTAL@ -DGAUGE_SPN
+[GEOMETRY][0]WARNING: NO PARALLEL DIMENSIONS SPECIFIED!!!
+[GEOMETRY][0]WARNING: THE MPI CODE SHOULD NOT BE USED IN THIS CASE!!!
+[GEOMETRY][0]CId = 0 (0,0,0,0)
+[GEOMETRY_INIT][0]Global size is 5x72x72x72
+[GEOMETRY_INIT][0]Local size is 5x72x72x72
+[GEOMETRY_INIT][0]Extended local size is 5x72x72x72
+[GEOMETRY_INIT][0]The lattice borders are (0,0,0,0)
+[WARNING][0](int) GLB_VOL3*GLB_VOL3 overflows
+[GEOMETRY][0]Geometry variable checked
+[GEOMETRY][0]Gauge field: size 1866240 nbuffer 0 
+[GEOMETRY][0]Spinor field (EO): size 1866240 nbuffer 0 
+[GEOMETRY][0]Even Spinor field: size 933120 nbuffer 0 
+[GEOMETRY][0]Odd Spinor field: size 933120 nbuffer 0 
+[SETUP_RANDOM][0]RLXD [1,20895]
+[MAIN][0]LLR number of mc steps per RM: 700
+[MAIN][0]LLR number of therm steps per RM 300
+[MAIN][0]LLR Initial a 7.476451
+[MAIN][0]LLR RM start value iteration 1 and its iteration frequency 1 
+[MAIN][0]LLR S0 Central action 6578792.620930
+[MAIN][0]LLR Delta S 593.241850
+[MAIN][0]Number of heatbath steps 1, number of overrelaxation steps 0
+[MAIN][0]Number of fixed a steps 0
+[MAIN][0]Swap frequency for fixed a steps 0
+[MAIN][0]LLR Smin minimum action for all replicas 6578496.000000
+[MAIN][0]LLR Smax maximum action for all replicas 6623285.760000
+[MAIN][0]LLR Delta S 593.241850
+[MAIN][0]LLR dB 0.001000
+[MAIN][0]LLR number of intial NR iterations 0
+[MAIN][0]Compiled with domain decomposition 
+[READINPUT][0]Warning: input parameter [config dir] not found in [input_file]!
+[BCS][0]Gauge field: PERIODIC x PERIODIC PERIODIC PERIODIC
+[BCS][0]Fermion fields: PERIODIC x PERIODIC PERIODIC PERIODIC
+[FLOW][0]Starting from conf [run1_5x72x72x72nc4b2.400000n59]
+[IO][0]Configuration [./run1_5x72x72x72nc4b2.400000n59] read [5 sec 15290 usec] Plaquette=5.875609e-01
+[MAIN][0]beta = 2.4000
+[MAIN][0]Number of thermalization cycles: 0
+[MAIN][0]Number of hb-or iterations per cycle: 1
+[MAIN][0]Number of heatbaths per iteration: 1
+[MAIN][0]Number or overrelaxations per iteration: 0
+[MAIN][0]Initial plaquette: 5.87560884e-01
+[MAIN][0]Bringing the system to the interval (S0,dS) = (6578792.620930, 593.241850) ...
+[ANNEAL][0]Finished S = 6578594.497595, Smin = 6578496.000005, Smax = 6579089.241855, in 6 steps ...
+[ANNEAL][0]Check action S_an = 6578594.4975953316316009, S_ap = 6578594.4975958541035652
+[MAIN][0]System brought to the interval (S0,dS) = (6578792.620930, 593.241850)
+[llr][0]nth: 300 
+[MAIN][0]Thermalization done in [0 sec 0 usec].
+[MAIN][0]Measured energy 6578594.497596, stated energy 
+[MAIN][0]Initial NR iterations, N_nr: 0 0 
+[MAIN][0]Newton Raphson update done.
+[MAIN][0]flow.start: 60, flow.end: 64, llr_var.it: 60 
+[MAIN][0]Trajectory #60...
+[ROBBINSMONRO][10](S-S0)_sqr: 28202.898301 
+[ROBBINSMONRO][10]RM avr-S0: -10.085041 delta_a: -0.000006 
+[SWAP][10]Starting Rep Par S0 = 6578792.620930 dS = 593.241850 a = 7.476457 
+[Boundary][10]a(1)_rm : 7.476457 and a(1)_bc : 7.476374 
+[Boundary][10]a(n-2)_rm : 7.502827 and a(n-2)_bc : 7.502765 
+[SWAP][10]Replicas 2 and 7 swapped!
+[SWAP][10]Replicas 8 and 1 swapped!
+[SWAP][10]Replicas 21 and 13 swapped!
+[SWAP][10]Replicas 22 and 16 swapped!
+[SWAP][10]Replicas 31 and 38 swapped!
+[SWAP][10]Replicas 35 and 29 swapped!
+[SWAP][10]Replicas 40 and 30 swapped!
+[SWAP][10]Replicas 47 and 48 swapped!
+[SWAP][10]Replicas 52 and 60 swapped!
+[SWAP][10]Replicas 53 and 55 swapped!
+[SWAP][10]Replicas 73 and 66 swapped!
+[SWAP][10]Replicas 92 and 104 swapped!
+[SWAP][10]Replicas 102 and 119 swapped!
+[SWAP][10]Replicas 107 and 112 swapped!
+[SWAP][10]Replicas 130 and 123 swapped!
+[SWAP][10]Replicas 143 and 125 swapped!
+[SWAP][10]Replicas 124 and 132 swapped!
+[SWAP][10]Replicas 136 and 142 swapped!
+[SWAP][10]Replicas 135 and 137 swapped!
+[SWAP][10]Replicas 140 and 141 swapped!
+[SWAP][10]Replicas 144 and 148 swapped!
+[llr:setreplica][0]Updating OLD LLR Param: S0 6578792.620930,  a  7.476456841 , dS 593.241850  
+[llr:setreplica][0]New LLR Param: S0 6578792.620930,  a  7.476456841 , dS 593.241850  
+[SWAP][10]New Rep Par S0 = 6578792.620930 dS = 593.241850 a = 7.476457 
+[MAIN][0]Robbins Monro sequence #60: generated in [13988 sec 500215 usec]
+[MAIN][0]Plaq a fixed 0.587508 
+[MAIN][0]<a_rho(0,60,6578792.620930000)>= 7.476456841
+[MAIN][0]Trajectory #61...
+[ROBBINSMONRO][10](S-S0)_sqr: 28637.818619 
+[ROBBINSMONRO][10]RM avr-S0: -0.917184 delta_a: -0.000001 
+[SWAP][10]Starting Rep Par S0 = 6578792.620930 dS = 593.241850 a = 7.476457 
+[Boundary][10]a(1)_rm : 7.476457 and a(1)_bc : 7.476366 
+[Boundary][10]a(n-2)_rm : 7.502812 and a(n-2)_bc : 7.502730 
+[SWAP][10]Replicas 7 and 2 swapped!
+[SWAP][10]Replicas 19 and 24 swapped!
+[SWAP][10]Replicas 11 and 25 swapped!
+[SWAP][10]Replicas 38 and 31 swapped!
+[SWAP][10]Replicas 36 and 37 swapped!
+[SWAP][10]Replicas 57 and 56 swapped!
+[SWAP][10]Replicas 61 and 63 swapped!
+[SWAP][10]Replicas 69 and 67 swapped!
+[SWAP][10]Replicas 74 and 65 swapped!
+[SWAP][10]Replicas 70 and 58 swapped!
+[SWAP][10]Replicas 95 and 87 swapped!
+[SWAP][10]Replicas 91 and 83 swapped!
+[SWAP][10]Replicas 101 and 93 swapped!
+[SWAP][10]Replicas 119 and 102 swapped!
+[SWAP][10]Replicas 90 and 112 swapped!
+[SWAP][10]Replicas 105 and 116 swapped!
+[SWAP][10]Replicas 123 and 130 swapped!
+[SWAP][10]Replicas 121 and 132 swapped!
+[SWAP][10]Replicas 142 and 136 swapped!
+[SWAP][10]Replicas 144 and 145 swapped!
+[SWAP][10]Replicas 151 and 147 swapped!
+[llr:setreplica][0]Updating OLD LLR Param: S0 6578792.620930,  a  7.476457354 , dS 593.241850  
+[llr:setreplica][0]New LLR Param: S0 6578792.620930,  a  7.476457354 , dS 593.241850  
+[SWAP][10]New Rep Par S0 = 6578792.620930 dS = 593.241850 a = 7.476457 
+[MAIN][0]Robbins Monro sequence #61: generated in [14449 sec 71502 usec]
+[MAIN][0]Plaq a fixed 0.587547 
+[MAIN][0]<a_rho(0,61,6578792.620930000)>= 7.476457354
+[MAIN][0]Trajectory #62...
+[ROBBINSMONRO][10](S-S0)_sqr: 28595.360441 
+[ROBBINSMONRO][10]RM avr-S0: 11.385841 delta_a: 0.000006 
+[SWAP][10]Starting Rep Par S0 = 6578792.620930 dS = 593.241850 a = 7.476451 
+[Boundary][10]a(1)_rm : 7.476451 and a(1)_bc : 7.476373 
+[Boundary][10]a(n-2)_rm : 7.502791 and a(n-2)_bc : 7.502709 
+[SWAP][10]Replicas 7 and 1 swapped!
+[SWAP][10]Replicas 5 and 6 swapped!
+[SWAP][10]Replicas 17 and 16 swapped!
+[SWAP][10]Replicas 26 and 34 swapped!
+[SWAP][10]Replicas 15 and 23 swapped!
+[SWAP][10]Replicas 43 and 35 swapped!
+[SWAP][10]Replicas 37 and 36 swapped!
+[SWAP][10]Replicas 45 and 40 swapped!
+[SWAP][10]Replicas 30 and 44 swapped!
+[SWAP][10]Replicas 41 and 47 swapped!
+[SWAP][10]Replicas 57 and 52 swapped!
+[SWAP][10]Replicas 54 and 51 swapped!
+[SWAP][10]Replicas 86 and 87 swapped!
+[SWAP][10]Replicas 98 and 77 swapped!
+[SWAP][10]Replicas 79 and 83 swapped!
+[SWAP][10]Replicas 99 and 92 swapped!
+[SWAP][10]Replicas 111 and 108 swapped!
+[SWAP][10]Replicas 120 and 134 swapped!
+[SWAP][10]Replicas 127 and 132 swapped!
+[SWAP][10]Replicas 121 and 128 swapped!
+[SWAP][10]Replicas 145 and 144 swapped!
+[llr:setreplica][0]Updating OLD LLR Param: S0 6578792.620930,  a  7.476451092 , dS 593.241850  
+[llr:setreplica][0]New LLR Param: S0 6578792.620930,  a  7.476451092 , dS 593.241850  
+[SWAP][10]New Rep Par S0 = 6578792.620930 dS = 593.241850 a = 7.476451 
+[MAIN][0]Robbins Monro sequence #62: generated in [14465 sec 256657 usec]
+[MAIN][0]Plaq a fixed 0.587517 
+[MAIN][0]<a_rho(0,62,6578792.620930000)>= 7.476451092
+[MAIN][0]Trajectory #63...
+[ROBBINSMONRO][10](S-S0)_sqr: 29173.774636 
+[ROBBINSMONRO][10]RM avr-S0: -17.630466 delta_a: -0.000010 
+[SWAP][10]Starting Rep Par S0 = 6578792.620930 dS = 593.241850 a = 7.476461 
+[Boundary][10]a(1)_rm : 7.476461 and a(1)_bc : 7.476355 
+[Boundary][10]a(n-2)_rm : 7.502779 and a(n-2)_bc : 7.502660 
+[SWAP][10]Replicas 0 and 10 swapped!
+[SWAP][10]Replicas 6 and 5 swapped!
+[SWAP][10]Replicas 21 and 14 swapped!
+[SWAP][10]Replicas 9 and 16 swapped!
+[SWAP][10]Replicas 17 and 20 swapped!
+[SWAP][10]Replicas 27 and 25 swapped!
+[SWAP][10]Replicas 37 and 40 swapped!
+[SWAP][10]Replicas 54 and 55 swapped!
+[SWAP][10]Replicas 59 and 64 swapped!
+[SWAP][10]Replicas 67 and 81 swapped!
+[SWAP][10]Replicas 70 and 78 swapped!
+[SWAP][10]Replicas 80 and 75 swapped!
+[SWAP][10]Replicas 98 and 84 swapped!
+[SWAP][10]Replicas 89 and 85 swapped!
+[SWAP][10]Replicas 97 and 103 swapped!
+[SWAP][10]Replicas 112 and 90 swapped!
+[SWAP][10]Replicas 106 and 113 swapped!
+[SWAP][10]Replicas 109 and 114 swapped!
+[SWAP][10]Replicas 122 and 126 swapped!
+[SWAP][10]Replicas 130 and 123 swapped!
+[SWAP][10]Replicas 128 and 121 swapped!
+[SWAP][10]Replicas 142 and 137 swapped!
+[llr:setreplica][0]Updating OLD LLR Param: S0 6578792.620930,  a  7.476460634 , dS 593.241850  
+[llr:setreplica][0]New LLR Param: S0 6579089.241850,  a  7.476632462 , dS 593.241850  
+[SWAP][10]New Rep Par S0 = 6579089.241850 dS = 593.241850 a = 7.476632 
+[MAIN][0]Robbins Monro sequence #63: generated in [14446 sec 759644 usec]
+[MAIN][0]Plaq a fixed 0.587531 
+[MAIN][0]<a_rho(0,63,6579089.241850000)>= 7.476632462
+[MAIN][0]Robins Monro update done.
+[IO][0]Configuration [./run1_5x72x72x72nc4b2.400000n64] saved [2 sec 391938 usec]
+[MAIN][0]Saving rlxd state to file rand_state
+[IO][0]Ranlxd state [rand_state] saved [0 sec 8878 usec]
+[MAIN][0]Total simulation time =[57661 sec 19593 usec]
+[TEST][0]start of finalize_process 
+[TEST][0]free_ghmc 
+[TEST][0]free_BCs 
+[TEST][0]free_wrk_space 
+[SYSTEM][0]Process finalized.

@@ -5,15 +5,16 @@ using LLRParsing
 # If the preceeding run has errored then the configuration will still be named after the last number appearing in the out_0 file even if the configuration has never been written to disk
 function traj_numbers(file)
     pattern = r"^\[MAIN\]\[0\](Newton Raphson|Robbins Monro) sequence \#([0-9]+): generated"
-    numbers = String[]
+    numbers = Int[]
+    types   = String[]
     for line in eachline(file)
         if occursin(pattern,line)
             m = match(pattern,line)
-            step = m.captures[1]*" "*m.captures[2]
-            push!(numbers,step)
+            push!(types,m.captures[1])
+            push!(numbers,parse(Int,m.captures[2]))
         end
     end
-    return numbers
+    return numbers,types
 end
 # The trajectory number in the output file cannot be trusted. To circumvent this issue I determine all trajectory numbers that indicate that a configuration has been 
 # read from or written to the disk. With this I can identify the Robbins-Monro trajectory numbers that should be included in the analysis
@@ -73,15 +74,23 @@ function find_good_RM_trajectory_numbers(file)
     good_trajectories = find_good_RM_trajectory_numbers(read_saved, types, rs_number)
     return good_trajectories
 end
-
-file = "output/LLRout/LLR_5x72_152/0/Rep_2/out_0"
-dS0, S0, plaq, a, is_rm, S0_fxa, a_fxa, poly = parse_llr(file)
-numbers           = traj_numbers(file)
-good_trajectories = find_good_RM_trajectory_numbers(file) 
-@show size(good_trajectories)
-
-file = "output/LLRout/LLR_5x72_152/0/Rep_0/out_0"
-dS0, S0, plaq, a, is_rm, S0_fxa, a_fxa, poly = parse_llr(file)
-numbers           = traj_numbers(file)
-good_trajectories = find_good_RM_trajectory_numbers(file) 
-@show size(good_trajectories)
+function good_rm_indices(trajectories,types,good_trajectories)
+    good_indices = Int[]
+    for i in eachindex(trajectories)
+        if types[i] == "Newton Raphson"
+            push!(good_indices,i)
+        elseif types[i] == "Robbins Monro" && trajectories[i] ∈ good_trajectories
+            push!(good_indices,i)
+        end
+    end
+    return good_indices
+end
+function parse_llr_corrupted(file)
+    dS0, S0, plaq, a, is_rm, S0_fxa, a_fxa, poly = parse_llr(file)
+    trajectories, types = traj_numbers(file)
+    @assert size(S0) == size(plaq) == size(a) == size(is_rm)
+    @assert size(S0) == size(trajectories) == size(types)
+    good_trajectories = find_good_RM_trajectory_numbers(file) 
+    inds = good_rm_indices(trajectories,types,good_trajectories)
+    return dS0, S0[inds], plaq[inds], a[inds], is_rm[inds], S0_fxa, a_fxa, poly
+end
