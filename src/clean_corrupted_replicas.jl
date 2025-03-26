@@ -6,19 +6,15 @@ unique_indices(v) = unique(i -> v[i], eachindex(v))
 duplicate_vals(v) = v[setdiff(eachindex(v),unique_indices(v))]
 approx_duplicate_indices(v) = findall(i-> any(isapprox(v[i]),duplicate_vals(v)), eachindex(v))
 
-function read_non_matching_trajectory(fid;key)
+function read_non_matching_trajectory(fid,::Type{T};key) where T
     replicas     = keys(fid)
     traj_lengths = [length(fid["$rep/$key"]) for rep in replicas]
     nmin, nmax   = extrema(traj_lengths)
-    
-    T   = eltype(fid["$(first(replicas))/$key"])
-    res = zeros(T,(length(replicas),nmax)) .+ typemax(T)
-    
+    res          = fill(typemax(T),(length(replicas),nmax))
     for (i,rep) in enumerate(replicas)
         val = read(fid,"$rep/$key")
         res[i,1:length(val)] = val
     end
-    
     return res
 end
 # Sometimes we have additional data corruption that leads to a non-matching trajectory lengths
@@ -50,7 +46,7 @@ function remove_central_energy_trajectories!(S0,traj_step,replica_indices)
     return S0
 end
 function remove_non_matching_trajectories_in_replicas(fid_repeat)
-    S0 = read_non_matching_trajectory(fid_repeat,key="S0")
+    S0 = read_non_matching_trajectory(fid_repeat,Float64,key="S0")
     remove_non_matching_trajectories_in_replicas(S0)
 end
 function remove_non_matching_trajectories_in_replicas(S0::Matrix{T}) where T

@@ -174,23 +174,11 @@ function sort_by_central_energy_to_hdf5(h5file_in,h5file_out;skip_ens=nothing)
             if n_traj_min < n_traj_max
                 @warn "Run $run, repeat $j: Non-matching trajectory length across replicas. Non-matching entries will be discarded."
             end
-            # Use arrays that can hold the longest trajectory recorded
-            a       = zeros(Float64,(N_replicas,n_traj_max))
-            p       = zeros(Float64,(N_replicas,n_traj_max))
-            is_rm   = zeros(Bool,   (N_replicas,n_traj_max))
-            # For S I initialize the data to +Inf so that the unused data comes last after sorting
-            S       = zeros(Float64,(N_replicas,n_traj_max)) .+ Inf64
-            for i in 1:N_replicas
-                dset = joinpath(run,"$j/Rep_$(i-1)")
-                val1 = h5dset[dset]["a"][1:end]
-                val2 = h5dset[dset]["S0"][1:end]
-                val3 = h5dset[dset]["plaq"][1:end]
-                val4 = h5dset[dset]["is_rm"][1:end]
-                a[i,1:length(val1)]     = val1 
-                S[i,1:length(val2)]     = val2 
-                p[i,1:length(val3)]     = val3 
-                is_rm[i,1:length(val4)] = val4 
-            end
+            # read data for all replicas
+            a     = read_non_matching_trajectory(h5dset[run][j],Float64;key="a")
+            p     = read_non_matching_trajectory(h5dset[run][j],Float64;key="plaq")
+            is_rm = read_non_matching_trajectory(h5dset[run][j],Bool   ;key="is_rm")
+            S     = read_non_matching_trajectory(h5dset[run][j],Float64;key="S0")
             ## Sort by the central action to account for different swaps
             for j in 1:n_traj_max
                 perm = sortperm(S[:,j])
