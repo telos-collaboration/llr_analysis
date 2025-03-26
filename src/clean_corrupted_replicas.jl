@@ -1,5 +1,3 @@
-using HDF5
-using Test
 # Utilities for 
 # 1) Finding all indices for unique elements in an array v  
 # 2) Finding the values of all items of v that occur more than once
@@ -14,7 +12,7 @@ function all_central_enrgies(fid)
     nmin, nmax   = extrema(traj_lengths)
     S0 = zeros((length(replicas),nmax)) .+ Inf
     for (i,rep) in enumerate(replicas)
-        val = read(fid_repeat,"$rep/S0")
+        val = read(fid,"$rep/S0")
         S0[i,1:length(val)] = val
     end
     return S0
@@ -75,20 +73,4 @@ function remove_non_matching_trajectories_in_replicas(fid_repeat)
     end
     # Then we only return the good, matching trajectories
     return S0[:,1:min_traj]
-end
-
-fid = h5open("test/test_data/LLR_5x64_95_Rep13.hdf5")
-fid_repeat = fid["5x64_1repeats_95replicas/13/"]
-
-S0        = remove_non_matching_trajectories_in_replicas(fid_repeat)
-S0_sorted = sort(S0,dims=1)
-
-Smin,Smax = extrema(filter(isfinite, S0))
-nreplicas = first(size(S0))
-S0_theory = collect(range(Smin,Smax,length=nreplicas))
-
-@testset "Removal of corrupted data for non-matching trajectory lengths across replicas" begin 
-    @test all(allequal ,eachslice(S0_sorted,dims=1))
-    @test all(issorted ,eachslice(S0_sorted,dims=2))
-    @test all(isapprox(S0_theory) ,eachslice(S0_sorted,dims=2))
 end
