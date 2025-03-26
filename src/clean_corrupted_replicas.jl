@@ -35,15 +35,14 @@ function find_first_duplicated_central_energies(S0,traj_lengths)
         end
     end
 end
-function remove_central_energy_trajectories!(S0,traj_step,replica_indices)
+function remove_trajectories!(data::Matrix{T},traj_step,replica_indices) where T
     for replica_ind in replica_indices
-        S0[replica_ind,traj_step:end-1] = S0[replica_ind,traj_step+1:end]
-        # The last entry is then set to infinity, since it corresponds to missing data
-        # and we choose 'Inf' to represent that because it autoimatically places the entry
+        data[replica_ind,traj_step:end-1] = data[replica_ind,traj_step+1:end]
+        # The last entry is then set to infinity (the typemax for Float64), since it corresponds to missing data
+        # and we choose typemax(T) ('Inf' for Float64) to represent that, because it automatically places the entry
         # at the end of the array when sorting it.
-        S0[replica_ind,end] = Inf 
+        data[replica_ind,end] = typemax(T)
     end
-    return S0
 end
 function remove_non_matching_trajectories_in_replicas(fid_repeat)
     S0 = read_non_matching_trajectory(fid_repeat,Float64,key="S0")
@@ -63,7 +62,7 @@ function remove_non_matching_trajectories_in_replicas(S0::Matrix{T}) where T
         push!(steps,traj_step)
         push!(inds ,indices)
         rm_indices = filter(i -> traj_lengths[i] > minimum(traj_lengths),  indices)
-        S0 = remove_central_energy_trajectories!(S0,traj_step,rm_indices)
+        remove_trajectories!(S0,traj_step,rm_indices)
         traj_lengths = dropdims(count(isfinite, S0, dims=2),dims=2)
         ans = find_first_duplicated_central_energies(S0, traj_lengths)
     end
