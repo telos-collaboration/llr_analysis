@@ -163,22 +163,18 @@ function sort_by_central_energy_to_hdf5(h5file_in,h5file_out;skip_ens=nothing)
         repeats    = read(h5dset[run],"repeats")        
         # read all last elements for a and the central action
         for j in repeats
-            ntraj1 = [ length(h5dset[run]["$j/Rep_$i/a"])     for i in 0:N_replicas-1]
-            ntraj2 = [ length(h5dset[run]["$j/Rep_$i/S0"])    for i in 0:N_replicas-1]
-            ntraj3 = [ length(h5dset[run]["$j/Rep_$i/plaq"])  for i in 0:N_replicas-1]
-            ntraj4 = [ length(h5dset[run]["$j/Rep_$i/is_rm"]) for i in 0:N_replicas-1]
-            @assert ntraj1 == ntraj2 == ntraj3 == ntraj4            
-            n_traj_min, n_traj_max = extrema(ntraj1)
-            # I need to deal with those later
-            # I want to remove extra trajectories that correspond to non matching replicas
-            if n_traj_min < n_traj_max
-                @warn "Run $run, repeat $j: Non-matching trajectory length across replicas. Non-matching entries will be discarded."
-            end
             # read data for all replicas
             a     = read_non_matching_trajectory(h5dset[run][j],Float64;key="a")
             p     = read_non_matching_trajectory(h5dset[run][j],Float64;key="plaq")
             is_rm = read_non_matching_trajectory(h5dset[run][j],Bool   ;key="is_rm")
             S     = read_non_matching_trajectory(h5dset[run][j],Float64;key="S0")
+            # check for mismatch in the number of trajectories
+            # (ntraj will match for a, p, is_rm and S which is already checked while parsing)
+            ntraj = dropdims(count(isfinite, S, dims=2),dims=2)
+            n_traj_min, n_traj_max = extrema(ntraj)
+            if n_traj_min < n_traj_max
+                @warn "Run $run, repeat $j: Non-matching trajectory length across replicas. Non-matching entries will be discarded."
+            end
             ## Sort by the central action to account for different swaps
             for j in 1:n_traj_max
                 perm = sortperm(S[:,j])
