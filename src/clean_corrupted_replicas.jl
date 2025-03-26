@@ -6,16 +6,20 @@ unique_indices(v) = unique(i -> v[i], eachindex(v))
 duplicate_vals(v) = v[setdiff(eachindex(v),unique_indices(v))]
 approx_duplicate_indices(v) = findall(i-> any(isapprox(v[i]),duplicate_vals(v)), eachindex(v))
 
-function all_central_enrgies(fid)
+function read_non_matching_trajectory(fid;key)
     replicas     = keys(fid)
-    traj_lengths = [length(fid["$rep/S0"]) for rep in replicas]
+    traj_lengths = [length(fid["$rep/$key"]) for rep in replicas]
     nmin, nmax   = extrema(traj_lengths)
-    S0 = zeros((length(replicas),nmax)) .+ Inf
+    
+    T   = eltype(fid["$(first(replicas))/$key"])
+    res = zeros(T,(length(replicas),nmax)) .+ typemax(T)
+    
     for (i,rep) in enumerate(replicas)
-        val = read(fid,"$rep/S0")
-        S0[i,1:length(val)] = val
+        val = read(fid,"$rep/$key")
+        res[i,1:length(val)] = val
     end
-    return S0
+    
+    return res
 end
 # Sometimes we have additional data corruption that leads to a non-matching trajectory lengths
 # In order to identify the spurious data, we compare the central energies for every trajectory
@@ -46,7 +50,10 @@ function remove_central_energy_trajectories!(S0,traj_step,replica_indices)
     return S0
 end
 function remove_non_matching_trajectories_in_replicas(fid_repeat)
-    S0 = all_central_enrgies(fid_repeat)
+    S0 = read_non_matching_trajectory(fid_repeat,key="S0")
+    remove_non_matching_trajectories_in_replicas(S0)
+end
+function remove_non_matching_trajectories_in_replicas(S0::Matrix{T}) where T
     traj_lengths = dropdims(count(isfinite, S0, dims=2),dims=2)
 
     ans = find_first_duplicated_central_energies(S0, traj_lengths)
