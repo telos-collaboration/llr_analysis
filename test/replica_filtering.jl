@@ -1,7 +1,7 @@
 fid = h5open("./test_data/LLR_5x64_95_Rep13.hdf5")
 fid_repeat = fid["5x64_1repeats_95replicas/13/"]
 
-S0        = remove_non_matching_trajectories_in_replicas(fid_repeat)
+S0, steps, inds = remove_non_matching_trajectories_in_replicas(fid_repeat)
 S0_sorted = sort(S0,dims=1)
 
 Smin,Smax = extrema(filter(isfinite, S0))

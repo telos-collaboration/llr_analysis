@@ -52,9 +52,16 @@ end
 function remove_non_matching_trajectories_in_replicas(S0::Matrix{T}) where T
     traj_lengths = dropdims(count(isfinite, S0, dims=2),dims=2)
 
+    # keep track of trajectory numbers and indices of non-matching trajectories
+    # (such that they can later on be applied to the other observables)
+    steps = Int[]
+    inds  = Array{Int}[]
+
     ans = find_first_duplicated_central_energies(S0, traj_lengths)
     while !isnothing(ans)
         traj_step, indices = ans
+        push!(steps,traj_step)
+        push!(inds ,indices)
         rm_indices = filter(i -> traj_lengths[i] > minimum(traj_lengths),  indices)
         S0 = remove_central_energy_trajectories!(S0,traj_step,rm_indices)
         traj_lengths = dropdims(count(isfinite, S0, dims=2),dims=2)
@@ -75,5 +82,5 @@ function remove_non_matching_trajectories_in_replicas(S0::Matrix{T}) where T
         @assert all(isequal(Inf),S0[:,traj])
     end
     # Then we only return the good, matching trajectories
-    return S0[:,1:min_traj]
+    return S0[:,1:min_traj], steps, inds
 end
