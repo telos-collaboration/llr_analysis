@@ -163,12 +163,12 @@ function sort_by_central_energy_to_hdf5(h5file_in,h5file_out;skip_ens=nothing)
         repeats    = read(h5dset[run],"repeats")        
         # read all last elements for a and the central action
         for j in repeats
-            ntraj1 = [ length(h5dset[run]["$j/Rep_$i/a"]) for i in 0:N_replicas-1]
-            ntraj2 = [ length(h5dset[run]["$j/Rep_$i/S0"]) for i in 0:N_replicas-1]
-            ntraj3 = [ length(h5dset[run]["$j/Rep_$i/plaq"]) for i in 0:N_replicas-1]
+            ntraj1 = [ length(h5dset[run]["$j/Rep_$i/a"])     for i in 0:N_replicas-1]
+            ntraj2 = [ length(h5dset[run]["$j/Rep_$i/S0"])    for i in 0:N_replicas-1]
+            ntraj3 = [ length(h5dset[run]["$j/Rep_$i/plaq"])  for i in 0:N_replicas-1]
             ntraj4 = [ length(h5dset[run]["$j/Rep_$i/is_rm"]) for i in 0:N_replicas-1]
-            n_traj_min = minimum(hcat(ntraj1,ntraj2,ntraj3,ntraj4))
-            n_traj_max = maximum(hcat(ntraj1,ntraj2,ntraj3,ntraj4))
+            @assert ntraj1 == ntraj2 == ntraj3 == ntraj4            
+            n_traj_min, n_traj_max = extrema(ntraj1)
             # I need to deal with those later
             # I want to remove extra trajectories that correspond to non matching replicas
             if n_traj_min < n_traj_max
@@ -199,10 +199,10 @@ function sort_by_central_energy_to_hdf5(h5file_in,h5file_out;skip_ens=nothing)
                 p[:,j] = p[perm,j]
                 is_rm[:,j] = is_rm[perm,j]
             end
-            a     = a[:    ,1:n_traj_min-1]
-            p     = p[:    ,1:n_traj_min-1]
-            S     = S[:    ,1:n_traj_min-1]
-            is_rm = is_rm[:,1:n_traj_min-1]
+            a = a[:,1:n_traj_min]
+            p = p[:,1:n_traj_min]
+            S = S[:,1:n_traj_min]
+            is_rm = is_rm[:,1:n_traj_min]
             ## make sure that the sorted central action alwas matches, if not, discard the repeat
             keep_repeat = true
             for i in 1:N_replicas 
