@@ -1,4 +1,5 @@
 using HDF5
+using Test
 # Utilities for 
 # 1) Finding all indices for unique elements in an array v  
 # 2) Finding the values of all items of v that occur more than once
@@ -58,9 +59,36 @@ function remove_non_matching_trajectories_in_replicas(fid_repeat)
         traj_lengths = dropdims(count(isfinite, S0, dims=2),dims=2)
         ans = find_first_duplicated_central_energies(S0, traj_lengths)
     end
-    return S0
+
+    # In the end we check that all trajectories up to minimum(traj_lengths) are matching the 
+    # initial central energies and the remaining entries all correspond to missing data which 
+    # we encode as 'Inf'
+    min_traj, max_traj = extrema(traj_lengths)
+    Smin,Smax = extrema(filter(isfinite, S0))
+    nreplicas = first(size(S0))
+    S0_theory = collect(range(Smin,Smax,length=nreplicas))
+    for traj in 1:min_traj
+        @assert isapprox(S0_theory,sort(S0[:,traj]))
+    end
+    for traj in min_traj+1:max_traj
+        @assert all(isequal(Inf),S0[:,traj])
+    end
+    # Then we only return the good, matching trajectories
+    return S0[:,1:min_traj]
 end
 
-fid = h5open("output/test.hdf5")
-fid_repeat = fid["5x64_19repeats_95replicas/13/"]
-S0 = remove_non_matching_trajectories_in_replicas(fid_repeat)
+fid = h5open("test/test_data/LLR_5x64_95_Rep13.hdf5")
+fid_repeat = fid["5x64_1repeats_95replicas/13/"]
+
+S0        = remove_non_matching_trajectories_in_replicas(fid_repeat)
+S0_sorted = sort(S0,dims=1)
+
+Smin,Smax = extrema(filter(isfinite, S0))
+nreplicas = first(size(S0))
+S0_theory = collect(range(Smin,Smax,length=nreplicas))
+
+@testset "Removal of corrupted data for non-matching trajectory lengths across replicas" begin 
+    @test all(allequal ,eachslice(S0_sorted,dims=1))
+    @test all(issorted ,eachslice(S0_sorted,dims=2))
+    @test all(isapprox(S0_theory) ,eachslice(S0_sorted,dims=2))
+end
