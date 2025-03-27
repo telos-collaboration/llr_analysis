@@ -7,8 +7,9 @@ newpath = "./output/LLRout"
 clean_llr_directory(path,newpath;checkpoint_pattern=nothing,last_ranges=nothing,warn=false)
 path    = newpath
 
-h5fileSp4_new        = "output/test.hdf5"
-h5fileSp4_sorted_new = "output/test_sorted.hdf5"
+isdir("./output") || mkdir("./output")
+h5file        = "output/test.hdf5"
+h5file_sorted = "output/test_sorted.hdf5"
 
 function llr_alldirs_hdf5(path,base_dir,file)
     for dir in readdir(joinpath(path,base_dir),join=true)
@@ -16,8 +17,8 @@ function llr_alldirs_hdf5(path,base_dir,file)
     end
 end
 
-isfile(h5fileSp4_new) && rm(h5fileSp4_new)
-llr_alldirs_hdf5(path,"",h5fileSp4_new)
-isfile(h5fileSp4_sorted_new) && rm(h5fileSp4_sorted_new)
-sort_by_central_energy_to_hdf5(h5fileSp4_new, h5fileSp4_sorted_new)
+isfile(h5file) && rm(h5file)
+llr_alldirs_hdf5(path,"",h5file)
+isfile(h5file_sorted) && rm(h5file_sorted)
+sort_by_central_energy_to_hdf5(h5file, h5file_sorted)
 include("trajectory_overview.jl")
