@@ -2,6 +2,7 @@ using Pkg; Pkg.activate(".")
 using LLRParsing
 using HiRepOutputCleaner
 
+path = "/home/fabian/Documents/Physics/Data/DataLLR/llr_sp4_cleaned"
 path    = "/home/fabian/Documents/Physics/Data/DataCSD/CSD3/"
 newpath = "./output/LLRout" 
 clean_llr_directory(path,newpath;checkpoint_pattern=nothing,last_ranges=nothing,warn=false)
