@@ -168,18 +168,24 @@ function sort_by_central_energy_to_hdf5(h5file_in,h5file_out;skip_ens=nothing)
             p     = read_non_matching_trajectory(h5dset[run][j],Float64;key="plaq")
             is_rm = read_non_matching_trajectory(h5dset[run][j],Bool   ;key="is_rm")
             S     = read_non_matching_trajectory(h5dset[run][j],Float64;key="S0")
-            # check for mismatch in the number of trajectories
-            # (ntraj will match for a, p, is_rm and S which is already checked while parsing)
+            # Check if we have any mismatches of the unsorted central energies
+            data_healthy = all(allequal ,eachslice(sort(S,dims=1),dims=1))
+            if !data_healthy
+                # check for mismatch in the number of trajectories
+                # (ntraj will match for a, p, is_rm and S which is already checked while parsing)
+                ntraj = dropdims(count(isfinite, S, dims=2),dims=2)
+                n_traj_min, n_traj_max = extrema(ntraj)
+                if n_traj_min < n_traj_max
+                    @warn "Run $run, repeat $j: Non-matching trajectory length across replicas. Non-matching entries will be discarded."
+                end
+                # remove spurious entries from the trajectories
+                S, steps, inds = remove_non_matching_trajectories_in_replicas(S)
+                remove_all_trajectories!(a,steps,inds)
+                remove_all_trajectories!(p,steps,inds)
+                remove_all_trajectories!(is_rm,steps,inds)
+            end
             ntraj = dropdims(count(isfinite, S, dims=2),dims=2)
             n_traj_min, n_traj_max = extrema(ntraj)
-            if n_traj_min < n_traj_max
-                @warn "Run $run, repeat $j: Non-matching trajectory length across replicas. Non-matching entries will be discarded."
-            end
-            # remove spurious entries from the trajectories
-            S, steps, inds = remove_non_matching_trajectories_in_replicas(S)
-            remove_all_trajectories!(a,steps,inds)
-            remove_all_trajectories!(p,steps,inds)
-            remove_all_trajectories!(is_rm,steps,inds)
             ## Sort by the central action to account for different swaps
             for j in 1:n_traj_min
                 perm = sortperm(S[:,j])
