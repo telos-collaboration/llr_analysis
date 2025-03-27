@@ -175,8 +175,13 @@ function sort_by_central_energy_to_hdf5(h5file_in,h5file_out;skip_ens=nothing)
             if n_traj_min < n_traj_max
                 @warn "Run $run, repeat $j: Non-matching trajectory length across replicas. Non-matching entries will be discarded."
             end
+            # remove spurious entries from the trajectories
+            S, steps, inds = remove_non_matching_trajectories_in_replicas(S)
+            remove_all_trajectories!(a,steps,inds)
+            remove_all_trajectories!(p,steps,inds)
+            remove_all_trajectories!(is_rm,steps,inds)
             ## Sort by the central action to account for different swaps
-            for j in 1:n_traj_max
+            for j in 1:n_traj_min
                 perm = sortperm(S[:,j])
                 S[:,j] = S[perm,j]
                 a[:,j] = a[perm,j]
@@ -188,10 +193,7 @@ function sort_by_central_energy_to_hdf5(h5file_in,h5file_out;skip_ens=nothing)
             S = S[:,1:n_traj_min]
             is_rm = is_rm[:,1:n_traj_min]
             ## make sure that the sorted central action alwas matches, if not, discard the repeat
-            keep_repeat = true
-            for i in 1:N_replicas 
-                keep_repeat = keep_repeat*allequal(S[i,:])
-            end
+            keep_repeat = all(allequal ,eachslice(S,dims=1))
             if keep_repeat
                 for i in 1:N_replicas
                     dset    = create_group(h5dset_out, joinpath(run,"$j","Rep_$(i-1)"))

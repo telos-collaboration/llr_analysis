@@ -20,12 +20,12 @@ end
 # Sometimes we have additional data corruption that leads to a non-matching trajectory lengths
 # In order to identify the spurious data, we compare the central energies for every trajectory
 # We then remove duplicates  and/or non-matching central energies from the replica with the longer trajectory
-function find_first_duplicated_central_energies(S0,traj_lengths)
+function find_first_duplicated_central_energies(S0,traj_lengths;i_min=1)
     Smin,Smax = extrema(filter(isfinite, S0))
     nreplicas = first(size(S0))
     S0_theory = collect(range(Smin,Smax,length=nreplicas))
     traj_min  = minimum(traj_lengths)
-    for i in 1:traj_min
+    for i in i_min:traj_min
         if !isapprox(S0_theory,sort(S0[:,i]))
             # identify duplicate indices and then
             # remove those that correspond to the longer trajectories
@@ -42,6 +42,11 @@ function remove_trajectories!(data::Matrix{T},traj_step,replica_indices) where T
         # and we choose typemax(T) ('Inf' for Float64) to represent that, because it automatically places the entry
         # at the end of the array when sorting it.
         data[replica_ind,end] = typemax(T)
+    end
+end
+function remove_all_trajectories!(data::Matrix{T},traj_step_array,replica_indices_array) where T
+    for (traj_step,replica_indices) in zip(traj_step_array,replica_indices_array)
+        remove_trajectories!(data,traj_step,replica_indices)
     end
 end
 function remove_non_matching_trajectories_in_replicas(fid_repeat)
