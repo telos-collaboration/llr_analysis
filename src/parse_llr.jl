@@ -171,19 +171,13 @@ function sort_by_central_energy_to_hdf5(h5file_in,h5file_out;skip_ens=nothing)
             # Check if we have any mismatches of the unsorted central energies
             data_healthy = all(allequal ,eachslice(sort(S,dims=1),dims=1))
             if !data_healthy
-                # check for mismatch in the number of trajectories
-                # (ntraj will match for a, p, is_rm and S which is already checked while parsing)
-                ntraj = dropdims(count(isfinite, S, dims=2),dims=2)
-                n_traj_min, n_traj_max = extrema(ntraj)
-                if n_traj_min < n_traj_max
-                    @warn "Run $run, repeat $j: Non-matching trajectory length across replicas. Non-matching entries will be discarded."
-                end
-                # remove spurious entries from the trajectories
-                S, steps, inds = remove_non_matching_trajectories_in_replicas(S)
-                remove_all_trajectories!(a,steps,inds)
-                remove_all_trajectories!(p,steps,inds)
-                remove_all_trajectories!(is_rm,steps,inds)
+                traj_lengths = dropdims(count(isfinite, S, dims=2),dims=2)
+                last_healthy_traj_p1, inds = find_first_duplicated_central_energies(S, traj_lengths)
+                S = S[:,1:last_healthy_traj_p1-1]
+                @warn "Run $run, repeat $j: Discarded data after step $(last_healthy_traj_p1-1)"
+                data_healthy = all(allequal ,eachslice(sort(S,dims=1),dims=1))
             end
+
             ntraj = dropdims(count(isfinite, S, dims=2),dims=2)
             n_traj_min, n_traj_max = extrema(ntraj)
             ## Sort by the central action to account for different swaps
@@ -199,20 +193,16 @@ function sort_by_central_energy_to_hdf5(h5file_in,h5file_out;skip_ens=nothing)
             S = S[:,1:n_traj_min]
             is_rm = is_rm[:,1:n_traj_min]
             ## make sure that the sorted central action alwas matches, if not, discard the repeat
-            keep_repeat = all(allequal ,eachslice(S,dims=1))
-            if keep_repeat
-                for i in 1:N_replicas
-                    dset    = create_group(h5dset_out, joinpath(run,"$j","Rep_$(i-1)"))
-                    dset_in = h5dset[joinpath(run,"$j","Rep_$(i-1)")]
-                    dS0 = read(dset_in,"dS0")
-                    write(dset,"S0_sorted",  S[i,:])
-                    write(dset,"a_sorted",   a[i,:])
-                    write(dset,"plaq_sorted",p[i,:])
-                    write(dset,"is_rm"      ,is_rm[i,:])
-                    write(dset,"dS0"        ,dS0)
-                end
-            else
-                @warn "Run $run, repeat $j: Central energies do not always match => discarded "
+            @assert data_healthy
+            for i in 1:N_replicas
+                dset    = create_group(h5dset_out, joinpath(run,"$j","Rep_$(i-1)"))
+                dset_in = h5dset[joinpath(run,"$j","Rep_$(i-1)")]
+                dS0 = read(dset_in,"dS0")
+                write(dset,"S0_sorted",  S[i,:])
+                write(dset,"a_sorted",   a[i,:])
+                write(dset,"plaq_sorted",p[i,:])
+                write(dset,"is_rm"      ,is_rm[i,:])
+                write(dset,"dS0"        ,dS0)
             end
         end
         write(h5dset_out,joinpath(run,"N_replicas"),N_replicas)
