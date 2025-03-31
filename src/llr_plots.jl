@@ -58,7 +58,7 @@ function a_vs_central_action_plot!(plt,h5dset,run;index=nothing,highlight_index=
     Nl = read(h5dset[run],"Nl")
     V  = Nl^3 * Nt
     up = S0/(6V)
-    plot!(plt,up,a0,yerr=Δa0,marker=:auto,label="ΔE=$(round(2(S0[2]-S0[1])/6V,sigdigits=1))")
+    plot!(plt,up,a0,yerr=Δa0,marker=:auto,label="$Nt×$(Nl) (ΔE=$(round(2(S0[2]-S0[1])/6V,sigdigits=1)))")
     if !isnothing(highlight_index)
         mid = up[highlight_index]
         del = (up[highlight_index+1] - up[highlight_index])/2
