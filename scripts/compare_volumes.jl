@@ -18,15 +18,24 @@ runs = keys(h5id)
 runsNt4 = filter(contains("4x"),runs)
 runsNt5 = filter(contains("5x"),runs)
 runsNt6 = filter(contains("6x"),runs)
+runsNt4_v2 = filter(contains("4x"),runs)[[2,4,5,6,8]]
+runsNt5_v2 = filter(contains("5x"),runs)[[1,5,6,7]]  
 
 pltNt4 = a_vs_central_action_plot(h5id,runsNt4,lens=false)
 pltNt5 = a_vs_central_action_plot(h5id,runsNt5,lens=false)
 pltNt6 = a_vs_central_action_plot(h5id,runsNt6,lens=false)
+pltNt4_v2 = a_vs_central_action_plot(h5id,runsNt4_v2,lens=false)
+pltNt5_v2 = a_vs_central_action_plot(h5id,runsNt5_v2,lens=false)
 
 plot!(pltNt4,xlims=(0.569,0.574) ,ylims=(7.333,7.345),legend=:bottomright) # Nt4
 plot!(pltNt5,xlims=(0.5888,0.590),ylims=(7.487,7.492),legend=:bottomright) # Nt5
 plot!(pltNt6,legend=:bottomright) # pltNt6
+plot!(pltNt4_v2,xlims=(0.569,0.574) ,ylims=(7.333,7.345),legend=:bottomright) # Nt4
+plot!(pltNt5_v2,xlims=(0.5888,0.590),ylims=(7.487,7.492),legend=:bottomright) # Nt5
 
-display(pltNt4)
-display(pltNt5)
-display(pltNt6)
+isdir("plots") || mkdir("plots")
+savefig(pltNt4,joinpath("plots","Nt4.pdf"))
+savefig(pltNt5,joinpath("plots","Nt5.pdf"))
+savefig(pltNt6,joinpath("plots","Nt6.pdf"))
+savefig(pltNt4_v2,joinpath("plots","Nt4_selected.pdf"))
+savefig(pltNt5_v2,joinpath("plots","Nt5_selected.pdf"))
