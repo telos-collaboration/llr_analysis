@@ -39,6 +39,17 @@ function parse_dS0(file)
     end
     return dS0
 end
+function parse_initial_a(file)
+    a0 = NaN
+    pattern = "[MAIN][0]LLR Initial a"
+    for line in eachline(file)
+        if startswith(line,pattern)
+            a0 = parse(Float64,line[length(pattern)+1:end])
+            return a0
+        end
+    end
+    return a0
+end
 function _parse_data!(array,string;n)
     opts = Parsers.Options(delim=' ', ignorerepeated=true)
     io = IOBuffer(string)
@@ -138,9 +149,11 @@ function llr_dir_hdf5(dir,h5file;suffix="")
     @showprogress desc="parsing $name" for repeat in repeats
         for rep in replica_dirs[repeat]
             file = joinpath(dir, repeat,rep,"out_0")
+            a0   = parse_initial_a(file)
             dS0, S0, plaq, a, is_rm, S0_fxa, a_fxa, poly = parse_llr_corrupted(file)
             write(fid,joinpath(name,repeat,rep,"dS0"),dS0)
             write(fid,joinpath(name,repeat,rep,"S0"),S0)
+            write(fid,joinpath(name,repeat,rep,"a0"),a0)
             write(fid,joinpath(name,repeat,rep,"plaq"),plaq)
             write(fid,joinpath(name,repeat,rep,"a"),a)
             write(fid,joinpath(name,repeat,rep,"is_rm"),is_rm)
@@ -198,11 +211,13 @@ function sort_by_central_energy_to_hdf5(h5file_in,h5file_out;skip_ens=nothing)
                 dset    = create_group(h5dset_out, joinpath(run,"$j","Rep_$(i-1)"))
                 dset_in = h5dset[joinpath(run,"$j","Rep_$(i-1)")]
                 dS0 = read(dset_in,"dS0")
+                a0  = read(dset_in,"a0")
                 write(dset,"S0_sorted",  S[i,:])
                 write(dset,"a_sorted",   a[i,:])
                 write(dset,"plaq_sorted",p[i,:])
                 write(dset,"is_rm"      ,is_rm[i,:])
                 write(dset,"dS0"        ,dS0)
+                write(dset,"a0"         ,a0)
             end
         end
         write(h5dset_out,joinpath(run,"N_replicas"),N_replicas)

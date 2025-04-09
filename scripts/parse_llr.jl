@@ -2,10 +2,10 @@ using Pkg; Pkg.activate(".")
 using LLRParsing
 using HiRepOutputCleaner
 
-path = "/home/fabian/Documents/Physics/Data/DataCSD/CSD3/"
 path = "/home/fabian/Documents/Physics/Data/DataLLR/llr_sp4_cleaned"
+path = "/home/fabian/Documents/Physics/Data/DataCSD/CSD3/"
 newpath = "./output/LLRout"
-clean_llr_directory(path,newpath;checkpoint_pattern=nothing,last_ranges=nothing,warn=false)
+#clean_llr_directory(path,newpath;checkpoint_pattern=nothing,last_ranges=nothing,warn=false)
 path    = newpath
 
 isdir("./output") || mkdir("./output")
@@ -23,4 +23,4 @@ isfile(h5file) && rm(h5file)
 isfile(h5file_sorted) && rm(h5file_sorted)
 llr_alldirs_hdf5(path,"",h5file)
 sort_by_central_energy_to_hdf5(h5file, h5file_sorted)
-include("trajectory_overview.jl")
+#include("trajectory_overview.jl")
