@@ -1,8 +1,8 @@
-function a_vs_central_action(h5dset,run;ind=nothing)
+function a_vs_central_action_repeats(h5dset,run;ind=nothing)
     N_replicas = read(h5dset[run],"N_replicas")
     N_repeats = read(h5dset[run],"N_repeats")
-    a_last = zeros(N_replicas,N_repeats)
-    S_last = zeros(N_replicas,N_repeats)
+    a = zeros(N_replicas,N_repeats)
+    S = zeros(N_replicas,N_repeats)
     repeat_indices = Int[]
     # read all last elements for a and the central action
     for i in 1:N_replicas, j in 1:N_repeats
@@ -11,17 +11,20 @@ function a_vs_central_action(h5dset,run;ind=nothing)
             if n_steps > 0
                 ind = isnothing(ind) ? n_steps : min(ind,n_steps)
                 ind = max(1,ind)
-                a_last[i,j] = h5dset[run]["$(j-1)/Rep_$(i-1)/a_sorted"][ind]
-                S_last[i,j] = h5dset[run]["$(j-1)/Rep_$(i-1)/S0_sorted"][ind]
+                a[i,j] = h5dset[run]["$(j-1)/Rep_$(i-1)/a_sorted"][ind]
+                S[i,j] = h5dset[run]["$(j-1)/Rep_$(i-1)/S0_sorted"][ind]
                 append!(repeat_indices,j)
             end
         end
     end
     N_eff_repeats = length(repeat_indices)
-    # average over all repeats
-    S0  = S_last[:,first(repeat_indices)]
-    a0  = dropdims(mean(a_last[:,repeat_indices],dims=2),dims=2)
-    Δa0 = dropdims(std(a_last[:,repeat_indices],dims=2),dims=2)/sqrt(N_eff_repeats)
+    return a, S, ind, N_eff_repeats
+end
+function a_vs_central_action(h5dset,run;ind=nothing)
+    a, S, ind, N_eff_repeats = a_vs_central_action_repeats(h5dset,run;ind)
+    S0  = S[:,first(repeat_indices)]
+    a0  = dropdims(mean(a[:,repeat_indices],dims=2),dims=2)
+    Δa0 = dropdims( std(a[:,repeat_indices],dims=2),dims=2)/sqrt(N_eff_repeats)
     return a0, Δa0, S0, ind
 end
 function a_vs_central_action_plot(h5dset,runs;indices)

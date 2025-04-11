@@ -13,6 +13,7 @@ function read_initial_a(h5dset,run;repeat)
 end
 
 dir   = "/home/fabian/Documents/Physics/Data/DataSunbird/Sunbird/LLR/LLR_4x20_40" 
+dir   = "/home/fabian/Dokumente/Physics/Data/DataSunbird/Sunbird/LLR/LLR_4x20_40" 
 file  = "test_small.hdf5"
 file0 = "test_small_sorted.hdf5"
 #llr_dir_hdf5(dir,file)
@@ -24,6 +25,6 @@ a0, u0 = read_initial_a(h5dset,runs[1];repeat="0")
 
 using Plots
 plt = scatter(u0,a0,label="intial a")
-LLRParsing.a_vs_central_action_plot!(plt,h5dset,runs[1];lens=false,index=1,highlight_index=nothing)
-LLRParsing.a_vs_central_action_plot!(plt,h5dset,runs[1];lens=false,index=nothing,highlight_index=nothing)
-display(plt)
+#LLRParsing.a_vs_central_action_plot!(plt,h5dset,runs[1];lens=false,index=1,highlight_index=nothing)
+#LLRParsing.a_vs_central_action_plot!(plt,h5dset,runs[1];lens=false,index=nothing,highlight_index=nothing)
+#display(plt)
