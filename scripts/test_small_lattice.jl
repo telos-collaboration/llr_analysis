@@ -25,6 +25,11 @@ a0, u0 = read_initial_a(h5dset,runs[1];repeat="0")
 
 using Plots
 plt = scatter(u0,a0,label="intial a")
-#LLRParsing.a_vs_central_action_plot!(plt,h5dset,runs[1];lens=false,index=1,highlight_index=nothing)
-#LLRParsing.a_vs_central_action_plot!(plt,h5dset,runs[1];lens=false,index=nothing,highlight_index=nothing)
-#display(plt)
+
+a, S   = LLRParsing.a_vs_central_action_repeats(h5dset,runs[1];ind=nothing)[1:2]
+LLRParsing.a_vs_central_action_plot!(plt,a[:,1],zero(a[:,1]),S[:,1],4,20;lens=false)
+LLRParsing.a_vs_central_action_plot!(plt,a[:,2],zero(a[:,2]),S[:,2],4,20;lens=false)
+
+a, S   = LLRParsing.a_vs_central_action_repeats(h5dset,runs[1];ind=1)[1:2]
+LLRParsing.a_vs_central_action_plot!(plt,a[:,1],zero(a[:,1]),S[:,1],4,20;lens=false)
+LLRParsing.a_vs_central_action_plot!(plt,a[:,2],zero(a[:,2]),S[:,2],4,20;lens=false)
