@@ -55,11 +55,11 @@ function _lens_location(a0, Δa0, up)
     xlms = up[xinds]
     return ylms, xlms, [dip, peak], up[[p_ind, m_ind + d_ind]]
 end
-function a_vs_central_action_plot!(plt,h5dset,run;index=nothing,highlight_index=nothing,lens=true)
+function a_vs_central_action_plot!(plt,h5dset,run;index=nothing,kws...)
     a0, Δa0, S0, ind = a_vs_central_action(h5dset,run;ind=index)
     Nt = read(h5dset[run],"Nt")
     Nl = read(h5dset[run],"Nl")
-    return a_vs_central_action_plot!(plt,a0, Δa0, S0, Nt, Nl;highlight_index=nothing,lens=true)
+    return a_vs_central_action_plot!(plt,a0, Δa0, S0, Nt, Nl;kws...)
 end
 function a_vs_central_action_plot!(plt,a0, Δa0, S0, Nt, Nl;highlight_index=nothing,lens=true)
     V  = Nl^3 * Nt
