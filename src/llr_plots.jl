@@ -18,7 +18,7 @@ function a_vs_central_action_repeats(h5dset,run;ind=nothing)
         end
     end
     N_eff_repeats = length(repeat_indices)
-    return a, S[:,repeat_indices], ind, N_eff_repeats
+    return a[:,repeat_indices], S[:,repeat_indices], ind, N_eff_repeats
 end
 function a_vs_central_action(h5dset,run;ind=nothing)
     a, S, ind, N_eff_repeats = a_vs_central_action_repeats(h5dset,run;ind)
