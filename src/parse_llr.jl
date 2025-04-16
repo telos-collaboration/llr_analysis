@@ -89,9 +89,11 @@ function parse_llr(file; skiplines=Int[])
         end
         if startswith(line,"[MAIN][0]")
             if startswith(line,"[MAIN][0]Robins Monro update done.")
-                is_fxa = true
-                append!(S0_fxa,S0[end])
-                append!(a_fxa,a[end])
+                if !isempty(S0) && !isempty(S0) 
+                    is_fxa = true
+                    append!(S0_fxa,S0[end])
+                    append!(a_fxa,a[end])
+                end
             end
             if occursin(patternPl,line)
                 m   = match(patternPl,line)
