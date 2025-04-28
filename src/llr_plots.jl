@@ -17,14 +17,15 @@ function a_vs_central_action_repeats(h5dset,run;ind=nothing)
             end
         end
     end
-    N_eff_repeats = length(repeat_indices)
-    return a[:,repeat_indices], S[:,repeat_indices], ind, N_eff_repeats
+    repeat_indices = unique(repeat_indices)
+    return a[:,repeat_indices], S[:,repeat_indices], ind
 end
 function a_vs_central_action(h5dset,run;ind=nothing)
-    a, S, ind, N_eff_repeats = a_vs_central_action_repeats(h5dset,run;ind)
+    a, S, ind = a_vs_central_action_repeats(h5dset,run;ind)
+    N   = size(a)[2]
     S0  = S[:,1]
     a0  = dropdims(mean(a,dims=2),dims=2)
-    Δa0 = dropdims( std(a,dims=2),dims=2)/sqrt(N_eff_repeats)
+    Δa0 = dropdims( std(a,dims=2),dims=2)/sqrt(N)
     return a0, Δa0, S0, ind
 end
 function a_vs_central_action_plot(h5dset,runs;indices)
