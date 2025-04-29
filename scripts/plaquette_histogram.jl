@@ -1,6 +1,7 @@
 using HDF5
 using LLRParsing
 using Plots
+using Statistics
 # In python, we are using the following precision
 # Mpmath settings:
 #   mp.prec = 53                [default: 53]
@@ -45,36 +46,42 @@ function log_rho(E, S, dS, a)
     @assert !iszero(log_ρ)
     return Float64(log_ρ)
 end
-function probability_density(a, S, beta, V)
+function probability_density(a, S, beta, V; nbins=1000)
     up   = S/(6V)
     dS   = S[2] - S[1]
     δup  = dS/(6V)
-    ups  = range(minimum(up) + δup, maximum(up), length=1000)
-    E    = @. ups*6V
+    ups  = range(minimum(up) + δup, maximum(up), length=nbins)
+    E    = @. ups*6V 
 
-    logZ = log_partition_function(a, S, beta)
-    log_ρ = log_rho.(E, Ref(S), dS, Ref(a))
-    probability_density = @. exp(log_ρ + beta*ups*V*6 - logZ)
+    repeats = last(size(a))
+    probability_density = zeros(nbins,repeats)
+    
+    for i in 1:repeats
+        logZ = log_partition_function(a[:,i], S, beta)
+        log_ρ = log_rho.(E, Ref(S), dS, Ref(a[:,i]))
+        probability_density[:,i] = @. exp(log_ρ + beta*ups*V*6 - logZ)
+    end
     return ups, probability_density
+end
+function probability_density(fid, run, beta; kws...)
+    a, S_all = LLRParsing.a_vs_central_action_repeats(fid,run;ind=nothing)[1:2]
+    Nl   = read(fid[run],"Nl")
+    Nt   = read(fid[run],"Nt")
+    V    = Nl^3 * Nt
+    S    = unique(S_all) 
+    
+    ups,prob = probability_density(a, S, beta, V; kws...)
+    P  = mean(prob,dims=2)
+    ΔP = std(prob,dims=2)/sqrt(size(prob)[2])
+    return ups, P, ΔP 
 end
 
 file = "output/SU3_llr_sorted.hdf5"
 fid  = h5open(file)
+run  = "4x20_20repeats_108replicas"
+beta = 5.69187
 
-keys(fid)
+ups,P,ΔP = probability_density(fid, run, beta)
+plot(ups,P,ribbon=ΔP)
 
-run     = "4x20_20repeats_108replicas"
-repeat  = "0"
-replica = "Rep_0"
 
-# I have checked that those are the correct values that David's code is using
-a_all, S_all = LLRParsing.a_vs_central_action_repeats(fid,run;ind=nothing)[1:2]
-Nl   = read(fid[run],"Nl")
-Nt   = read(fid[run],"Nt")
-V    = Nl^3 * Nt
-a    = a_all[:,end]
-S    = S_all[:,end]
-beta = 5.69193
-
-ups,prob = probability_density(a, S, beta, V)
-plot(ups,prob)
