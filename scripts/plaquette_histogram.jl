@@ -3,7 +3,7 @@ using LLRParsing
 using Plots
 using Statistics
 using LaTeXStrings
-gr(fontfamily="Computer Modern",legend=:outerright,frame=:box,titlefontsize=11,legendfontsize=9,labelfontsize=12,left_margin=0Plots.mm)
+gr(fontfamily="Computer Modern",legend=:topright,frame=:box,titlefontsize=11,legendfontsize=9,labelfontsize=12,left_margin=0Plots.mm)
 
 # In python, we are using the following precision
 # Mpmath settings:
@@ -49,7 +49,7 @@ function log_rho(E, S, dS, a)
     @assert !iszero(log_ρ)
     return Float64(log_ρ)
 end
-function probability_density(a, S, beta, V; nbins=10000)
+function probability_density(a, S, beta, V; nbins=1000)
     up   = S/(6V)
     dS   = S[2] - S[1]
     δup  = dS/(6V)
@@ -72,11 +72,12 @@ function probability_density(fid, run, beta; kws...)
     Nt   = read(fid[run],"Nt")
     V    = Nl^3 * Nt
     S    = unique(S_all) 
+    dS   = S[2] - S[1]
     
     ups,prob = probability_density(a, S, beta, V; kws...)
     P  = mean(prob,dims=2)
     ΔP = std(prob,dims=2)/sqrt(size(prob)[2])
-    return ups, P, ΔP, V
+    return ups, P, ΔP, V, dS
 end
 
 file = "output/test_sorted.hdf5"
@@ -84,9 +85,14 @@ fid  = h5open(file)
 beta = 7.48969
 xl   = (0.5885,0.5905)
 
-plt = plot(xlabel=L"u_p")
+plt = plot(xlabel=L"u_p",ylabel=L"P_{\beta}(u_p)",yticks=:none,left_margin=5Plots.mm)
 for run in keys(fid)
-    ups,P,ΔP,V = probability_density(fid, run, beta)
-    plot!(plt,ups,P*6V,ribbon=ΔP*6V,label=run,xlims=xl)
+    Nl   = read(fid[run],"Nl")
+    Nt   = read(fid[run],"Nt")
+    V    = Nl^3 * Nt
+
+    ups,P,ΔP,V,dS = probability_density(fid, run, beta)
+    label = "$(Nt)x$(Nl): ΔE=$(round(2(dS)/6V,sigdigits=1))"
+    plot!(plt,ups,P*6V;label,ribbon=ΔP*6V,xlims=xl)
 end
-plt
+savefig(plt,"Nt5_probability_density.pdf")
