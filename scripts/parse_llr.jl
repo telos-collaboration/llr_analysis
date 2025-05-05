@@ -15,10 +15,8 @@ h5file_sorted = "output/test_Nt5_sorted.hdf5"
 
 function llr_alldirs_hdf5(path,base_dir,file)
     for dir in readdir(joinpath(path,base_dir),join=true)
-        if occursin("5x",basename(dir))
-            @show basename(dir)
-            llr_dir_hdf5(dir,file)
-        end
+        @show basename(dir)
+        llr_dir_hdf5(dir,file)
     end
 end
 
