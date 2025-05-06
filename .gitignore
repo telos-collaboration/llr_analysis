@@ -1,3 +1,6 @@
+assets/
+data_assets/
+tmp/
 *.h5
 *.hdf5
 *.zst
@@ -5,6 +8,5 @@
 *.txt
 *.pdf
 *.svg
-output/
-tmp/
+!metadata/runs.csv
 !test/test_data/*

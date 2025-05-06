@@ -1,17 +1,13 @@
 using Pkg; Pkg.activate(".")
 using LLRParsing
 using HiRepOutputCleaner
+using DelimitedFiles
 
 path = "/home/fabian/Documents/Physics/Data/" 
-dirs = [
-    "DataSunbird/Sunbird/LLR/LLR_5x48_48_v2",
-    "DataTursa/LLR/LLR_5x80_64",
-    "DataCSD/CSD3/LLR_5x64_95",
-    "DataCSD/CSD3/LLR_5x72_95",
-]
+dirs = readdlm("metadata/runs.csv",',',skipstart=1)
 
-h5file        = "output/test_Nt5.hdf5"
-h5file_sorted = "output/test_Nt5_sorted.hdf5"
+h5file        = "data_assets/test_Nt5.hdf5"
+h5file_sorted = "data_assets/test_Nt5_sorted.hdf5"
 
 function llr_alldirs_hdf5(path,dirs,h5file)
     for dir in joinpath.(Ref(path),dirs)
