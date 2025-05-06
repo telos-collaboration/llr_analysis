@@ -6,4 +6,5 @@
 *.pdf
 *.svg
 output/
+tmp/
 !test/test_data/*

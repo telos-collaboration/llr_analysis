@@ -184,14 +184,14 @@ function sort_by_central_energy_to_hdf5(h5file_in,h5file_out;skip_ens=nothing)
             is_rm = read_non_matching_trajectory(h5dset[run][j],Bool   ;key="is_rm")
             S     = read_non_matching_trajectory(h5dset[run][j],Float64;key="S0")
             # Check if we have any mismatches of the unsorted central energies
-            #data_healthy = all(allequal ,eachslice(sort(S,dims=1),dims=1))
-            #if !data_healthy
-            #    traj_lengths = dropdims(count(isfinite, S, dims=2),dims=2)
-            #    last_healthy_traj_p1, inds = find_first_duplicated_central_energies(S, traj_lengths)
-            #    S = S[:,1:last_healthy_traj_p1-1]
-            #    @warn "Run $run, repeat $j: Discarded data after step $(last_healthy_traj_p1-1)"
-            #    data_healthy = all(allequal ,eachslice(sort(S,dims=1),dims=1))
-            #end
+            data_healthy = all(allequal ,eachslice(sort(S,dims=1),dims=1))
+            if !data_healthy
+                traj_lengths = dropdims(count(isfinite, S, dims=2),dims=2)
+                last_healthy_traj_p1, inds = find_first_duplicated_central_energies(S, traj_lengths)
+                S = S[:,1:last_healthy_traj_p1-1]
+                @warn "Run $run, repeat $j: Discarded data after step $(last_healthy_traj_p1-1)"
+                data_healthy = all(allequal ,eachslice(sort(S,dims=1),dims=1))
+            end
 
             ntraj = dropdims(count(isfinite, S, dims=2),dims=2)
             n_traj_min, n_traj_max = extrema(ntraj)
@@ -207,8 +207,8 @@ function sort_by_central_energy_to_hdf5(h5file_in,h5file_out;skip_ens=nothing)
             p = p[:,1:n_traj_min]
             S = S[:,1:n_traj_min]
             is_rm = is_rm[:,1:n_traj_min]
-            ## make sure that the sorted central action alwas matches, if not, discard the repeat
-            #@assert data_healthy
+            # make sure that the sorted central action alwas matches, if not, discard the repeat
+            @assert data_healthy
             for i in 1:N_replicas
                 dset    = create_group(h5dset_out, joinpath(run,"$j","Rep_$(i-1)"))
                 dset_in = h5dset[joinpath(run,"$j","Rep_$(i-1)")]
