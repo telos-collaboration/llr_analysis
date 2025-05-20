@@ -3,7 +3,7 @@ using Plots
 using HDF5
 gr(fontfamily="Computer Modern",legend=:topright,frame=:box,titlefontsize=11,legendfontsize=9,labelfontsize=12,left_margin=0Plots.mm)
 
-h5file_out = "output/test_Nt5_sorted.hdf5"
+h5file_out = "data_assets/test_Nt5_sorted.hdf5"
 h5dset = h5open(h5file_out)
 runs = keys(h5dset)
 

@@ -4,7 +4,7 @@ using Plots
 using LaTeXStrings
 gr(fontfamily="Computer Modern",legend=:topright,frame=:box,titlefontsize=11,legendfontsize=9,labelfontsize=12,left_margin=0Plots.mm)
 
-file = "output/test_Nt5_sorted.hdf5"
+file = "data_assets/test_Nt5_sorted.hdf5"
 fid  = h5open(file)
 runs = keys(fid)
 

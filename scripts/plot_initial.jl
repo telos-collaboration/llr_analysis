@@ -15,7 +15,7 @@ function read_initial_a(h5dset,run;repeat)
     return a0, u0
 end
 
-h5file_out = "output/test_sorted.hdf5"
+h5file_out = "data_assets/test_sorted.hdf5"
 h5dset = h5open(h5file_out)
 runs = keys(h5dset)
 repeat = "0"

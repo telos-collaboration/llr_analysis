@@ -11,7 +11,7 @@ function a_vs_central_action_plot!(plt,h5id,runs::Vector;kws...)
     return plt
 end     
 
-file = "output/test_sorted.hdf5"
+file = "data_assets/test_sorted.hdf5"
 h5id = h5open(file)
 runs = keys(h5id)
 

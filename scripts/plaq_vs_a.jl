@@ -2,7 +2,7 @@ using HDF5
 using LLRParsing
 using DelimitedFiles
 
-h5file_out = "output/test_sorted.hdf5"
+h5file_out = "data_assets/test_sorted.hdf5"
 h5dset = h5open(h5file_out,"r")
 
 for run in keys(h5dset)
@@ -15,6 +15,6 @@ for run in keys(h5dset)
 
     @assert issorted(up)
     data = hcat(a0,up)
-    writedlm("output/$run.txt",data,',')
+    writedlm("data_assets/$run.txt",data,',')
 end
 

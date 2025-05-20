@@ -80,7 +80,7 @@ function probability_density(fid, run, beta; kws...)
     return ups, P, ΔP, V, dS
 end
 
-file = "output/test_sorted.hdf5"
+file = "data_assets/test_sorted.hdf5"
 fid  = h5open(file)
 beta = 7.48969
 xl   = (0.5885,0.5905)

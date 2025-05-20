@@ -4,8 +4,8 @@ using LLRParsing
 path = "/media/fabian/Adata2TB/LLR/"
 path = "/home/fabian/Documents/Physics/Data/DataLLR/"
 
-h5fileSU3        = "output/SU3_llr.hdf5"
-h5fileSU3_sorted = "output/SU3_llr_sorted.hdf5"
+h5fileSU3        = "data_assets/SU3_llr.hdf5"
+h5fileSU3_sorted = "data_assets/SU3_llr_sorted.hdf5"
 
 function llr_alldirs_hdf5(path,base_dir,file)
     for dir in readdir(joinpath(path,base_dir),join=true)
