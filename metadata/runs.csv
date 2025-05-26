@@ -1,5 +1,3 @@
 runs,clean
-DataSunbird/Sunbird/LLR/LLR_5x48_48_v2,false
-DataTursa/LLR/LLR_5x80_64,false
-DataCSD/CSD3/LLR_5x64_95,true
-DataCSD/CSD3/LLR_5x72_95,false
+DataDiaL/LLR_DiaL3/LLR_5x80_64,true
+DataDiaL/SunbirdLLR/LLR_5x80_64,true
