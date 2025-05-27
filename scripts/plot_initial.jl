@@ -15,12 +15,15 @@ function read_initial_a(h5dset,run;repeat)
     return a0, u0
 end
 
-h5file_out = "data_assets/test_sorted.hdf5"
+h5file_out = "data_assets/test_Nt5_sorted.hdf5"
 h5dset = h5open(h5file_out)
-runs = keys(h5dset)
+runs   = keys(h5dset)
+run    = runs[2]
 repeat = "0"
 
-plt = LLRParsing.a_vs_central_action_plot!(plot(),h5dset,runs[4];lens=false,index=1,highlight_index=nothing)
-LLRParsing.a_vs_central_action_plot!(plt,h5dset,runs[4];lens=false,index=nothing,highlight_index=nothing)
-a0, u0 = read_initial_a(h5dset,runs[4];repeat)
+plt = LLRParsing.a_vs_central_action_plot!(plot(),h5dset,run;lens=false,index=nothing,highlight_index=nothing)
+#LLRParsing.a_vs_central_action_plot!(plt,h5dset,run;lens=false,index=nothing,highlight_index=nothing)
+a0, u0 = read_initial_a(h5dset,run;repeat)
 scatter!(u0,a0,label=L"inital $a_n$")
+savefig("initial_an_Vega.pdf")
+plt
