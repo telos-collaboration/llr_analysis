@@ -13,7 +13,7 @@ for run in runs
     Nreplicas        = read(h5dset[run],"N_replicas")
     a0, Δa0, S0, ind = a_vs_central_action(h5dset,run)
     replica_id       = Nreplicas÷2
-    repeat_id        = 0
+    repeat_id        = 1
     plt1 = full_trajectory_plot(h5dset,run,repeat_id,replica_id ,lens=false)
     plt2 = full_trajectory_plot(h5dset,run,repeat_id,Nreplicas-1,lens=false)
     plt3 = full_trajectory_plot(h5dset,run,repeat_id,1          ,lens=false)

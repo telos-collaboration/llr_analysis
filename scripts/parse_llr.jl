@@ -3,8 +3,12 @@ using LLRParsing
 using HiRepOutputCleaner
 using DelimitedFiles
 
+# specified directory
 path          = "/home/fabian/Documents/Physics/Data/" 
 metadata      = "metadata/runs.csv"
+# temporary directories after cleaning
+path          = "tmp" 
+metadata      = "metadata/tmp.csv"
 h5file        = "data_assets/test_Nt5.hdf5"
 h5file_sorted = "data_assets/test_Nt5_sorted.hdf5"
 
@@ -16,8 +20,8 @@ function llr_alldirs_hdf5(path,metadata_file,h5file)
             tmpdir = "./tmp/$(basename(dir))/"
             ispath(tmpdir) || mkpath(tmpdir)
             clean_llr_directory(dir,tmpdir;checkpoint_pattern=nothing,last_ranges=nothing,warn=false)
-            llr_dir_hdf5(tmpdir,h5file)
-            rm(tmpdir,recursive=true)
+            #llr_dir_hdf5(tmpdir,h5file)
+            #rm(tmpdir,recursive=true)
         else
             llr_dir_hdf5(dir,h5file)
         end

@@ -80,20 +80,22 @@ function probability_density(fid, run, beta; kws...)
     return ups, P, ΔP, V, dS
 end
 
-file = "data_assets/test_Nt5_sorted.hdf5"
-fid  = h5open(file)
-beta = 7.49012
-xl   = (0.5885,0.5905)
+file  = "data_assets/test_Nt5_sorted.hdf5"
+fid   = h5open(file)
+betas = [7.48967, 7.48970, 7.48982, 7.48969, 7.48973] #7.48973
+runs  = keys(fid)
 
 plt = plot(xlabel=L"u_p",ylabel=L"P_{\beta}(u_p)",yticks=:none,left_margin=5Plots.mm)
-for run in [keys(fid)]
+for (i,run) in enumerate(runs)
+    @show run
     Nl   = read(fid[run],"Nl")
     Nt   = read(fid[run],"Nt")
     V    = Nl^3 * Nt
+    xl   = (0.5885,0.5905)
+    beta = betas[i]
 
     ups,P,ΔP,V,dS = probability_density(fid, run, beta)
     label = "$(Nt)x$(Nl): ΔE=$(round(2(dS)/6V,sigdigits=1))"
     plot!(plt,ups,P*6V;label,ribbon=ΔP*6V,xlims=xl)
+    display(plt)
 end
-plt
-savefig("5x80_plaquette_histogram.svg")

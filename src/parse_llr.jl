@@ -169,7 +169,8 @@ end
 function sort_by_central_energy_to_hdf5(h5file_in,h5file_out;skip_ens=nothing)
     h5dset     = h5open(h5file_in,"r")
     h5dset_out = h5open(h5file_out,"cw")
-    @showprogress desc="sorting $h5file_in" for run in keys(h5dset)
+    for run in keys(h5dset)
+        println("sorting $h5file_in: $run")
         if !isnothing(skip_ens) 
             run ∈ skip_ens && continue
         end
