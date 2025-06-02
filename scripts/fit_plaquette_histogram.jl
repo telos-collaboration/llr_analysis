@@ -12,7 +12,7 @@ DoubleGaussian(x,A1,μ1,σ1,A2,μ2,σ2) = Gaussian(x,A1,μ1,σ1) + Gaussian(x,A2
 @. modelDG(x, p) = DoubleGaussian(x,p[1],p[2],p[3],p[4],p[5],p[6])
 function initial_param_double_gaussian(ups,P)
     δups = ups[2]-ups[1]
-    pks  = findmaxima(vec(P),50)
+    pks  = findmaxima(P,50)
     pks  = peakproms(pks)
     pks  = peakwidths(pks)
     p0   = [ pks.heights[1],ups[pks.indices[1]],pks.widths[1]*δups,
@@ -21,7 +21,7 @@ function initial_param_double_gaussian(ups,P)
 end
 function fit_double_gaussian(ups,P)
     p0  = initial_param_double_gaussian(ups,P)
-    fit = curve_fit(modelDG, ups, vec(P), p0)
+    fit = curve_fit(modelDG, ups, P, p0)
     return fit 
 end
 function fit_double_gaussian(fid, run, beta)

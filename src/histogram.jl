@@ -72,8 +72,8 @@ function probability_density_repeats(fid, run, beta; kws...)
 end
 function probability_density(fid, run, beta; kws...)
     ups, prob, V, dS = probability_density_repeats(fid, run, beta; kws...)
-    P  = mean(prob,dims=2)
-    ΔP = std(prob,dims=2)/sqrt(size(prob)[2])
+    P  = dropdims(mean(prob,dims=2),dims=2)
+    ΔP = dropdims(std(prob,dims=2),dims=2)/sqrt(size(prob)[2])
     return ups, P, ΔP, V, dS
 end
 function plot_plaquette_histogram!(plt,fid,run,beta;kws...)

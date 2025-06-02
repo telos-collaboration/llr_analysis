@@ -17,7 +17,7 @@ run   = runs[ind]
 
 function peak_height_difference(fid,run,β;w=50)
     P   = probability_density(fid, run, β)[2]
-    pks = findmaxima(vec(P),w)
+    pks = findmaxima(P,w)
     @assert length(pks.indices) == 2
     heightdiff = pks.heights[2] - pks.heights[1]
     return heightdiff
