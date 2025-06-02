@@ -1,7 +1,7 @@
 using LLRParsing
 using Plots
 using HDF5
-gr(fontfamily="Computer Modern",legend=:topright,frame=:box,titlefontsize=11,legendfontsize=9,labelfontsize=12,left_margin=0Plots.mm)
+gr(fontfamily="Computer Modern",legend=:topright,frame=:box,titlefontsize=11,legendfontsize=9,labelfontsize=12,left_margin=7Plots.mm)
 
 h5file_out = "data_assets/test_Nt5_sorted.hdf5"
 h5dset = h5open(h5file_out)
@@ -17,6 +17,6 @@ function overview(h5dset,run;repeat_id=1, replica_id = read(h5dset[run],"N_repli
     return plt
 end
 for run in runs
-   plt = overview(h5dset,run)
+   plt = overview(h5dset,run,repeat_id=4,replica_id=24)
    display(plt)
 end

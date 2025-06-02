@@ -86,7 +86,7 @@ function a_variance_vs_central_action_plot!(plt,h5dset,run;index=nothing,highlig
     Nl = read(h5dset[run],"Nl")
     V  = Nl^3 * Nt
     up = S0/(6V)
-    plot!(plt,up,zero(a0),ribbon=Δa0,label=L"\Delta a_n")
+    plot!(plt,up,zero(a0),ribbon=(zero(Δa0),Δa0),label=L"\Delta a_n")
     if !isnothing(highlight_index)
         mid = up[highlight_index]
         del = (up[highlight_index+1] - up[highlight_index])/2
@@ -153,7 +153,7 @@ function full_trajectory_plot(h5dset,run,repeat_id,replica_id;lens=true)
     plot!(plt1, ylims=ylims(plt2), title=fancy_title(run),ylabel=L"a_n^{(m)}")
     plot!(plt2, ylims=ylims(plt2), title="", xlabel="NR/RM iteration m",ylabel=L"a_n^{(m)}")  
     plot!(plt3, title="", xlabel="",ylabel=L"a_n")  
-    plot!(plt4, title="", xlabel=L"\textrm{central}~\textrm{plaquette}~u_p")
+    plot!(plt4, title="", xlabel=L"\textrm{central}~\textrm{plaquette}~u_p",ylabel=L"\Delta a_n")
     if lens
         plot!(plt3, subplot=2, left_margin=0Plots.mm, tickfontsize=7, ylabel="")  
     end
