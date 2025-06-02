@@ -7,8 +7,11 @@ gr(fontfamily="Computer Modern",legend=:topright,frame=:box,titlefontsize=11,leg
 
 file  = "data_assets/test_Nt5_sorted.hdf5"
 fid   = h5open(file)
-beta  = 7.48975
-run   = keys(fid)[end]
+betas = [7.48967, 7.48970, 7.48982, 7.48969, 7.48975]
+runs  = keys(fid)
+ind   = 5
+beta  = betas[ind]
+run   = runs[ind] 
 
 Nl   = read(fid[run],"Nl")
 Nt   = read(fid[run],"Nt")
@@ -26,8 +29,6 @@ using Peaks
 pks  = findmaxima(vec(P),50)
 pks  = peakproms(pks)
 pks  = peakwidths(pks)
-
-pks.indices
 
 using LsqFit
 Gaussian(x,A,μ,σ) = A * exp(-(x-μ)^2 / σ^2 / 2)
