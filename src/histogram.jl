@@ -72,3 +72,13 @@ function probability_density(fid, run, beta; kws...)
     ΔP = std(prob,dims=2)/sqrt(size(prob)[2])
     return ups, P, ΔP, V, dS
 end
+function plot_plaquette_histogram!(plt,fid,run,beta;kws...)
+    Nl  = read(fid[run],"Nl")
+    Nt  = read(fid[run],"Nt")
+    ups,P,ΔP,V,dS = probability_density(fid, run, beta)
+    label  = "$(Nt)x$(Nl): ΔE=$(round(2(dS)/6V,sigdigits=1))"
+    xlabel = L"u_p"
+    ylabel = L"P_{\beta}(u_p)"
+    plot!(plt;xlabel,ylabel,yticks=:none,left_margin=5Plots.mm)
+    plot!(plt,ups,P*6V;label,ribbon=ΔP*6V,kws...)
+end

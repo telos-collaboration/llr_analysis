@@ -13,16 +13,9 @@ ind   = 5
 beta  = betas[ind]
 run   = runs[ind] 
 
-Nl   = read(fid[run],"Nl")
-Nt   = read(fid[run],"Nt")
 xl   = (0.5885,0.5905)
-
 ups,P,ΔP,V,dS = probability_density(fid, run, beta)
-
-plt   = plot(xlabel=L"u_p",ylabel=L"P_{\beta}(u_p)",yticks=:none,left_margin=5Plots.mm)
-label = "$(Nt)x$(Nl): ΔE=$(round(2(dS)/6V,sigdigits=1))"
-plot!(plt,ups,P;label,ribbon=ΔP,xlims=xl,marker=:circle,ms=2,markeralpha=0.8)
-
+plot_plaquette_histogram!(plt,fid,run,betas[i];xlims=xl)
 
 using Peaks
 δups = ups[2]-ups[1]
