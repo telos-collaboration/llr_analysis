@@ -59,7 +59,7 @@ function probability_density(a, S, beta, V; nbins=1000)
     end
     return ups, probability_density
 end
-function probability_density(fid, run, beta; kws...)
+function probability_density_repeats(fid, run, beta; kws...)
     a, S_all = a_vs_central_action_repeats(fid,run;ind=nothing)[1:2]
     Nl   = read(fid[run],"Nl")
     Nt   = read(fid[run],"Nt")
@@ -67,7 +67,11 @@ function probability_density(fid, run, beta; kws...)
     S    = unique(S_all) 
     dS   = S[2] - S[1]
     
-    ups,prob = probability_density(a, S, beta, V; kws...)
+    ups,P = probability_density(a, S, beta, V; kws...)
+    return ups, P, V, dS
+end
+function probability_density(fid, run, beta; kws...)
+    ups, prob, V, dS = probability_density_repeats(fid, run, beta; kws...)
     P  = mean(prob,dims=2)
     ΔP = std(prob,dims=2)/sqrt(size(prob)[2])
     return ups, P, ΔP, V, dS
