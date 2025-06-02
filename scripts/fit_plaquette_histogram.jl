@@ -24,17 +24,30 @@ function fit_double_gaussian(ups,P)
     fit = curve_fit(modelDG, ups, vec(P), p0)
     return fit 
 end
+function fit_double_gaussian(fid, run, beta)
+    ups,P,ΔP,V,dS = probability_density(fid, run, beta)
+    fit = fit_double_gaussian(ups,P)
+    return fit
+end
+function plot_double_gaussian_fit!(plt,fid, run, beta)
+    ups,P,ΔP,V,dS = probability_density(fid, run, beta)
+    fit = fit_double_gaussian(ups,P)
+    fitted = 6 .* V .* modelDG(ups,fit.param)
+    plot!(plt,ups,fitted,label="double Gaussian fit",lw=3)
+    return plt
+end
 
 file  = "data_assets/test_Nt5_sorted.hdf5"
 fid   = h5open(file)
 betas = [7.48967, 7.48970, 7.48982, 7.48969, 7.48975]
 runs  = keys(fid)
-ind   = 5
-beta  = betas[ind]
-run   = runs[ind] 
 
-ups,P,ΔP,V,dS = probability_density(fid, run, beta)
-fit = fit_double_gaussian(ups,P)
-plt = plot_plaquette_histogram!(plot(),fid,run,betas[ind];xlims=(0.5885,0.5905))
-y   = modelDG(ups,fit.param)
-plot!(plt,ups,y*6V,label="double Gaussian fit",lw=3)
+for i in eachindex(betas,runs)
+    beta = betas[i]
+    run  = runs[i] 
+
+    plt = plot()
+    plot_plaquette_histogram!(plt,fid,run,beta;xlims=(0.5885,0.5905))
+    plot_double_gaussian_fit!(plt,fid,run,beta)
+    display(plt)
+end
