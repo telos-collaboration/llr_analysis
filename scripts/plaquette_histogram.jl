@@ -16,7 +16,6 @@ function histogram_comparison(fid,runs,betas)
         @show run
         Nl   = read(fid[run],"Nl")
         Nt   = read(fid[run],"Nt")
-        V    = Nl^3 * Nt
         xl   = (0.5885,0.5905)
         beta = betas[i]
 
