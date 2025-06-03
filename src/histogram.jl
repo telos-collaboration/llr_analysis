@@ -52,6 +52,7 @@ function probability_density(a, S, beta, V; nbins=1000)
     repeats = last(size(a))
     probability_density = zeros(nbins,repeats)
     
+    #TODO: Parallelise
     for i in 1:repeats
         logZ = log_partition_function(a[:,i], S, beta)
         log_ρ = log_rho.(E, Ref(S), dS, Ref(a[:,i]))
