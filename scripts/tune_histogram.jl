@@ -6,7 +6,15 @@ using LaTeXStrings
 using Peaks
 using Roots
 gr(fontfamily="Computer Modern",legend=:topright,frame=:box,titlefontsize=11,legendfontsize=9,labelfontsize=12,left_margin=0Plots.mm)
+"""
+    peak_height_difference(args;w=50)
 
+    Calculate the height difference between the two peaks in the histogram.
+
+    `w` is the minimal number of intervals that the peaks need to be separated
+    to count as proper peaks. This variable probably needs to be tuned depending
+    on the noise in the dataset.
+"""
 function peak_height_difference(fid,run,β;w=50)
     a, S, Nt, Nl, V = LLRParsing._set_up_histogram(fid,run)
     return peak_height_difference(a, S, β, V;w)
@@ -23,6 +31,19 @@ function peak_height_difference(a, S, β, V;w=50)
         return nothing
     end
 end
+"""
+    bracket_critical_beta(args; w=50, Nint=50)
+
+    Find two value of beta for which the height difference has a different sign.
+    The two values can then be used to determine the critical beta using a Bisection
+    search to find the value for which the height difference is vanishing.
+
+    `w` is the minimal required separation of the peaks.
+
+    Here I first look for an initial β for which we have to peaks. Then, depending on 
+    the sign of the height difference, β is lowered or raised in fixed steps. The maximal 
+    number of steps is given by `Nint`.    
+"""
 function bracket_critical_beta(fid,run;w=50,Nint=50)
     a, S, Nt, Nl, V = LLRParsing._set_up_histogram(fid,run)
     βl, βu = extrema(a)
@@ -40,9 +61,13 @@ function bracket_critical_beta(fid,run;w=50,Nint=50)
         βold, diff = βnew, newdiff
     end
 end
-function beta_at_equal_heights(fid,run)
+"""
+    Determine the critical coupling by first finding an interval for which the height
+    difference of the histogram peaks vanish
+"""
+function beta_at_equal_heights(fid,run;kws...)
     a, S, Nt, Nl, V = LLRParsing._set_up_histogram(fid,run)
-    βl, βu = bracket_critical_beta(fid,run)
+    βl, βu = bracket_critical_beta(fid,run;kws...)
     f(β)   = peak_height_difference(a, S, β, V)
     βc     = find_zero(f, (βl, βu), Bisection())
     return βc, βl, βu
