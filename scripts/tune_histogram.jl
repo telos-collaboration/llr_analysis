@@ -12,12 +12,16 @@ function peak_height_difference(fid,run,β;w=50)
     return peak_height_difference(a, S, β, V;w)
 end
 function peak_height_difference(a, S, β, V;w=50)
-    prob = probability_density(a, S, β, V; nbins=1000)[2]
-    P    = dropdims(mean(prob,dims=2),dims=2)
-    pks  = findmaxima(P,w)
-    @assert length(pks.indices) == 2
-    heightdiff = pks.heights[2] - pks.heights[1]
-    return heightdiff
+    ups, P, ΔP, V, dS = probability_density(a, S, β, V; nbins=1000)
+    pks = findmaxima(P,w)
+    n_peaks = length(pks.indices)
+    if n_peaks == 2
+        heightdiff = pks.heights[2] - pks.heights[1]
+        return heightdiff
+    else 
+        @warn "Found $n_peaks peak(s)"
+        return nothing
+    end
 end
 function bracket_critical_beta(fid,run;w=50,Nint=50)
     a, S, Nt, Nl, V = LLRParsing._set_up_histogram(fid,run)
@@ -52,5 +56,6 @@ for run in runs
     βc, βl, βu = beta_at_equal_heights(fid,run)
     @show βc, βl, βu
 end 
-#@time beta_at_equal_heights(fid,last(runs))
-#@profview beta_at_equal_heights(fid,last(runs))
+@time beta_at_equal_heights(fid,last(runs))
+@profview beta_at_equal_heights(fid,last(runs))
+βc, βl, βu = beta_at_equal_heights(fid,last(runs))
