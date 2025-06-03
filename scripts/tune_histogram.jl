@@ -7,14 +7,6 @@ using Peaks
 using Roots
 gr(fontfamily="Computer Modern",legend=:topright,frame=:box,titlefontsize=11,legendfontsize=9,labelfontsize=12,left_margin=0Plots.mm)
 
-file  = "data_assets/test_Nt5_sorted.hdf5"
-fid   = h5open(file)
-betas = [7.48967, 7.48970, 7.48982, 7.48969, 7.48975]
-runs  = keys(fid)
-ind   = 5
-beta  = betas[ind]
-run   = runs[ind] 
-
 function peak_height_difference(fid,run,β;w=50)
     P   = probability_density(fid, run, β)[2]
     pks = findmaxima(P,w)
@@ -27,27 +19,26 @@ function bracket_critical_beta(fid,run;w=50,Nint=50)
     βl, βu = extrema(a)
     βold = (βl + βu)/2
     βint = abs(βl - βu)/2
-    diff = peak_height_difference(fid,run,βold;w)
-
     for _ in 1:Nint
-        βnew = diff>0 ? βold - βint/50 : βold + βint/50 
-        newdiff = peak_height_difference(fid,run,βold;w)
-        @show diff, newdiff
-        @show βold, βnew
-        # use extrame function to sort bracket of equal height
+        diff    = peak_height_difference(fid,run,βold;w)
+        βnew    = diff>0 ? βold - βint/Nint : βold + βint/Nint 
+        newdiff = peak_height_difference(fid,run,βnew;w)
+
         if sign(diff) != sign(newdiff)
+            # use extrame function to sort bracket of equal height
             return extrema((βold,βnew))
         end
         # move to the next interval
         βold, diff = βnew, newdiff
     end
 end
+function beta_at_equal_heights(fid,run)
+    βl, βu = bracket_critical_beta(fid,run)
+    βc = find_zero(β -> peak_height_difference(fid,run,β), (βl, βu), Bisection())
+    return βc
+end
 
-using Roots
-βl, βu = bracket_critical_beta(fid,run)
-
-βl, βu = 7.48983354367, 7.489727429839999
-peak_height_difference(fid,run,βl;w=50)
-peak_height_difference(fid,run,βu;w=50)
-
-find_zero(β -> peak_height_difference(fid,run,β), (βl, βu), Bisection())
+file  = "data_assets/test_Nt5_sorted.hdf5"
+fid   = h5open(file)
+runs  = keys(fid)
+βc    = @profview beta_at_equal_heights(fid,last(runs))
