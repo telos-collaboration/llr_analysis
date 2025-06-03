@@ -60,14 +60,16 @@ function probability_density(a, S, beta, V; nbins=1000)
     end
     return ups, probability_density
 end
-function probability_density_repeats(fid, run, beta; kws...)
-    a, S_all = a_vs_central_action_repeats(fid,run;ind=nothing)[1:2]
+function _set_up_histogram(fid,run)
+    a, S_all = LLRParsing.a_vs_central_action_repeats(fid,run;ind=nothing)[1:2]
     Nl   = read(fid[run],"Nl")
     Nt   = read(fid[run],"Nt")
-    V    = Nl^3 * Nt
     S    = unique(S_all) 
-    dS   = S[2] - S[1]
-    
+    V    = Nt*Nl^3
+    return a, S, Nt, Nl, V
+end
+function probability_density_repeats(fid, run, beta; kws...)
+    a, S, Nt, Nl, V = _set_up_histogram(fid,run)
     ups,P = probability_density(a, S, beta, V; kws...)
     return ups, P, V, dS
 end
@@ -78,9 +80,10 @@ function probability_density(fid, run, beta; kws...)
     return ups, P, ΔP, V, dS
 end
 function plot_plaquette_histogram!(plt,fid,run,beta;kws...)
-    Nl  = read(fid[run],"Nl")
-    Nt  = read(fid[run],"Nt")
-    ups,P,ΔP,V,dS = probability_density(fid, run, beta)
+    a, S, Nt, Nl, V = _set_up_histogram(fid,run)
+    ups, prob = probability_density(a, S, beta, V; nbins=1000)
+    P  = dropdims(mean(prob,dims=2),dims=2)
+    ΔP = dropdims(std(prob,dims=2),dims=2)/sqrt(size(prob)[2])
     label  = "$(Nt)x$(Nl): ΔE=$(round(2(dS)/6V,sigdigits=1))"
     xlabel = L"u_p"
     ylabel = L"P_{\beta}(u_p)"
