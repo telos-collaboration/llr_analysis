@@ -19,3 +19,5 @@ fid   = h5open(file)
 betas = [7.48967, 7.48970, 7.48982, 7.48969, 7.48975]
 runs  = keys(fid)
 plt = histogram_comparison(fid,runs,betas)
+savefig("Nt5_histogram.pdf")
+display(plt)

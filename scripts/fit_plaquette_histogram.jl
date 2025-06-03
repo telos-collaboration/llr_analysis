@@ -36,18 +36,21 @@ function plot_double_gaussian_fit!(plt,fid, run, beta)
     plot!(plt,ups,fitted,label="double Gaussian fit",lw=3)
     return plt
 end
+function plot_all_histogram_fits(fid,runs,betas)
+    for i in eachindex(betas,runs)
+        beta = betas[i]
+        run  = runs[i] 
+
+        plt = plot()
+        plot_plaquette_histogram!(plt,fid,run,beta;xlims=(0.5885,0.5905))
+        plot_double_gaussian_fit!(plt,fid,run,beta)
+        display(plt)
+        savefig("$(run)_histogram.pdf")
+    end
+end
 
 file  = "data_assets/test_Nt5_sorted.hdf5"
 fid   = h5open(file)
 betas = [7.48967, 7.48970, 7.48982, 7.48969, 7.48975]
 runs  = keys(fid)
-
-for i in eachindex(betas,runs)
-    beta = betas[i]
-    run  = runs[i] 
-
-    plt = plot()
-    plot_plaquette_histogram!(plt,fid,run,beta;xlims=(0.5885,0.5905))
-    plot_double_gaussian_fit!(plt,fid,run,beta)
-    display(plt)
-end
+plot_all_histogram_fits(fid,runs,betas)
