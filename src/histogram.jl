@@ -4,6 +4,7 @@
 #   mp.dps = 15                 [default: 15]
 #   mp.trap_complex = False     [default: False]
 
+# TODO: Compare performance and results with Quadmath.jl and ArbNumerics.jl
 function log_partition_function(a, S, beta)
     
     # David uses a different sign for a
@@ -54,6 +55,7 @@ function probability_density_repeats(fid, run, beta; kws...)
     a, S, Nt, Nl, V = _set_up_histogram(fid,run)
     return probability_density_repeats(a, S, beta, V; kws...)
 end
+# TODO: Test setting nbins to n_replicas
 function probability_density_repeats(a, S, beta, V; nbins=1000)
     up   = S/(6V)
     dS   = S[2] - S[1]
@@ -86,7 +88,7 @@ function probability_density(a, S, beta, V; kws...)
 end
 function plot_plaquette_histogram!(plt,fid,run,beta;kws...)
     a, S, Nt, Nl, V = _set_up_histogram(fid,run)
-    ups, P, ΔP, V, dS = probability_density(a, S, beta, V; nbins=1000)
+    ups, P, ΔP, V, dS = probability_density(a, S, beta, V)
     label  = "$(Nt)x$(Nl): ΔE=$(round(2(dS)/6V,sigdigits=1))"
     xlabel = L"u_p"
     ylabel = L"P_{\beta}(u_p)"
