@@ -3,8 +3,8 @@
 #   mp.prec = 53                [default: 53]
 #   mp.dps = 15                 [default: 15]
 #   mp.trap_complex = False     [default: False]
+setprecision(BigFloat, 53)
 
-# TODO: Compare performance and results with Quadmath.jl and ArbNumerics.jl
 function log_partition_function(a, S, beta)
     
     # David uses a different sign for a
