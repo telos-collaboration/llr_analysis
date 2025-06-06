@@ -17,7 +17,8 @@ function log_partition_function(a, S, beta)
         if iszero(A)
             Z += exp(pi_exp + ai*(Si - dS/2))  * dS/2
         else
-            full_exp    = exp(pi_exp + Si*beta - ai*dS/2)
+            val         = pi_exp + Si*beta - ai*dS/2
+            full_exp    = exp(val)
             sinf_factor = sinh(A*dS/2)
             Z += full_exp*sinf_factor/A
         end
@@ -25,21 +26,14 @@ function log_partition_function(a, S, beta)
     end
     return Float64(log(2Z))
 end
-function log_rho(E, S, dS, a)
-    # David uses a different sign for a
-    pi_exp = Float64(0)
-    log_ρ  = Float64(0)
-    for (S0,ai) in zip(S, a)   
-        Si = S0 - dS/2
-        if E >= Si && E < (Si + dS)
-            log_ρ = ai * (Si - E) + pi_exp*dS
-            break
-        else
-            pi_exp -= ai
+_E_in_interval(E,S0,dS) = E >= (S0 - dS/2) && E < (S0 + dS/2)
+function log_rho(E, S, dS, a; cumsum_a = cumsum(a))
+    for i in eachindex(S, a)   
+        if _E_in_interval(E,S[i],dS)
+            log_ρ = a[i] * (S[i] - dS/2 - E) - cumsum_a[i-1]*dS
+            return log_ρ
         end
     end
-    @assert !iszero(log_ρ)
-    return Float64(log_ρ)
 end
 function _set_up_histogram(fid,run)
     a, S_all = LLRParsing.a_vs_central_action_repeats(fid,run;ind=nothing)[1:2]
