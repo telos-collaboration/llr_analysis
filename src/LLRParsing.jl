@@ -14,6 +14,7 @@ using Plots
 using LaTeXStrings
 using Peaks
 using Roots
+using LsqFit
 
 include("parse_std.jl")
 export importance_sampling_dir_hdf5
@@ -30,5 +31,6 @@ export remove_non_matching_trajectories_in_replicas
 include("histogram.jl")
 export probability_density,plot_plaquette_histogram!
 include("critical_histogram.jl")
+include("double_gaussian_fit.jl")
 
 end # module LLRParsing
