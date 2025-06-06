@@ -27,10 +27,10 @@ function log_partition_function(a, S, beta)
 end
 function log_rho(E, S, dS, a)
     # David uses a different sign for a
-    S_shifted = @. S - dS/2
-    pi_exp = BigFloat(0)
-    log_ρ  = BigFloat(0)
-    for (Si,ai) in zip(S_shifted, a)   
+    pi_exp = Float64(0)
+    log_ρ  = Float64(0)
+    for (S0,ai) in zip(S, a)   
+        Si = S0 - dS/2
         if E >= Si && E < (Si + dS)
             log_ρ = ai * (Si - E) + pi_exp*dS
             break
@@ -60,17 +60,18 @@ function probability_density_repeats(a, S, beta, V; nbins=length(S))
     δup  = dS/(6V)
     ups  = range(minimum(up) + δup, maximum(up), length=nbins)
     E    = @. ups*6V 
-
     repeats = last(size(a))
-    probability_density = zeros(nbins,repeats)
+    P    = zeros(nbins,repeats)
     
     #TODO: Parallelise
     for i in 1:repeats
         logZ = log_partition_function(a[:,i], S, beta)
-        log_ρ = log_rho.(E, Ref(S), dS, Ref(a[:,i]))
-        probability_density[:,i] = @. exp(log_ρ + beta*ups*V*6 - logZ)
+        for j in 1:nbins
+            log_ρ  = log_rho(E[j], S, dS, a[:,i])
+            P[j,i] = exp(log_ρ + beta*E[j] - logZ)
+        end
     end
-    return ups, probability_density, V, dS
+    return ups, P, V, dS
 end
 function probability_density(fid, run, beta; kws...)
     ups, prob, V, dS = probability_density_repeats(fid, run, beta; kws...)
