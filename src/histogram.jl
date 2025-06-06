@@ -8,36 +8,34 @@ setprecision(BigFloat, 53)
 function log_partition_function(a, S, beta)
     
     # David uses a different sign for a
-    a      = -a
     dS     = S[2] - S[1]    
     pi_exp = BigFloat(0)
     Z      = BigFloat(0)
     
     for (ai, Si) in zip(a,S)
-        A = ai + beta
+        A = beta - ai
         if iszero(A)
-            Z += exp(pi_exp - Si*ai + ai*dS/2)  * dS/2
+            Z += exp(pi_exp + ai*(Si - dS/2))  * dS/2
         else
-            full_exp    = exp(pi_exp + Si*beta + ai*dS/2)
+            full_exp    = exp(pi_exp + Si*beta - ai*dS/2)
             sinf_factor = sinh(A*dS/2)
             Z += full_exp*sinf_factor/A
         end
-        pi_exp += ai*dS
+        pi_exp = pi_exp - ai*dS
     end
     return Float64(log(2Z))
 end
 function log_rho(E, S, dS, a)
     # David uses a different sign for a
-    a = -a
     S_shifted = @. S - dS/2
     pi_exp = BigFloat(0)
     log_ρ  = BigFloat(0)
     for (Si,ai) in zip(S_shifted, a)   
         if E >= Si && E < (Si + dS)
-            log_ρ = (ai * (E - Si)) + pi_exp*dS
+            log_ρ = ai * (Si - E) + pi_exp*dS
             break
         else
-            pi_exp += ai
+            pi_exp -= ai
         end
     end
     @assert !iszero(log_ρ)
