@@ -34,10 +34,10 @@ function log_rho(E, S, dS, a)
     log_ρ  = BigFloat(0)
     for (Si,ai) in zip(S_shifted, a)   
         if E >= Si && E < (Si + dS)
-            log_ρ = (ai * (E - Si)) + pi_exp
+            log_ρ = (ai * (E - Si)) + pi_exp*dS
             break
         else
-            pi_exp += ai*dS
+            pi_exp += ai
         end
     end
     @assert !iszero(log_ρ)
