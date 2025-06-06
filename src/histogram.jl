@@ -6,23 +6,16 @@
 setprecision(BigFloat, 53)
 
 function log_partition_function(a, S, beta)
-    
     # David uses a different sign for a
     dS     = S[2] - S[1]    
     pi_exp = BigFloat(0)
     Z      = BigFloat(0)
-    
     for (ai, Si) in zip(a,S)
         A = beta - ai
-        if iszero(A)
-            Z += exp(pi_exp + ai*(Si - dS/2))  * dS/2
-        else
-            val         = pi_exp + Si*beta - ai*dS/2
-            full_exp    = exp(val)
-            sinf_factor = sinh(A*dS/2)
-            Z += full_exp*sinf_factor/A
-        end
-        pi_exp = pi_exp - ai*dS
+        exp_factor  = exp(pi_exp + Si*beta - ai*dS/2)
+        sinh_factor = iszero(A) ? dS/2 : sinh(A*dS/2)/A
+        Z      += exp_factor*sinh_factor
+        pi_exp -= ai*dS
     end
     return Float64(log(2Z))
 end
@@ -47,21 +40,18 @@ function probability_density_repeats(fid, run, beta; kws...)
     a, S, Nt, Nl, V = _set_up_histogram(fid,run)
     return probability_density_repeats(a, S, beta, V; kws...)
 end
-# TODO: Test setting nbins to n_replicas
 function probability_density_repeats(a, S, beta, V; nbins=length(S))
-    up   = S/(6V)
-    dS   = S[2] - S[1]
-    δup  = dS/(6V)
-    ups  = range(minimum(up) + δup, maximum(up), length=nbins)
-    E    = @. ups*6V 
-    repeats = last(size(a))
-    P    = zeros(nbins,repeats)
-    
-    #TODO: Parallelise
+    dS  = S[2] - S[1]
+    E   = range(minimum(S) + dS, maximum(S), length=nbins)
+    ups = @. E/(6V) 
+    repeats = last(size(a)[2])
+    P = zeros(nbins,repeats)
+
     for i in 1:repeats
         logZ = log_partition_function(a[:,i], S, beta)
+        csa  = cumsum(a[:,i])
         for j in 1:nbins
-            log_ρ  = log_rho(E[j], S, dS, a[:,i])
+            log_ρ  = log_rho(E[j], S, dS, a[:,i]; cumsum_a=csa)
             P[j,i] = exp(log_ρ + beta*E[j] - logZ)
         end
     end
