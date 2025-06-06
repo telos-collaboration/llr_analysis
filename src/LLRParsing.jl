@@ -12,6 +12,8 @@ using NaturalSort
 using Parsers
 using Plots
 using LaTeXStrings
+using Peaks
+using Roots
 
 include("parse_std.jl")
 export importance_sampling_dir_hdf5
@@ -29,5 +31,6 @@ include("clean_corrupted_replicas.jl")
 export remove_non_matching_trajectories_in_replicas
 include("histogram.jl")
 export probability_density,plot_plaquette_histogram!
+include("critical_histogram.jl")
 
 end # module LLRParsing

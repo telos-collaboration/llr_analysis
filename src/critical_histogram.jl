@@ -1,11 +1,3 @@
-using HDF5
-using LLRParsing
-using Plots
-using Statistics
-using LaTeXStrings
-using Peaks
-using Roots
-gr(fontfamily="Computer Modern",legend=:topright,frame=:box,titlefontsize=11,legendfontsize=9,labelfontsize=12,left_margin=0Plots.mm)
 """
     peak_height_difference(args;w=5)
 
@@ -105,20 +97,3 @@ function beta_at_equal_heights(a, S, V, β0, βmin, βmax; kws...)
     βc     = find_zero(f, (βl, βu), Bisection())
     return βc
 end
-
-function main()
-    file  = "data_assets/test_Nt5_sorted.hdf5"
-    fid   = h5open(file)
-    runs  = keys(fid)
-
-    for run in runs
-        βc = beta_at_equal_heights(fid,run)
-        @show βc
-        #plt = plot_plaquette_histogram!(plot(),fid,run,βc)
-        #display(plt)
-    end
-end
-
-main()
-@time main()
-@profview main()
