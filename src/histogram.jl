@@ -8,11 +8,11 @@ setprecision(BigFloat, 53)
 function log_partition_function(a, S, beta)
     # David uses a different sign for a
     dS     = S[2] - S[1]    
-    pi_exp = BigFloat(0)
+    pi_exp = 0.0
     Z      = BigFloat(0)
     for (ai, Si) in zip(a,S)
         A = beta - ai
-        exp_factor  = exp(pi_exp + Si*beta - ai*dS/2)
+        exp_factor  = exp(BigFloat(pi_exp + Si*beta - ai*dS/2))
         sinh_factor = iszero(A) ? dS/2 : sinh(A*dS/2)/A
         Z      += exp_factor*sinh_factor
         pi_exp -= ai*dS
