@@ -56,7 +56,7 @@ function probability_density_repeats(fid, run, beta; kws...)
     return probability_density_repeats(a, S, beta, V; kws...)
 end
 # TODO: Test setting nbins to n_replicas
-function probability_density_repeats(a, S, beta, V; nbins=1000)
+function probability_density_repeats(a, S, beta, V; nbins=length(S))
     up   = S/(6V)
     dS   = S[2] - S[1]
     δup  = dS/(6V)

@@ -7,7 +7,7 @@ using Peaks
 using Roots
 gr(fontfamily="Computer Modern",legend=:topright,frame=:box,titlefontsize=11,legendfontsize=9,labelfontsize=12,left_margin=0Plots.mm)
 """
-    peak_height_difference(args;w=50)
+    peak_height_difference(args;w=5)
 
     Calculate the height difference between the two peaks in the histogram.
 
@@ -15,12 +15,12 @@ gr(fontfamily="Computer Modern",legend=:topright,frame=:box,titlefontsize=11,leg
     to count as proper peaks. This variable probably needs to be tuned depending
     on the noise in the dataset.
 """
-function peak_height_difference(fid,run,β;w=50)
+function peak_height_difference(fid,run,β; kws...)
     a, S, Nt, Nl, V = LLRParsing._set_up_histogram(fid,run)
-    return peak_height_difference(a, S, β, V;w)
+    return peak_height_difference(a, S, β, V; kws...)
 end
-function peak_height_difference(a, S, β, V;w=50)
-    ups, P, ΔP, V, dS = probability_density(a, S, β, V)
+function peak_height_difference(a, S, β, V; w=5, nbins=length(S))
+    ups, P, ΔP, V, dS = probability_density(a, S, β, V; nbins)
     pks = findmaxima(P,w)
     n_peaks = length(pks.indices)
     if n_peaks == 2
@@ -31,8 +31,8 @@ function peak_height_difference(a, S, β, V;w=50)
         return nothing
     end
 end
-function _count_peaks(a, S, β, V; w = 50, kws...)
-    ups, P, ΔP, V, dS = probability_density(a, S, β, V)
+function _count_peaks(a, S, β, V; w=5, nbins=length(S))
+    ups, P, ΔP, V, dS = probability_density(a, S, β, V; nbins)
     pks = findmaxima(P,w)
     n_peaks = length(pks.indices)
     return n_peaks
@@ -43,9 +43,9 @@ end
     Find a value of β for which the histogram as tweo distinct peaks. 
     The starting value is β0 and we restrict ourselves to β ∈ [βmin,βmax]
 """
-function find_initial_double_peak(a,S,β0,βmin,βmax,V;Nint=100,w=50)
+function find_initial_double_peak(a,S,β0,βmin,βmax,V;Nint=100, kws...)
     # start looking at β0 in the interval [βmin,βmax]
-    np = _count_peaks(a, S, β0, V; w)
+    np = _count_peaks(a, S, β0, V; kws...)
     if np == 2
         return β0
     end
@@ -54,14 +54,14 @@ function find_initial_double_peak(a,S,β0,βmin,βmax,V;Nint=100,w=50)
     βs          = collect(range(βmin,βmax,length=Nint))
     ordered_ind = sort(eachindex(βs), by = ind -> abs(βs[ind] - β0))
     for i in ordered_ind
-        np = _count_peaks(a, S, βs[i], V; w)
+        np = _count_peaks(a, S, βs[i], V; kws...)
         if np == 2
             return βs[i]
         end
     end
 end
 """
-    bracket_critical_beta(a, S, V, β0, βmin, βmax; w=50, Nint=50)
+    bracket_critical_beta(a, S, V, β0, βmin, βmax; w=5, Nint=50)
 
     Find two value of beta for which the height difference has a different sign.
     The two values can then be used to determine the critical beta using a Bisection
@@ -73,13 +73,13 @@ end
     the sign of the height difference, β is lowered or raised in fixed steps. The maximal 
     number of steps is given by `Nint`.    
 """
-function bracket_critical_beta(a, S, V, β0, βmin, βmax;w=50,Nint=50)
+function bracket_critical_beta(a, S, V, β0, βmin, βmax;Nint=50, kws...)
     βold = β0
     βint = abs(βmax - βmin)/2
     for _ in 1:Nint
-        diff    = peak_height_difference(a, S, βold, V; w)
+        diff    = peak_height_difference(a, S, βold, V; kws... )
         βnew    = diff>0 ? βold - βint/Nint : βold + βint/Nint 
-        newdiff = peak_height_difference(a, S, βnew, V; w)
+        newdiff = peak_height_difference(a, S, βnew, V; kws... )
         if sign(diff) != sign(newdiff)
             # use extrame function to sort bracket of equal height
             return extrema((βold,βnew))
@@ -99,9 +99,9 @@ function beta_at_equal_heights(fid,run;kws...)
     return beta_at_equal_heights(a, S, V, β0, βmin, βmax;kws...)
 end
 function beta_at_equal_heights(a, S, V, β0, βmin, βmax; kws...)
-    βdg    = find_initial_double_peak(a,S,β0,βmin,βmax,V)
+    βdg    = find_initial_double_peak(a,S,β0,βmin,βmax,V; kws...)
     βl, βu = bracket_critical_beta(a, S, V, βdg, βmin, βmax;kws...)
-    f(β)   = peak_height_difference(a, S, β, V)
+    f(β)   = peak_height_difference(a, S, β, V;kws...)
     βc     = find_zero(f, (βl, βu), Bisection())
     return βc
 end
@@ -109,19 +109,10 @@ end
 file  = "data_assets/test_Nt5_sorted.hdf5"
 fid   = h5open(file)
 runs  = keys(fid)
-#for run in runs
-#    @show runs
-#    βc, βl, βu = beta_at_equal_heights(fid,run)
-#    @show βc, βl, βu
-#end 
 
-#@time beta_at_equal_heights(fid,last(runs))
-#@profview beta_at_equal_heights(fid,last(runs))
-
-for run in runs
-    a, S, Nt, Nl, V = LLRParsing._set_up_histogram(fid,run)
-    βmin, βmax      = extrema(a)
-    β0 = (βmin + βmax)/2
-    βc = beta_at_equal_heights(a, S, V, β0, βmin, βmax)
+@time for run in runs
+    βc = beta_at_equal_heights(fid,run)
     @show βc
+    plt = plot_plaquette_histogram!(plot(),fid,run,βc)
+    display(plt)
 end
