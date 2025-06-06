@@ -106,13 +106,19 @@ function beta_at_equal_heights(a, S, V, β0, βmin, βmax; kws...)
     return βc
 end
 
-file  = "data_assets/test_Nt5_sorted.hdf5"
-fid   = h5open(file)
-runs  = keys(fid)
+function main()
+    file  = "data_assets/test_Nt5_sorted.hdf5"
+    fid   = h5open(file)
+    runs  = keys(fid)
 
-@time for run in runs
-    βc = beta_at_equal_heights(fid,run)
-    @show βc
-    plt = plot_plaquette_histogram!(plot(),fid,run,βc)
-    display(plt)
+    for run in runs
+        βc = beta_at_equal_heights(fid,run)
+        @show βc
+        #plt = plot_plaquette_histogram!(plot(),fid,run,βc)
+        #display(plt)
+    end
 end
+
+main()
+@time main()
+@profview main()
