@@ -1,29 +1,34 @@
 """
-    peak_height_difference(args;w=5)
+    peak_height_difference(args;w=5,nbins=length(S),A1=1,A2=1)
 
     Calculate the height difference between the two peaks in the histogram.
 
     `w` is the minimal number of intervals that the peaks need to be separated
     to count as proper peaks. This variable probably needs to be tuned depending
     on the noise in the dataset.
+
+    The histogram is calculated at `nbins` values of the plaquette. 
+
+    `A1` and `A2` set the relative heights of the peaks. They can
+    be used to investigate histograms of unequal heights.
 """
 function peak_height_difference(fid,run,β; kws...)
     a, S, Nt, Nl, V = LLRParsing._set_up_histogram(fid,run)
     return peak_height_difference(a, S, β, V; kws...)
 end
-function peak_height_difference(a, S, β, V; w=5, nbins=length(S))
+function peak_height_difference(a, S, β, V; w=5, nbins=length(S),A1=1,A2=1)
     ups, P, ΔP, V, dS = probability_density(a, S, β, V; nbins)
     pks = findmaxima(P,w)
     n_peaks = length(pks.indices)
     if n_peaks == 2
-        heightdiff = pks.heights[2] - pks.heights[1]
+        heightdiff = A2*pks.heights[2] - A1*pks.heights[1]
         return heightdiff
     else 
         @warn "Found $n_peaks peak(s)"
         return nothing
     end
 end
-function _count_peaks(a, S, β, V; w=5, nbins=length(S))
+function _count_peaks(a, S, β, V; w=5, nbins=length(S), kws...)
     ups, P, ΔP, V, dS = probability_density(a, S, β, V; nbins)
     pks = findmaxima(P,w)
     n_peaks = length(pks.indices)
