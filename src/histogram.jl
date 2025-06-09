@@ -61,17 +61,19 @@ function probability_density(fid, run, beta; kws...)
     ups, prob, V, dS = probability_density_repeats(fid, run, beta; kws...)
     P  = dropdims(mean(prob,dims=2),dims=2)
     ΔP = dropdims(std(prob,dims=2),dims=2)/sqrt(size(prob)[2])
-    return ups, P, ΔP, V, dS
+    covP = cov(prob,dims=2)/size(prob)[2] 
+    return ups, P, ΔP, covP, V, dS
 end
 function probability_density(a, S, beta, V; kws...)
     ups, prob, V, dS = probability_density_repeats(a, S, beta, V; kws...)
     P  = dropdims(mean(prob,dims=2),dims=2)
     ΔP = dropdims(std(prob,dims=2),dims=2)/sqrt(size(prob)[2])
-    return ups, P, ΔP, V, dS
+    covP = cov(prob,dims=2)/size(prob)[2]
+    return ups, P, ΔP, covP, V, dS
 end
 function plot_plaquette_histogram!(plt,fid,run,beta;kws...)
     a, S, Nt, Nl, V = _set_up_histogram(fid,run)
-    ups, P, ΔP, V, dS = probability_density(a, S, beta, V)
+    ups, P, ΔP, covP, V, dS = probability_density(a, S, beta, V)
     label  = "$(Nt)x$(Nl): ΔE=$(round(2(dS)/6V,sigdigits=1))"
     xlabel = L"u_p"
     ylabel = L"P_{\beta}(u_p)"

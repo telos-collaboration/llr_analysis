@@ -16,12 +16,12 @@ function fit_double_gaussian(ups,P;kws...)
     return fit 
 end
 function fit_double_gaussian(fid, run, beta;kws...)
-    ups,P,ΔP,V,dS = probability_density(fid, run, beta)
+    ups,P,ΔP,covP,V,dS = probability_density(fid, run, beta)
     fit = fit_double_gaussian(ups,P;kws...)
     return fit
 end
 function plot_double_gaussian_fit!(plt,fid, run, beta;kws...)
-    ups,P,ΔP,V,dS = probability_density(fid, run, beta)
+    ups,P,ΔP,covP,V,dS = probability_density(fid, run, beta)
     fit = fit_double_gaussian(ups,P;kws...)
     fitted = 6 .* V .* modelDG(ups,fit.param)
     plot!(plt,ups,fitted,label="double Gaussian fit",lw=3)

@@ -17,7 +17,7 @@ function peak_height_difference(fid,run,β; kws...)
     return peak_height_difference(a, S, β, V; kws...)
 end
 function peak_height_difference(a, S, β, V; w=5, nbins=length(S),A1=1,A2=1)
-    ups, P, ΔP, V, dS = probability_density(a, S, β, V; nbins)
+    ups, P, ΔP, covP, V, dS = probability_density(a, S, β, V; nbins)
     pks = findmaxima(P,w)
     n_peaks = length(pks.indices)
     if n_peaks == 2
@@ -29,7 +29,7 @@ function peak_height_difference(a, S, β, V; w=5, nbins=length(S),A1=1,A2=1)
     end
 end
 function _count_peaks(a, S, β, V; w=5, nbins=length(S), kws...)
-    ups, P, ΔP, V, dS = probability_density(a, S, β, V; nbins)
+    ups, P, ΔP, covP, V, dS = probability_density(a, S, β, V; nbins)
     pks = findmaxima(P,w)
     n_peaks = length(pks.indices)
     return n_peaks
