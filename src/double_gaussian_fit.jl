@@ -10,14 +10,29 @@ function initial_param_double_gaussian(ups,P;w=5)
     pks.heights[2],ups[pks.indices[2]],pks.widths[2]*δups ]
     return p0
 end
+function fitting_range_double_gaussian(P;w=5,N=0.5)
+    # determine fitting range: 
+    # Include half the points between peak and minimum 
+    pks = findmaxima(P,w)
+    mns = findminima(P,w)
+    δ1  = abs(pks.indices[1]-mns.indices[1])*N
+    δ2  = abs(pks.indices[2]-mns.indices[1])*N
+    δ   = Int(round((δ1+δ2)/2))
+    range1 = pks.indices[1]-δ:pks.indices[1]+δ
+    range2 = pks.indices[2]-δ:pks.indices[2]+δ
+    range  = vcat(collect(range1),collect(range2)) 
+    return range
+end
 function fit_double_gaussian(ups::Vector{T},P::Vector{T},covP::Matrix{T};kws...) where T
     p0  = initial_param_double_gaussian(ups,P;kws...)
-    fit = curve_fit(modelDG, ups, P, p0)
+    r   = fitting_range_double_gaussian(P; kws...)
+    fit = curve_fit(modelDG, ups[r], P[r], p0)
     return fit 
 end
 function fit_double_gaussian(ups::Vector{T},P::Vector{T};kws...) where T
     p0  = initial_param_double_gaussian(ups,P;kws...)
-    fit = curve_fit(modelDG, ups, P, p0)
+    r   = fitting_range_double_gaussian(P; kws...)
+    fit = curve_fit(modelDG, ups[r], P[r], p0)
     return fit 
 end
 function fit_double_gaussian(fid::HDF5.File, run, beta;kws...)
