@@ -10,19 +10,19 @@ function initial_param_double_gaussian(ups,P;w=5)
     pks.heights[2],ups[pks.indices[2]],pks.widths[2]*δups ]
     return p0
 end
-function fit_double_gaussian(ups,P;kws...)
+function fit_double_gaussian(ups::Vector{T},P::Vector{T},covP::Matrix{T};kws...) where T
     p0  = initial_param_double_gaussian(ups,P;kws...)
-    fit = curve_fit(modelDG, ups, P, p0)
+    fit = curve_fit(modelDG, ups, P, w, p0)
     return fit 
 end
-function fit_double_gaussian(fid, run, beta;kws...)
+function fit_double_gaussian(fid::HDF5.File, run, beta;kws...)
     ups,P,ΔP,covP,V,dS = probability_density(fid, run, beta)
-    fit = fit_double_gaussian(ups,P;kws...)
+    fit = fit_double_gaussian(ups,P,covP;kws...)
     return fit
 end
 function plot_double_gaussian_fit!(plt,fid, run, beta;kws...)
     ups,P,ΔP,covP,V,dS = probability_density(fid, run, beta)
-    fit = fit_double_gaussian(ups,P;kws...)
+    fit = fit_double_gaussian(ups,P,covP;kws...)
     fitted = 6 .* V .* modelDG(ups,fit.param)
     plot!(plt,ups,fitted,label="double Gaussian fit",lw=3)
     return plt
