@@ -31,11 +31,3 @@ function histogram_jackknife_fit(fid,run)
     Δf = sqrt(N-1)*dropdims(std(fitted,dims=2),dims=2)
     return ups, f, Δf
 end
-
-file  = "data_assets/test_Nt5_sorted.hdf5"
-fid   = h5open(file)
-runs  = keys(fid)
-run   = runs[end-2]
-
-ups, f, Δf = histogram_jackknife_fit(fid,run)
-plot(ups,f,ribbon=Δf)
