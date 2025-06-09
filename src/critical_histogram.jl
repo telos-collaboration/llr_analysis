@@ -91,6 +91,9 @@ end
 """
 function beta_at_equal_heights(fid,run;kws...)
     a, S, Nt, Nl, V = LLRParsing._set_up_histogram(fid,run)
+    return beta_at_equal_heights(a, S, V;kws...)
+end
+function beta_at_equal_heights(a, S, V;kws...)
     βmin, βmax      = extrema(a)
     β0              = (βmin + βmax)/2
     return beta_at_equal_heights(a, S, V, β0, βmin, βmax;kws...)

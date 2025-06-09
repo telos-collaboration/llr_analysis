@@ -12,7 +12,12 @@ function initial_param_double_gaussian(ups,P;w=5)
 end
 function fit_double_gaussian(ups::Vector{T},P::Vector{T},covP::Matrix{T};kws...) where T
     p0  = initial_param_double_gaussian(ups,P;kws...)
-    fit = curve_fit(modelDG, ups, P, w, p0)
+    fit = curve_fit(modelDG, ups, P, p0)
+    return fit 
+end
+function fit_double_gaussian(ups::Vector{T},P::Vector{T};kws...) where T
+    p0  = initial_param_double_gaussian(ups,P;kws...)
+    fit = curve_fit(modelDG, ups, P, p0)
     return fit 
 end
 function fit_double_gaussian(fid::HDF5.File, run, beta;kws...)
