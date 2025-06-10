@@ -12,6 +12,7 @@ function plot_all_histogram_fits(fid,runs)
         plot_plaquette_histogram!(plt,fid,run,βc;xlims=(0.5885,0.5905))
         LLRParsing.plot_double_gaussian_fit!(plt,fid,run,βc)
         display(plt)
+        savefig(plt,"$(run)_fit.pdf")
     end
 
     for run in runs[2:end]
@@ -21,15 +22,17 @@ function plot_all_histogram_fits(fid,runs)
         plot_plaquette_histogram!(plt,fid,run,βc;xlims=(0.5885,0.5905))
         plot!(plt,ups,f,ribbon=Δf,label="double Gaussian fit",lw=2)
         display(plt)
+        savefig(plt,"$(run)_fit_with_error.pdf")
     end
 
-    for run in runs[2:end]
-        plt = plot()
-        βc  = LLRParsing.beta_at_equal_heights(fid,run;A1=2,A2=1)
-        plot_plaquette_histogram!(plt,fid,run,βc;xlims=(0.5885,0.5905))
-        LLRParsing.plot_double_gaussian_fit!(plt,fid,run,βc)
-        display(plt)
-    end
+    #for run in runs[2:end]
+    #    plt = plot()
+    #    βc  = LLRParsing.beta_at_equal_heights(fid,run;A1=2,A2=1)
+    #    plot_plaquette_histogram!(plt,fid,run,βc;xlims=(0.5885,0.5905))
+    #    LLRParsing.plot_double_gaussian_fit!(plt,fid,run,βc)
+    #    display(plt)
+    #    savefig(plt,"$(run)_fit_2to1_v3.pdf")
+    #end
 end
 
 file  = "data_assets/test_Nt5_sorted.hdf5"
