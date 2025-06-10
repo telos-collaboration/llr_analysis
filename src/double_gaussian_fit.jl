@@ -41,10 +41,62 @@ function fit_double_gaussian(fid::HDF5.File, run, beta;kws...)
     fit = fit_double_gaussian(ups,P,covP;kws...)
     return fit
 end
+function jackknife_resamples(obs)
+    nops,nconf = size(obs)
+    samples = similar(obs)
+    # Strategy: Sum over all configs then remove one
+    tmp = dropdims(sum(obs,dims=2),dims=2)
+    for index in 1:nconf    
+        @. samples[:,index] = (tmp - obs[:,index])/(nconf-1) 
+    end
+    return samples
+end
+function histogram_jackknife_fit(fid,run)
+    a, S, Nt, Nl, V = LLRParsing._set_up_histogram(fid,run)
+    a_jk   = jackknife_resamples(a) 
+    fitted = similar(a_jk)
+    ups    = similar(S)
+    for i in axes(a_jk,2)
+        ai   = a_jk[:,i:i]
+        beta = LLRParsing.beta_at_equal_heights(ai, S, V)
+        ups, P, ΔP, covP, V, dS = LLRParsing.probability_density(ai, S, beta, V)
+        fit  = LLRParsing.fit_double_gaussian(ups,P)
+        data = 6 .* V .* LLRParsing.modelDG(ups,fit.param)
+        fitted[:,i] = data 
+    end
+    N  = size(fitted)[2]
+    f  = dropdims(mean(fitted,dims=2),dims=2)
+    Δf = sqrt(N-1)*dropdims(std(fitted,dims=2),dims=2)
+    return ups, f, Δf
+end
+function histogram_jackknife_fit(fid,run, beta)
+    a, S, Nt, Nl, V = LLRParsing._set_up_histogram(fid,run)
+    a_jk   = jackknife_resamples(a) 
+    fitted = similar(a_jk)
+    ups    = similar(S)
+    for i in axes(a_jk,2)
+        ai   = a_jk[:,i:i]
+        ups, P, ΔP, covP, V, dS = LLRParsing.probability_density(ai, S, beta, V)
+        fit  = LLRParsing.fit_double_gaussian(ups,P)
+        data = 6 .* V .* LLRParsing.modelDG(ups,fit.param)
+        fitted[:,i] = data 
+    end
+    N  = size(fitted)[2]
+    f  = dropdims(mean(fitted,dims=2),dims=2)
+    Δf = sqrt(N-1)*dropdims(std(fitted,dims=2),dims=2)
+    return ups, f, Δf
+end
 function plot_double_gaussian_fit!(plt,fid, run, beta;kws...)
     ups,P,ΔP,covP,V,dS = probability_density(fid, run, beta)
     fit = fit_double_gaussian(ups,P,covP;kws...)
     fitted = 6 .* V .* modelDG(ups,fit.param)
     plot!(plt,ups,fitted,label="double Gaussian fit",lw=3)
     return plt
+end
+function plot_double_gaussian_fit_difference(plt,fid,run;kws...)
+    ups, f, Δf = histogram_jackknife_fit(fid,run)
+    βc  = beta_at_equal_heights(fid,run;A1=1,A2=1)
+    ups, P, ΔP, covP, V, dS = probability_density(fid, run, βc)
+    d, Δd = P*6V, ΔP*6V
+    plot!(plt,ups,d-f;ribbon=sqrt.(Δd.^2 .+ Δf.^2),label="difference")
 end
