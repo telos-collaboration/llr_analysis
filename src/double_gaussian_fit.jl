@@ -18,7 +18,7 @@ function fitting_range_double_gaussian(P;w=5,N=0.5)
     δ1  = abs(pks.indices[1]-mns.indices[1])*N
     δ2  = abs(pks.indices[2]-mns.indices[1])*N
     # After discussion: Only fit up to the peaks
-    δ   = 0 # Int(round((δ1+δ2)/2))
+    δ      = 0 # Int(round((δ1+δ2)/2))
     range1 = 1:pks.indices[1]+δ
     range2 = pks.indices[2]-δ:length(P)
     range  = vcat(collect(range1),collect(range2)) 
@@ -27,12 +27,10 @@ end
 function fit_double_gaussian(ups::Vector{T},P::Vector{T},covP::Matrix{T};kws...) where T
     p0  = initial_param_double_gaussian(ups,P;kws...)
     r   = fitting_range_double_gaussian(P; kws...)
-    fit = curve_fit(modelDG, ups[r], P[r], p0)
-    return fit 
-end
-function fit_double_gaussian(ups::Vector{T},P::Vector{T};kws...) where T
-    p0  = initial_param_double_gaussian(ups,P;kws...)
-    r   = fitting_range_double_gaussian(P; kws...)
+    # Remove negative eigenvalues of the correlation Matrix by hand
+    # Thse are due to numerics, since we know that the correlation 
+    # matrix is at least semidefinite. 
+    λ   = eigmin(Hermitian(covP[r,r]))
     fit = curve_fit(modelDG, ups[r], P[r], p0)
     return fit 
 end
@@ -60,7 +58,7 @@ function histogram_jackknife_fit(fid,run)
         ai   = a_jk[:,i:i]
         beta = LLRParsing.beta_at_equal_heights(ai, S, V)
         ups, P, ΔP, covP, V, dS = LLRParsing.probability_density(ai, S, beta, V)
-        fit  = LLRParsing.fit_double_gaussian(ups,P)
+        fit  = LLRParsing.fit_double_gaussian(ups,P,covP)
         data = 6 .* V .* LLRParsing.modelDG(ups,fit.param)
         fitted[:,i] = data 
     end
@@ -71,13 +69,18 @@ function histogram_jackknife_fit(fid,run)
 end
 function histogram_jackknife_fit(fid,run, beta)
     a, S, Nt, Nl, V = LLRParsing._set_up_histogram(fid,run)
+    # estimate the covariance matrix of the probability distribution by calculating 
+    # it from the ensemble averages. I will use it as the weight in the least squares fit. 
+    covP   = LLRParsing.probability_density(a, S, beta, V)[4]
     a_jk   = jackknife_resamples(a) 
     fitted = similar(a_jk)
     ups    = similar(S)
     for i in axes(a_jk,2)
         ai   = a_jk[:,i:i]
-        ups, P, ΔP, covP, V, dS = LLRParsing.probability_density(ai, S, beta, V)
-        fit  = LLRParsing.fit_double_gaussian(ups,P)
+        # Note, the standard deviation and covariance matrix returned are useless 
+        # because we are only considering one resample at a time 
+        ups, P, _, _, V, dS = LLRParsing.probability_density(ai, S, beta, V)
+        fit  = LLRParsing.fit_double_gaussian(ups,P,covP)
         data = 6 .* V .* LLRParsing.modelDG(ups,fit.param)
         fitted[:,i] = data 
     end
