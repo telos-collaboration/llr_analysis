@@ -1,7 +1,7 @@
-runs,clean
-DataDiaL/SunbirdLLR/LLR_5x80_64,true
-DataDiaL/LLR_DiaL3/LLR_5x80_64,true
-DataCSD/CSD3/LLR_5x72_95,true
-DataCSD/CSD3/LLR_5x64_95,true
-DataLLR/Nt5_cleaned/sp4_5x56_128,true
-DataLLR/Nt5_cleaned/sp4_5x48_96,true
+runs
+DataDiaL/SunbirdLLR/LLR_5x80_64
+DataDiaL/LLR_DiaL3/LLR_5x80_64
+DataCSD/CSD3/LLR_5x72_95
+DataCSD/CSD3/LLR_5x64_95
+DataLLR/Nt5_cleaned/sp4_5x56_128
+DataLLR/Nt5_cleaned/sp4_5x48_96

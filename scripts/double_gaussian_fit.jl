@@ -31,7 +31,7 @@ function plot_all_histogram_fits(fid,runs)
     #end
 end
 
-file  = "data_assets/test_Nt5_sorted.hdf5"
+file  = "data_assets/Sp4_Nt5_sorted.hdf5"
 fid   = h5open(file)
 runs  = keys(fid)
 plot_all_histogram_fits(fid,runs)
