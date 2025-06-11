@@ -16,16 +16,19 @@ function peak_height_difference(fid,run,β; kws...)
     a, S, Nt, Nl, V = LLRParsing._set_up_histogram(fid,run)
     return peak_height_difference(a, S, β, V; kws...)
 end
-function peak_height_difference(a, S, β, V; w=5, nbins=length(S),A1=1,A2=1)
+function peak_height_difference(a, S, β, V; w=5, nbins=length(S),A1=1,A2=1,retries=0)
     ups, P, ΔP, covP, V, dS = probability_density(a, S, β, V; nbins)
     pks = findmaxima(P,w)
     n_peaks = length(pks.indices)
     if n_peaks == 2
         heightdiff = A2*pks.heights[2] - A1*pks.heights[1]
         return heightdiff
-    else 
-        @warn "Found $n_peaks peak(s)"
-        return nothing
+    elseif n_peaks > 2
+        @warn "Found $n_peaks peak(s): Taking first and last one to be the relevant ones"
+        heightdiff = A2*pks.heights[end] - A1*pks.heights[1]
+        return heightdiff
+    else
+        @error "Found $n_peaks peak(s): Aborting."
     end
 end
 function _count_peaks(a, S, β, V; w=5, nbins=length(S), kws...)
@@ -40,7 +43,7 @@ end
     Find a value of β for which the histogram as tweo distinct peaks. 
     The starting value is β0 and we restrict ourselves to β ∈ [βmin,βmax]
 """
-function find_initial_double_peak(a,S,β0,βmin,βmax,V;Nint=100, kws...)
+function find_initial_double_peak(a,S,β0,βmin,βmax,V;Nint=50, kws...)
     # start looking at β0 in the interval [βmin,βmax]
     np = _count_peaks(a, S, β0, V; kws...)
     if np == 2
@@ -70,7 +73,7 @@ end
     the sign of the height difference, β is lowered or raised in fixed steps. The maximal 
     number of steps is given by `Nint`.    
 """
-function bracket_critical_beta(a, S, V, β0, βmin, βmax;Nint=50, kws...)
+function bracket_critical_beta(a, S, V, β0, βmin, βmax;Nint=100, kws...)
     βold = β0
     βint = abs(βmax - βmin)/2
     for _ in 1:Nint
@@ -92,6 +95,10 @@ end
 function beta_at_equal_heights(fid,run;kws...)
     a, S, Nt, Nl, V = LLRParsing._set_up_histogram(fid,run)
     return beta_at_equal_heights(a, S, V;kws...)
+end
+function beta_at_equal_heights(fid,run,β0, βmin, βmax;kws...)
+    a, S, Nt, Nl, V = LLRParsing._set_up_histogram(fid,run)
+    return beta_at_equal_heights(a, S, V, β0, βmin, βmax;kws...)
 end
 function beta_at_equal_heights(a, S, V;kws...)
     βmin, βmax      = extrema(a)

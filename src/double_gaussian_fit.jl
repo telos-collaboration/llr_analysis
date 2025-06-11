@@ -100,3 +100,9 @@ function plot_double_gaussian_fit_difference(plt,fid,run;kws...)
     d, Δd = P*6V, ΔP*6V
     plot!(plt,ups,d-f;ribbon=sqrt.(Δd.^2 .+ Δf.^2),label="difference")
 end
+function plot_double_gaussian_fit_difference(plt,fid,run, βc;kws...)
+    ups, f, Δf = histogram_jackknife_fit(fid,run, βc)
+    ups, P, ΔP, covP, V, dS = probability_density(fid, run, βc)
+    d, Δd = P*6V, ΔP*6V
+    plot!(plt,ups,d-f;ribbon=sqrt.(Δd.^2 .+ Δf.^2),label="difference")
+end

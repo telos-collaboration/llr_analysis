@@ -3,35 +3,21 @@ using HDF5
 using Plots
 gr(fontfamily="Computer Modern",legend=:topright,frame=:box,titlefontsize=11,legendfontsize=9,labelfontsize=12,left_margin=0Plots.mm)
 
-function plot_all_histogram_fits(fid,runs)    
+function plot_all_histogram_fits(file)
+    fid   = h5open(file)
+    runs  = keys(fid)
     for run in runs
+        @show run
         plt = plot()
-        βc  = LLRParsing.beta_at_equal_heights(fid,run;A1=1,A2=1)
-        plot_plaquette_histogram!(plt,fid,run,βc;xlims=(0.5885,0.5905))
-        LLRParsing.plot_double_gaussian_fit!(plt,fid,run,βc)    
-        display(plt)
-    end
-
-    for run in runs[2:end]
-        plt = plot()
-        βc  = LLRParsing.beta_at_equal_heights(fid,run;A1=1,A2=1)
+        βc  = LLRParsing.beta_at_equal_heights(fid,run,β0,βmin,βmax;A1=1,A2=1)
         ups, f, Δf = LLRParsing.histogram_jackknife_fit(fid,run,βc)
         plot_plaquette_histogram!(plt,fid,run,βc;xlims=(0.5885,0.5905))
-        LLRParsing.plot_double_gaussian_fit_difference(plt,fid,run)
+        LLRParsing.plot_double_gaussian_fit_difference(plt,fid,run, βc)
         plot!(plt,ups,f,ribbon=Δf,label="double Gaussian fit",lw=2)
         display(plt)
     end
-
-    #for run in runs[2:end]
-    #    plt = plot()
-    #    βc  = LLRParsing.beta_at_equal_heights(fid,run;A1=2,A2=1)
-    #    plot_plaquette_histogram!(plt,fid,run,βc;xlims=(0.5885,0.5905))
-    #    LLRParsing.plot_double_gaussian_fit!(plt,fid,run,βc)
-    #    display(plt)
-    #end
 end
 
+β0, βmin, βmax = 7.490, 7.488, 7.492
 file  = "data_assets/Sp4_Nt5_sorted.hdf5"
-fid   = h5open(file)
-runs  = keys(fid)
-plot_all_histogram_fits(fid,runs)
+plot_all_histogram_fits(file)
