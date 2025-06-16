@@ -7,7 +7,7 @@ gr(fontfamily="Computer Modern",legend=:topright,frame=:box,titlefontsize=11,leg
 file = "data_assets/Sp4_Nt5_sorted.hdf5"
 fid  = h5open(file)
 runs = keys(fid)
-run  = runs[3]
+run  = last(runs)
 
 function plot_all_an_trajectories(fid,run;yl=(7.475,7.503))
     repeats = read(fid[run],"repeats")

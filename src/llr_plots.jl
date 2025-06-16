@@ -109,7 +109,7 @@ function a_trajectory(h5dset,run;replica=0)
 end
 function plot_a_trajectory_repeat!(plt,h5dset,run,repeat,replica)
     a    = a_trajectory(h5dset,run;replica)
-    plot!(plt,a[repeat+1],label="",lw=1,markersize=1,marker=:circle,msw=0.1)
+    plot!(plt,a[repeat],label="",lw=1,markersize=1,marker=:circle,msw=0.1)
     return plt
 end
 function plot_a_trajectory_all!(plt,h5dset,run,replica)

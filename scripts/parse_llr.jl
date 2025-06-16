@@ -31,7 +31,6 @@ function llr_alldirs_hdf5(path,metadata_file,h5file;clean=false,tmpdir="./tmp/")
         skip = newskip 
     end
     for (dir,s) in zip(runs,skip)
-        @show dir,s
         llr_dir_hdf5(dir,h5file;skip_repeats=s)
     end
     if clean
