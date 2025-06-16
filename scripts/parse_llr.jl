@@ -4,13 +4,10 @@ using HiRepOutputCleaner
 using DelimitedFiles
 using ArgParse
 
-function clean_all_llr_dirs(path,dirs;target="./tmp/")
-    for run in dirs
-        dir = joinpath(path,run)
-        p   = joinpath(target,basename(dir))
-        ispath(p) || mkpath(p)
-        clean_llr_directory(dir,p;checkpoint_pattern=nothing,last_ranges=nothing,warn=false)
-    end
+function clean_all_llr_dirs(dir;target="./tmp/")
+    p = joinpath(target,basename(dir))
+    ispath(p) || mkpath(p)
+    clean_llr_directory(dir,p;checkpoint_pattern=nothing,last_ranges=nothing,warn=false)
 end
 function parse_skip(str)
     spl = split(chop(str, head=1),',')
@@ -20,10 +17,12 @@ function llr_alldirs_hdf5(path,metadata_file,h5file;clean=false,tmpdir="./tmp/")
     metadata = readdlm(metadata_file,',',String,skipstart=1)
     dirs = metadata[:,1]
     skip = parse_skip.(metadata[:,2])
-    runs = joinpath.(path,String.(dirs))
+    runs = joinpath.(path,dirs)
     if clean
-        clean_all_llr_dirs(path,dirs;target=tmpdir)
-        runs = readdir(tmpdir,join=true)
+        for i in eachindex(runs)
+            clean_all_llr_dirs(runs[i];target=tmpdir)
+            runs[i] = joinpath(tmpdir,basename(runs[i]))
+        end
     end
     for (dir,s) in zip(runs,skip)
         llr_dir_hdf5(dir,h5file;skip_repeats=s)
