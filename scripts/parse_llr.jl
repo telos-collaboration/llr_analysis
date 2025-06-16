@@ -4,24 +4,29 @@ using HiRepOutputCleaner
 using DelimitedFiles
 using ArgParse
 
-function clean_all_llr_dirs(path,metadata_file;target="./tmp/")
-    metadata = readdlm(metadata_file,',',skipstart=1)
-    for run in eachrow(String.(metadata))
-        dir = joinpath(path,run[1])
+function clean_all_llr_dirs(path,dirs;target="./tmp/")
+    for run in dirs
+        dir = joinpath(path,run)
         p   = joinpath(target,basename(dir))
         ispath(p) || mkpath(p)
         clean_llr_directory(dir,p;checkpoint_pattern=nothing,last_ranges=nothing,warn=false)
     end
 end
+function parse_skip(str)
+    spl = split(chop(str, head=1),',')
+    return all(isempty,spl) ? String[] : String.(spl)
+end
 function llr_alldirs_hdf5(path,metadata_file,h5file;clean=false,tmpdir="./tmp/")
-    metadata = readdlm(metadata_file,',',skipstart=1)
-    runs     = joinpath.(path,String.(metadata))
+    metadata = readdlm(metadata_file,',',String,skipstart=1)
+    dirs = metadata[:,1]
+    skip = parse_skip.(metadata[:,2])
+    runs = joinpath.(path,String.(dirs))
     if clean
-        clean_all_llr_dirs(path,metadata_file;target=tmpdir)
+        clean_all_llr_dirs(path,dirs;target=tmpdir)
         runs = readdir(tmpdir,join=true)
     end
-    for dir in runs
-        llr_dir_hdf5(dir,h5file)
+    for (dir,s) in zip(runs,skip)
+        llr_dir_hdf5(dir,h5file;skip_repeats=s)
     end
     if clean
         rm(tmpdir,recursive=true)

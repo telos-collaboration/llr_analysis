@@ -1,8 +1,10 @@
-function get_repeat_and_replica_dirs(base_dir)
+function get_repeat_and_replica_dirs(base_dir,skip_repeats=String[])
     # Obtain all directories containing repeats and sort them
     repeat_dirs = filter( str -> all(isdigit, str), readdir(base_dir))
     sort!(repeat_dirs,lt=natural)
-    
+    if !isempty(skip_repeats)
+        repeat_dirs = filter(i-> i ∉ skip_repeats,repeat_dirs)
+    end    
     dir_dict = Dict{String,Vector{String}}()
     for repeat in repeat_dirs
         rx = r"Rep_[0-9]+"
@@ -124,11 +126,11 @@ function parse_llr(file; skiplines=Int[])
     end
     return dS0, S0, plaq, a, is_rm, S0_fxa[1:end-1], a_fxa[1:end-1], poly
 end
-function llr_dir_hdf5(dir,h5file;suffix="") 
+function llr_dir_hdf5(dir,h5file;suffix="",skip_repeats=String[]) 
     fid = h5open(h5file,"cw")
 
     # get all repeats and replicas and store that information for future use
-    replica_dirs = get_repeat_and_replica_dirs(dir)
+    replica_dirs = get_repeat_and_replica_dirs(dir,skip_repeats)
     repeats      = sort(collect(keys(replica_dirs)),lt=natural)
     files        = _all_files_from_dict(dir,replica_dirs)
     N_repeats    = length(repeats)
