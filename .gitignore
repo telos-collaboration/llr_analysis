@@ -8,5 +8,4 @@ tmp/
 *.txt
 *.pdf
 *.svg
-!metadata/runs.csv
 !test/test_data/*
