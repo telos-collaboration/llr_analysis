@@ -19,5 +19,4 @@ end
 for run in runs
    plt = overview(h5dset,run,repeat_id=4,replica_id=24)
    display(plt)
-   savefig("$(run)_overview.svg")
 end

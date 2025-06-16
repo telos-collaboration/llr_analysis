@@ -23,8 +23,15 @@ function llr_alldirs_hdf5(path,metadata_file,h5file;clean=false,tmpdir="./tmp/")
             clean_all_llr_dirs(runs[i];target=tmpdir)
             runs[i] = joinpath(tmpdir,basename(runs[i]))
         end
+        # if multiple runs are identical: Remove the duplicate entry 
+        # and merge the skipped repeats
+        newruns = unique(runs)
+        newskip = [vcat(skip[findall(isequal(r),runs)]...)  for r in newruns]
+        runs = newruns 
+        skip = newskip 
     end
     for (dir,s) in zip(runs,skip)
+        @show dir,s
         llr_dir_hdf5(dir,h5file;skip_repeats=s)
     end
     if clean
