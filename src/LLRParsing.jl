@@ -16,6 +16,8 @@ using Peaks
 using Roots
 using LsqFit
 
+include("errorstring.jl")
+export errorstring
 include("parse_std.jl")
 export importance_sampling_dir_hdf5
 include("std_observables.jl")
