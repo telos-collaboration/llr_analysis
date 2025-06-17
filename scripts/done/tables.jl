@@ -25,7 +25,7 @@ $N_t$ & $N_l$ & $u_{p}^{\rm min}$ & $u_{p}^{\rm max}$ & $N_{\rm rep}$ & $N_{\rm 
         up = S0/(6Nl^3 * Nt)
         isrm = read(fid[run],"$(first(repeats))/Rep_0/is_rm")
         nr, rm = findlast(x->!x,isrm), length(isrm)
-        println(io,"$Nt & $Nl & $(minimum(up)) & $(maximum(up)) & $Nreplicas & $Nrepeats & $nr & $rm \\\\")
+        println(io,"$Nt & $Nl & $(minimum(up)) & $(maximum(up)) & $Nreplicas & $Nrepeats & $nr & $(rm-nr) \\\\")
     end
     println(io,footer)
     close(io)
