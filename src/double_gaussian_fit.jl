@@ -53,7 +53,6 @@ function histogram_jackknife_fit(fid,run)
     a, S, Nt, Nl, V = LLRParsing._set_up_histogram(fid,run)
     # estimate the covariance matrix of the probability distribution by calculating 
     # it from the ensemble averages. I will use it as the weight in the least squares fit. 
-    covP   = LLRParsing.probability_density(a, S, beta, V)[4]
     a_jk   = jackknife_resamples(a) 
     fitted = similar(a_jk)
     ups    = similar(S)
@@ -62,7 +61,7 @@ function histogram_jackknife_fit(fid,run)
         beta = LLRParsing.beta_at_equal_heights(ai, S, V)
         # Note, the standard deviation and covariance matrix returned are useless 
         # because we are only considering one resample at a time 
-        ups, P, _, _, V, dS = LLRParsing.probability_density(ai, S, beta, V)
+        ups, P, _, covP, V, dS = LLRParsing.probability_density(ai, S, beta, V)
         fit  = LLRParsing.fit_double_gaussian(ups,P,covP)
         data = 6 .* V .* LLRParsing.modelDG(ups,fit.param)
         fitted[:,i] = data 
@@ -71,6 +70,19 @@ function histogram_jackknife_fit(fid,run)
     f  = dropdims(mean(fitted,dims=2),dims=2)
     Δf = sqrt(N-1)*dropdims(std(fitted,dims=2),dims=2)
     return ups, f, Δf
+end
+function βc_jackknife(fid,run; β0, βmin, βmax ,kws...)
+    a, S, Nt, Nl, V = LLRParsing._set_up_histogram(fid,run)
+    a_jk = jackknife_resamples(a) 
+    beta = zeros(size(a_jk)[2])
+    for i in axes(a_jk,2)
+        ai      = a_jk[:,i:i]
+        beta[i] = LLRParsing.beta_at_equal_heights(ai, S, V, β0, βmin, βmax; kws...)
+    end
+    N   = length(beta)
+    βc  = mean(beta)
+    Δβc = sqrt(N-1)*std(beta)
+    return βc, Δβc
 end
 function histogram_jackknife_fit(fid,run, beta)
     a, S, Nt, Nl, V = LLRParsing._set_up_histogram(fid,run)
