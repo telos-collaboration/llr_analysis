@@ -6,7 +6,7 @@ using ArgParse
 gr(fontfamily="Computer Modern",legend=:topright,frame=:box,titlefontsize=11,legendfontsize=9,labelfontsize=12,left_margin=0Plots.mm)
 
 function plot_all_histogram_fits(file, plotfile, β0, βmin, βmax; xmin, xmax)
-    ispath(basename(plotfile)) || mkpath(basename(plotfile))
+    ispath(dirname(plotfile)) || mkpath(dirname(plotfile))
     fid   = h5open(file)
     runs  = keys(fid)
     plt = plot(title="Comparison of probability distribution across volumes")
