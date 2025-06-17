@@ -62,6 +62,6 @@ function main()
     β0 = (βmax+βmin)/2
 
     plot_all_histogram_fits(file, plotdir, β0, βmin, βmax; xmin, xmax, fit=true, name = "fit")
-    plot_all_histogram_fits(file, plotdir, β0, βmin, βmax; xmin, xmax, fit=false, A1=2, A2=1, name="two-to-one")
+    plot_all_histogram_fits(file, plotdir, β0, βmin, βmax; xmin, xmax, fit=true, A1=2, A2=1, name="two-to-one")
 end
 main()
