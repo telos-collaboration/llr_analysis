@@ -15,3 +15,4 @@ julia scripts/done/double_gaussian_fit.jl --h5file "data_assets/Sp4_Nt4_sorted.h
 julia scripts/done/tables.jl --h5file "data_assets/Sp4_Nt5_sorted.hdf5" --outfile "assets/runs.tex"
 julia scripts/done/double_gaussian_volumes.jl --h5file "data_assets/Sp4_Nt5_sorted.hdf5" --plotfile "assets/plaquette_distribution_Nt5_volumes.pdf" --xmin 0.5885 --xmax 0.5905 --beta_min 7.488 --beta_max 7.492
 julia scripts/done/double_gaussian_volumes.jl --h5file "data_assets/Sp4_Nt4_sorted.hdf5" --plotfile "assets/plaquette_distribution_Nt4_volumes.pdf" --xmin 0.567  --xmax 0.577  --beta_min 7.337 --beta_max 7.343
+julia scripts/done/critical_beta.jl --h5file "data_assets/Sp4_Nt5_sorted.hdf5" --outfile "data_assets/critical_beta_Nt5.csv" --beta_min 7.488 --beta_max 7.492
