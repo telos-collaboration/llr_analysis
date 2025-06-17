@@ -8,7 +8,7 @@ As of now julia-1.10.4 from conda does not work with this code. But we probably 
 
 The raw data and metadata can be downloaded from OneDrive (I suggest using the following wget command since its 11GB)
 ```
-wget "https://swanseauniversity-my.sharepoint.com/:u:/g/personal/fabian_zierler_swansea_ac_uk/EaEMEKGYGDRDicdLeeoMnuMBUd1RW2Q6iquuoTZI3M7V4A?e=NuLivj&download=1"
+wget -c "https://swanseauniversity-my.sharepoint.com/:u:/g/personal/fabian_zierler_swansea_ac_uk/EaEMEKGYGDRDicdLeeoMnuMBUd1RW2Q6iquuoTZI3M7V4A?e=NuLivj&download=1"
 ```
 
 Unzip the archive, and decompress the `tar.zst` files in `raw_data`. After decompression the raw data takes up ~120GB of space. 
