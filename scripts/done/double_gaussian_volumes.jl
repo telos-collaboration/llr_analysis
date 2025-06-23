@@ -11,8 +11,12 @@ function plot_all_histogram_fits(file, plotfile, β0, βmin, βmax; xmin, xmax)
     runs  = keys(fid)
     plt = plot(title="Comparison of probability distribution across volumes")
     for run in runs
-        βc  = LLRParsing.beta_at_equal_heights(fid,run,β0,βmin,βmax)
-        plot_plaquette_histogram!(plt,fid,run,βc;xlims=(xmin, xmax))
+        try
+            βc  = LLRParsing.beta_at_equal_heights(fid,run,β0,βmin,βmax)
+            plot_plaquette_histogram!(plt,fid,run,βc;xlims=(xmin, xmax))
+        catch
+            @warn "Cannot determine critical β for $run"
+        end
     end
     savefig(plt,plotfile)
 end
@@ -52,7 +56,6 @@ function main()
     plotfile = args["plotfile"]
     β0 = (βmax+βmin)/2
 
-    plot_all_histogram_fits(file, plotfile, β0, βmin, βmax; xmin, xmax)
     plot_all_histogram_fits(file, plotfile, β0, βmin, βmax; xmin, xmax)
 end
 main()
