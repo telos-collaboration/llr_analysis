@@ -33,8 +33,8 @@ function thermodynamic_potentials_repeats(a, S0, V; logρ0 = 0.0)
         cs = cumsum(a0)
         for i in 1:replicas
             logρ  = LLRParsing.log_rho(E[i], S0, dS, a0; cumsum_a=cs)
-            u      = (6V - E[i])/V
-            s      = (logρ + logρ0)/V
+            u      = (6V - E[i])
+            s      = (logρ + logρ0)
             t[i,r] = 1/a0[i]
             f[i,r] = u - t[i,r]*s
         end
@@ -51,8 +51,16 @@ function thermodynamic_potentials(a, S0, V; kws...)
     return t, Δt, f, Δf
 end
 
-file   = "data_assets/Sp4_Nt4_sorted.hdf5"
+file   = "data_assets/Sp4_Nt5_sorted.hdf5"
 h5dset = h5open(file)
 runs   = keys(h5dset)
-t, Δt, f, Δf = thermodynamic_potentials(h5dset,runs[end])
-scatter(t,f,xerr=Δt,yerr=Δf,label="")
+plt    = plot()
+# Note: Free energies are slightly shifted when using different intervals
+#       This is most likely due to the normalization of log(ρ)
+#       David sbtracts the crossing point in the swallow-tail 
+#       Moving forward we should subtract for the lowest available temperature
+for run in runs
+    t, Δt, f, Δf = thermodynamic_potentials(h5dset,run)
+    scatter!(plt,t,f,xerr=Δt,yerr=Δf,label="")
+end
+plt
