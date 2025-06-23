@@ -8,7 +8,7 @@ using ProgressMeter
 using ArgParse
 gr(fontfamily="Computer Modern",legend=:topright,frame=:box,titlefontsize=11,legendfontsize=9,labelfontsize=12,left_margin=0Plots.mm)
 
-function plot_repeat(run,repeat,Nrep;kws...)
+function plot_repeat(fid,run,repeat,Nrep;kws...)
     title = LLRParsing.fancy_title(run)*", repeat #$repeat"
     a0    = hcat([read(fid[run],"$repeat/Rep_$i/a_sorted") for i in 0:Nrep-1]...)
     NRpRM = first(size(a0))
@@ -26,7 +26,7 @@ function plot_all_an_trajectories(file,outdir;kws...)
         Nrep = read(fid[run],"N_replicas")
         
         for r in repeats
-            plt = plot_repeat(run,r,Nrep;kws...)
+            plt = plot_repeat(fid,run,r,Nrep;kws...)
             savefig(plt, "tmp.pdf")
             append_pdf!(outfile, "tmp.pdf", cleanup=true)
         end
