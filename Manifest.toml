@@ -2,7 +2,7 @@
 
 julia_version = "1.11.5"
 manifest_format = "2.0"
-project_hash = "8f769813fdf7cadadd2c24f69299f1d74f60e8e3"
+project_hash = "4932f7ef6e797c665cb61227003b9a8178d1d105"
 
 [[deps.ADTypes]]
 git-tree-sha1 = "e2478490447631aedba0823d4d7a80b2cc8cdb32"
@@ -944,6 +944,15 @@ version = "1.3.3+0"
 git-tree-sha1 = "05868e21324cede2207c6f0f466b4bfef6d5e7ee"
 uuid = "bac558e1-5e72-5ebc-8fee-abe8a469f55d"
 version = "1.8.1"
+
+[[deps.PCHIPInterpolation]]
+git-tree-sha1 = "fa9c9839789b203e99580cd09c212df78f883562"
+uuid = "afe20452-48d1-4729-9a8b-50fb251f06cd"
+version = "0.2.1"
+weakdeps = ["RecipesBase"]
+
+    [deps.PCHIPInterpolation.extensions]
+    PCHIPInterpolationRecipesBaseExt = "RecipesBase"
 
 [[deps.PCRE2_jll]]
 deps = ["Artifacts", "Libdl"]

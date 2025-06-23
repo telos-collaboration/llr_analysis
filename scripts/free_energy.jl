@@ -4,6 +4,9 @@ using Statistics
 using Plots
 using LaTeXStrings
 using LinearAlgebra
+using PCHIPInterpolation
+using Peaks
+using Roots
 gr(fontfamily="Computer Modern",legend=:topleft,frame=:box,titlefontsize=11,legendfontsize=9,labelfontsize=12,left_margin=0Plots.mm)
 
 function thermodynamic_potentials_repeats(h5dset,run; kws...)
@@ -33,8 +36,8 @@ function thermodynamic_potentials_repeats(a, S0, V; logρ0 = 0.0)
         cs = cumsum(a0)
         for i in 1:replicas
             logρ  = LLRParsing.log_rho(E[i], S0, dS, a0; cumsum_a=cs)
-            u      = (6V - E[i])
-            s      = (logρ + logρ0)
+            u      = (6V - E[i])/V
+            s      = (logρ + logρ0)/V
             t[i,r] = 1/a0[i]
             f[i,r] = u - t[i,r]*s
         end
@@ -50,17 +53,34 @@ function thermodynamic_potentials(a, S0, V; kws...)
     Δf = dropdims(std(f_r,dims=2),dims=2) ./ sqrt(N)
     return t, Δt, f, Δf
 end
+function main()
+    file   = "data_assets/Sp4_Nt4_sorted.hdf5"
+    h5dset = h5open(file)
+    runs   = keys(h5dset)
+    plt    = plot()
+    for r in runs[2:end]
+        Nl = read(h5dset[r],"Nl")
+        Nt = read(h5dset[r],"Nt")
+        V  = Nt*Nl^3
+        a, Δa, S0, _ = a_vs_central_action(h5dset,r)
+        t, Δt, f, Δf = thermodynamic_potentials(h5dset,r)
+        pks = only(findmaxima(a,5).indices)
+        mns = only(findminima(a,5).indices)
+        up  = S0./(6V)
+        r1  = 1:pks
+        r2  = mns:length(a)   
 
-file   = "data_assets/Sp4_Nt5_sorted.hdf5"
-h5dset = h5open(file)
-runs   = keys(h5dset)
-plt    = plot()
-# Note: Free energies are slightly shifted when using different intervals
-#       This is most likely due to the normalization of log(ρ)
-#       David sbtracts the crossing point in the swallow-tail 
-#       Moving forward we should subtract for the lowest available temperature
-for run in runs
-    t, Δt, f, Δf = thermodynamic_potentials(h5dset,run)
-    scatter!(plt,t,f,xerr=Δt,yerr=Δf,label="")
+        perm1 = sortperm(t[r1])
+        perm2 = sortperm(t[r2])
+        itp1 = Interpolator(t[r1][perm1],f[r1][perm1])
+        itp2 = Interpolator(t[r2][perm2],f[r2][perm2])
+
+        g(x)   = itp1(x) - itp2(x)
+        t1, t2 = extrema(filter(t -> isfinite(g(t)), vcat(t[r1],t[r2]) ))
+        tc     = find_zero(g,(t1,t2))
+        f      = f .- itp1(tc)
+        plot!(plt,t,f,xerr=Δt,yerr=Δf,label="",ms=1)
+    end
+    return plt
 end
-plt
+plt = main()
