@@ -35,3 +35,6 @@ julia scripts/done/critical_beta.jl --h5file "data_assets/Sp4_Nt5_sorted.hdf5" -
 
 julia scripts/done/tables.jl --h5file "data_assets/Sp4_Nt5_sorted.hdf5" --outfile "assets/tables/runs.tex"
 
+# Optional: Reduce the filesize of the inefficient pdf using ps2pdf
+find ./data_assets/plots -name '*.pdf' -exec ps2pdf {} {}_tmp \; -exec mv {}_tmp {} \;
+find ./assets/plots -name '*.pdf' -exec ps2pdf {} {}_tmp \; -exec mv {}_tmp {} \;
