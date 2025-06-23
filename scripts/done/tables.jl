@@ -5,6 +5,7 @@ using LaTeXStrings
 using ArgParse
 
 function write_run_table(file,outfile)
+    ispath(dirname(outfile)) || mkpath(dirname(outfile))
     fid = h5open(file)
     io  = open(outfile,"w")
 
