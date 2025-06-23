@@ -54,19 +54,17 @@ function thermodynamic_potentials(a, S0, V; kws...)
     return t, Δt, f, Δf
 end
 function main()
-    file   = "data_assets/Sp4_Nt4_sorted.hdf5"
+    file   = "data_assets/Sp4_Nt5_sorted.hdf5"
     h5dset = h5open(file)
     runs   = keys(h5dset)
-    plt    = plot()
-    for r in runs[2:end]
-        Nl = read(h5dset[r],"Nl")
-        Nt = read(h5dset[r],"Nt")
-        V  = Nt*Nl^3
+    tmin, tmax = +Inf, -Inf
+    fmin, fmax = -Inf, +Inf
+    for r in runs
+        plt    = plot()
         a, Δa, S0, _ = a_vs_central_action(h5dset,r)
         t, Δt, f, Δf = thermodynamic_potentials(h5dset,r)
         pks = only(findmaxima(a,5).indices)
         mns = only(findminima(a,5).indices)
-        up  = S0./(6V)
         r1  = 1:pks
         r2  = mns:length(a)   
 
@@ -79,7 +77,16 @@ function main()
         t1, t2 = extrema(filter(t -> isfinite(g(t)), vcat(t[r1],t[r2]) ))
         tc     = find_zero(g,(t1,t2))
         f      = f .- itp1(tc)
-        plot!(plt,t,f,xerr=Δt,yerr=Δf,label="",ms=1)
+        plot!(plt,t,f,xerr=Δt,yerr=Δf,label="$r",ms=1)
+
+        # set plot limits
+        tmin = min(t[pks],tmin) 
+        tmax = max(t[mns],tmax) 
+        fmin = max(f[pks],fmin) 
+        fmax = min(f[mns],fmax)
+        δt, δf = tmax-tmin, fmax-fmin 
+        plot!(plt,ylims=(fmin-δf,fmax+δf),xlims=(tmin-δt/4,tmax+δt/4))
+        display(plt)
     end
     return plt
 end
