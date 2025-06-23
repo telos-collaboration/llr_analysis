@@ -22,7 +22,7 @@ function all_overview_plots(file,plotdir)
         Δa0 = a_vs_central_action(h5dset,run)[2]
         ind = findmax(Δa0)[2]
         plt = overview(h5dset,run,repeat_id=1,replica_id=ind)
-        savefig(plt,joinpath(plotdir,"$run.svg"))
+        savefig(plt,joinpath(plotdir,"$run.pdf"))
     end
 end
 function parse_commandline()
