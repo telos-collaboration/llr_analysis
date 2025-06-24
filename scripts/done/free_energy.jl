@@ -1,3 +1,4 @@
+using Pkg; Pkg.activate(".")
 using LLRParsing
 using HDF5
 using Statistics
@@ -7,6 +8,7 @@ using LinearAlgebra
 using PCHIPInterpolation
 using Peaks
 using Roots
+using ArgParse
 gr(fontfamily="Computer Modern",legend=:topleft,frame=:box,titlefontsize=11,legendfontsize=9,labelfontsize=12,left_margin=1Plots.mm)
 
 function thermodynamic_potentials_repeats(h5dset,run; kws...)
@@ -53,7 +55,7 @@ function thermodynamic_potentials(a, S0, V; kws...)
     Δf = dropdims(std(f_r,dims=2),dims=2) ./ sqrt(N)
     return t, Δt, f, Δf
 end
-function main(file)
+function plot_free_energies(file,plotdir)
     h5dset = h5open(file)
     runs   = keys(h5dset)
     tmin, tmax = +Inf, -Inf
@@ -71,10 +73,12 @@ function main(file)
         itp1 = Interpolator(t[r1][perm1],f[r1][perm1])
         itp2 = Interpolator(t[r2][perm2],f[r2][perm2])
 
-        g(x)   = itp1(x) - itp2(x)
-        t1, t2 = extrema(filter(t -> isfinite(g(t)), vcat(t[r1],t[r2]) ))
-        tc     = find_zero(g,(t1,t2))
-        f      = f .- itp1(tc)
+        g(x)  = itp1(x) - itp2(x)
+        t1,t2 = extrema(filter(t -> isfinite(g(t)), vcat(t[r1],t[r2]) ))
+        tc    = find_zero(g,(t1,t2))
+        f     = (f .- itp1(tc)) 
+        @. f  = f * 10^6
+        @. Δf = Δf * 10^6
         
         # set plot limits
         tmin = min(t[pks],tmin) 
@@ -83,17 +87,30 @@ function main(file)
         fmax = min(f[mns],fmax)
         δt, δf = tmax-tmin, fmax-fmin 
         
-        plt = plot(title=LLRParsing.fancy_title(r))
-        plot!(;ylabel=L"f - f_c^+")
+        plt = plot(title=LLRParsing.fancy_title(r)*" - no entropy subtraction")
+        plot!(;ylabel=L"(f - f_c^+ )/ 10^{-6}", xlabel=L"t = 1/a_n")
         plot!(plt,t,f,xerr=Δt,yerr=Δf,ms=1,label="")
         plot!(plt,ylims=(fmin-δf,fmax+δf/2),xlims=(tmin-δt/4,tmax+δt/4))
-        ispath("assets/plots/free_energy") || mkpath("assets/plots/free_energy")
-        savefig(plt,"assets/plots/free_energy/$r.pdf")
+        ispath(plotdir) || mkpath(plotdir)
+        savefig(plt,joinpath(plotdir,"$r.pdf"))
     end
 end
-
-file   = "data_assets/Sp4_Nt5_sorted.hdf5"
-main(file)
-
-file   = "data_assets/Sp4_Nt4_sorted.hdf5"
-main(file)
+function parse_commandline()
+    s = ArgParseSettings()
+    @add_arg_table s begin
+        "--h5file"
+            help = "HDF5 file containing the sorted results"
+            required = true
+        "--plot_dir"
+            help = "Where to save the plots"
+            required = true
+    end
+    return parse_args(s)
+end
+function main()
+    args = parse_commandline()
+    file    = args["h5file"]
+    plotdir = args["plot_dir"]
+    plot_free_energies(file, plotdir)
+end
+main()
