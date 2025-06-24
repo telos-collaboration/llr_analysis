@@ -32,10 +32,13 @@ julia scripts/done/double_gaussian_fit.jl --h5file "data_assets/Sp4_Nt5_sorted.h
 julia scripts/done/double_gaussian_volumes.jl --h5file "data_assets/Sp4_Nt4_sorted.hdf5" --plotfile "assets/plots/plaquette_distribution_Nt4_volumes.pdf" --xmin 0.567  --xmax 0.577  --beta_min 7.3#37 --beta_max 7.343
 julia scripts/done/double_gaussian_volumes.jl --h5file "data_assets/Sp4_Nt5_sorted.hdf5" --plotfile "assets/plots/plaquette_distribution_Nt5_volumes.pdf" --xmin 0.5885 --xmax 0.5905 --beta_min 7.4#88 --beta_max 7.492
 #julia scripts/done/double_gaussian_volumes.jl --h5file "data_assets/Sp4_Nt6_sorted.hdf5" --plotfile "assets/plots/plaquette_distribution_Nt6_volumes.pdf" --xmin 0.601  --xmax 0.603  --beta_min 7.#615 --beta_max 7.623
-
 julia scripts/done/critical_beta.jl --h5file "data_assets/Sp4_Nt4_sorted.hdf5" --outfile "data_assets/critical_beta_Nt4.csv" --beta_min 7.337 --beta_max 7.343
 julia scripts/done/critical_beta.jl --h5file "data_assets/Sp4_Nt5_sorted.hdf5" --outfile "data_assets/critical_beta_Nt5.csv" --beta_min 7.488 --beta_max 7.492
 #julia scripts/done/critical_beta.jl --h5file "data_assets/Sp4_Nt6_sorted.hdf5" --outfile "data_assets/critical_beta_Nt6.csv" --beta_min 7.615 --beta_max 7.623
+
+julia scripts/done/plot_beta.jl --file "data_assets/critical_beta_Nt4.csv"  --plotfile "assets/plots/critical_beta_volumes_Nt4.pdf" --Nt 4
+julia scripts/done/plot_beta.jl --file "data_assets/critical_beta_Nt5.csv"  --plotfile "assets/plots/critical_beta_volumes_Nt5.pdf" --Nt 5
+#julia scripts/done/plot_beta.jl --file "data_assets/critical_beta_Nt6.csv" --plotfile "assets/plots/critical_beta_volumes_Nt6.pdf" --Nt 6
 
 julia scripts/done/tables.jl --h5file "data_assets/Sp4_Nt5_sorted.hdf5" --outfile "assets/tables/runs.tex"
 

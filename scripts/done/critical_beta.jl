@@ -10,15 +10,16 @@ function all_critical_beta(file, outfile, β0, βmin, βmax; A1=1, A2=1)
     runs   = keys(fid)
     header = !isfile(outfile)
     io     = open(outfile,"a")
-    header && println(io,"run,A1,A2,βc,Δβc,str")
+    header && println(io,"run,L,A1,A2,βc,Δβc,str")
     for run in runs
+        L   = read(fid[run],"Nl")
         try
             βc, Δβc = LLRParsing.βc_jackknife(fid,run;β0,βmin,βmax,A1,A2)
             str = errorstring(βc, Δβc; nsig=1)
-            println(io,"$run,$A1,$A2,$βc,$Δβc,$str")
+            println(io,"$run,$L,$A1,$A2,$βc,$Δβc,$str")
         catch 
             @warn "Cannot determin critical coupling for run $run"
-            println(io,"$run,$A1,$A2,NaN,NaN,NaN(NaN)")
+            println(io,"$run,$L,$A1,$A2,NaN,NaN,NaN(NaN)")
         end
     end
     close(io)
