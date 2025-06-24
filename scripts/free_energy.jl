@@ -7,7 +7,7 @@ using LinearAlgebra
 using PCHIPInterpolation
 using Peaks
 using Roots
-gr(fontfamily="Computer Modern",legend=:topleft,frame=:box,titlefontsize=11,legendfontsize=9,labelfontsize=12,left_margin=0Plots.mm)
+gr(fontfamily="Computer Modern",legend=:topleft,frame=:box,titlefontsize=11,legendfontsize=9,labelfontsize=12,left_margin=1Plots.mm)
 
 function thermodynamic_potentials_repeats(h5dset,run; kws...)
     a, S0_all, ind = LLRParsing.a_vs_central_action_repeats(h5dset,run)
@@ -53,14 +53,12 @@ function thermodynamic_potentials(a, S0, V; kws...)
     Δf = dropdims(std(f_r,dims=2),dims=2) ./ sqrt(N)
     return t, Δt, f, Δf
 end
-function main()
-    file   = "data_assets/Sp4_Nt5_sorted.hdf5"
+function main(file)
     h5dset = h5open(file)
     runs   = keys(h5dset)
     tmin, tmax = +Inf, -Inf
     fmin, fmax = -Inf, +Inf
     for r in runs
-        plt    = plot()
         a, Δa, S0, _ = a_vs_central_action(h5dset,r)
         t, Δt, f, Δf = thermodynamic_potentials(h5dset,r)
         pks = only(findmaxima(a,5).indices)
@@ -77,17 +75,25 @@ function main()
         t1, t2 = extrema(filter(t -> isfinite(g(t)), vcat(t[r1],t[r2]) ))
         tc     = find_zero(g,(t1,t2))
         f      = f .- itp1(tc)
-        plot!(plt,t,f,xerr=Δt,yerr=Δf,label="$r",ms=1)
-
+        
         # set plot limits
         tmin = min(t[pks],tmin) 
         tmax = max(t[mns],tmax) 
         fmin = max(f[pks],fmin) 
         fmax = min(f[mns],fmax)
         δt, δf = tmax-tmin, fmax-fmin 
-        plot!(plt,ylims=(fmin-δf,fmax+δf),xlims=(tmin-δt/4,tmax+δt/4))
-        display(plt)
+        
+        plt = plot(title=LLRParsing.fancy_title(r))
+        plot!(;ylabel=L"f - f_c^+")
+        plot!(plt,t,f,xerr=Δt,yerr=Δf,ms=1,label="")
+        plot!(plt,ylims=(fmin-δf,fmax+δf/2),xlims=(tmin-δt/4,tmax+δt/4))
+        ispath("assets/plots/free_energy") || mkpath("assets/plots/free_energy")
+        savefig(plt,"assets/plots/free_energy/$r.pdf")
     end
-    return plt
 end
-plt = main()
+
+file   = "data_assets/Sp4_Nt5_sorted.hdf5"
+main(file)
+
+file   = "data_assets/Sp4_Nt4_sorted.hdf5"
+main(file)
