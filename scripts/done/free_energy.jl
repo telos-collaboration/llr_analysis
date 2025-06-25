@@ -39,30 +39,33 @@ function thermodynamic_potentials_repeats(a, S0, V; logρ0 = 0.0)
         for i in 1:replicas
             logρ  = LLRParsing.log_rho(E[i], S0, dS, a0; cumsum_a=cs)
             u      = (6V - E[i])/V
-            s      = (logρ + logρ0)/V
+            s[i,r] = (logρ + logρ0)/V
             t[i,r] = 1/a0[i]
-            f[i,r] = u - t[i,r]*s
+            f[i,r] = u - t[i,r]*s[i,r]
         end
     end
-    return t, f
+    return t, f, s
 end
 function thermodynamic_potentials(a, S0, V; kws...)
-    t_r, f_r = thermodynamic_potentials_repeats(a, S0, V; kws...)
+    t_r, f_r, s_r = thermodynamic_potentials_repeats(a, S0, V; kws...)
     N  = size(t_r,2)
     t  = dropdims(mean(t_r,dims=2),dims=2)
     f  = dropdims(mean(f_r,dims=2),dims=2)
+    s  = dropdims(mean(s_r,dims=2),dims=2)
     Δt = dropdims(std(t_r,dims=2),dims=2) ./ sqrt(N)
     Δf = dropdims(std(f_r,dims=2),dims=2) ./ sqrt(N)
-    return t, Δt, f, Δf
+    Δs = dropdims(std(s_r,dims=2),dims=2) ./ sqrt(N)
+    return t, Δt, f, Δf, s, Δs
 end
 function plot_free_energies(file,plotdir)
     h5dset = h5open(file)
     runs   = keys(h5dset)
     tmin, tmax = +Inf, -Inf
     fmin, fmax = -Inf, +Inf
+    plt_s = plot()
     for r in runs
         a, Δa, S0, _ = a_vs_central_action(h5dset,r)
-        t, Δt, f, Δf = thermodynamic_potentials(h5dset,r)
+        t, Δt, f, Δf, s, Δs = thermodynamic_potentials(h5dset,r)
         pks = only(findmaxima(a,5).indices)
         mns = only(findminima(a,5).indices)
         r1  = 1:pks
@@ -93,7 +96,11 @@ function plot_free_energies(file,plotdir)
         plot!(plt,ylims=(fmin-δf,fmax+δf/2),xlims=(tmin-δt/4,tmax+δt/4))
         ispath(plotdir) || mkpath(plotdir)
         savefig(plt,joinpath(plotdir,"$r.pdf"))
+        plot!(plt_s,t,s,xerr=Δt,yerr=Δs,ms=1,label=r)
     end
+    Nt = read(h5dset[first(runs)],"Nt")
+    plot!(legend=:bottomright, xlabel=L"t = 1/a_n", ylabel=L"unsubtracted entropy $s = \log(\rho)$")
+    savefig(plt_s,joinpath(plotdir,"entropy_Nt$Nt.pdf"))
 end
 function parse_commandline()
     s = ArgParseSettings()
