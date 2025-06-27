@@ -46,7 +46,3 @@ julia $sdir/plot_beta.jl --file "data_assets/critical_beta_Nt5.csv" --plotfile "
 #julia $sdir/plot_beta.jl --file "data_assets/critical_beta_Nt6.csv" --plotfile "assets/plots/critical_beta_volumes_Nt6.pdf" --Nt 6
 
 julia $sdir/tables.jl --h5file $Nt5_hdf5 --outfile "assets/tables/runs.tex"
-
-# Optional: Reduce the filesize of the inefficiently saved pdfs by using ps2pdf
-find ./data_assets/plots -name '*.pdf' -exec ps2pdf {} {}_tmp \; -exec mv {}_tmp {} \;
-find ./assets/plots -name '*.pdf' -exec ps2pdf {} {}_tmp \; -exec mv {}_tmp {} \;
