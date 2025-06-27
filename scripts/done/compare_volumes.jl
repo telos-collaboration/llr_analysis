@@ -22,7 +22,6 @@ function an_action_volumes(file,plotdest;title,xmin,xmax,ymin,ymax)
     plot!(plt,xlims=(xmin,xmax),ylims=(ymin,ymax);title)
     plot!(plt,legend=:bottomright,xlabel=L"u_p",ylabel=L"a_n")
     savefig(plt,plotdest)
-    display(plt)
 end
 function parse_commandline()
     s = ArgParseSettings()

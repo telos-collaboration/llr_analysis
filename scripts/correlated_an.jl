@@ -37,9 +37,6 @@ for run in runs
 
     plt_a = plot_pearson_correlation_matrix(ups, cora; title = title_a)
     plt_P = plot_pearson_correlation_matrix(ups[r],corP[r,r]; title = title_P)
-    display(plt_P)
-    @show extrema(covP)
-    @show eigmin(covP)
     #savefig(plt_a,"Pearson_correlation_an.pdf")
     #savefig(plt_P,"Pearson_correlation_P.pdf")
 end
