@@ -1,4 +1,3 @@
-using Pkg; Pkg.activate(".")
 using LLRParsing
 using HDF5
 using LaTeXStrings

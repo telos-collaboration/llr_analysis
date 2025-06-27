@@ -1,4 +1,3 @@
-using Pkg; Pkg.activate(".")
 using HDF5
 using LLRParsing
 using Plots

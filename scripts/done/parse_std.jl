@@ -1,4 +1,3 @@
-using Pkg; Pkg.activate(".")
 using LLRParsing
 
 path = "/home/fabian/Documents/Physics/Data/DataLLR"

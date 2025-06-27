@@ -1,4 +1,3 @@
-using Pkg; Pkg.activate(".")
 using DelimitedFiles
 using Plots
 using ArgParse
