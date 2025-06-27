@@ -14,6 +14,7 @@ function parse_skip(str)
     return all(isempty,spl) ? String[] : String.(spl)
 end
 function llr_alldirs_hdf5(path,metadata_file,h5file;clean=false,tmpdir="./tmp/")
+    ispath(dirname(h5file)) || mkpath(dirname(h5file))
     metadata = readdlm(metadata_file,',',String,skipstart=1)
     dirs = metadata[:,1]
     skip = parse_skip.(metadata[:,2])
