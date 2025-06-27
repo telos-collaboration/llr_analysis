@@ -560,17 +560,13 @@ uuid = "2e76f6c2-a576-52d4-95c1-20adfe4de566"
 version = "8.5.1+0"
 
 [[deps.HiRepOutputCleaner]]
-git-tree-sha1 = "266720cb5324b60b56bc6c525724f9a883aa843e"
-repo-rev = "main"
-repo-url = "https://github.com/fzierler/HiRepOutputCleaner"
+path = "libs/HiRepOutputCleaner"
 uuid = "a6578ec9-e5ba-419d-b25f-68053db3bc00"
 version = "0.1.0"
 
 [[deps.HiRepParsing]]
 deps = ["HDF5", "Parsers", "ProgressMeter"]
-git-tree-sha1 = "fff863c04f6d2e696b7871e94566a1b364537839"
-repo-rev = "main"
-repo-url = "https://github.com/fzierler/HiRepParsing"
+path = "libs/HiRepParsing"
 uuid = "c7cc7de0-aa5c-4db3-979c-e9fc59cba489"
 version = "0.1.0"
 
@@ -820,9 +816,7 @@ version = "0.5.16"
 
 [[deps.MadrasSokal]]
 deps = ["Distributions", "HDF5", "LaTeXStrings", "LsqFit", "PGFPlotsX", "Plots", "Statistics"]
-git-tree-sha1 = "6e7bdb44484f1194b0cdc7a0855418b164e22db0"
-repo-rev = "main"
-repo-url = "https://github.com/fzierler/MadrasSokal"
+path = "libs/MadrasSokal"
 uuid = "5c0a986f-5b00-49c7-a63c-a994e876fa55"
 version = "0.1.0"
 
