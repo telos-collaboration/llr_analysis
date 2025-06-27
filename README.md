@@ -4,7 +4,10 @@ This is for now a work-in-progress.
 This code assumes that julia is installed. 
 No LaTeX is required.
 
-As of now julia-1.10.4 from conda does not work with this code. But we probably don't need it since there are no dependencies outside of julia (except for `zstd` and the optional `ps2pdf` but we can change that).
+We provide a conda environment file that specifies all required dependencies. This should work for the `osx-64`, `osx-arm64` and `linux-64` It can be activated using:
+```
+conda env create -f environment.yml
+```
 
 The raw data and metadata can be downloaded from OneDrive using wget.
 ```
