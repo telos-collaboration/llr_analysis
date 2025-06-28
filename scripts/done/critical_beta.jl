@@ -9,16 +9,17 @@ function all_critical_beta(file, outfile, β0, βmin, βmax; A1=1, A2=1)
     runs   = keys(fid)
     header = !isfile(outfile)
     io     = open(outfile,"a")
-    header && println(io,"run,L,A1,A2,βc,Δβc,str")
+    header && println(io,"run,Nt,Nl,A1,A2,βc,Δβc,str")
     for run in runs
         L   = read(fid[run],"Nl")
+        T   = read(fid[run],"Nt")
         try
             βc, Δβc = LLRParsing.βc_jackknife(fid,run;β0,βmin,βmax,A1,A2)
             str = errorstring(βc, Δβc; nsig=1)
-            println(io,"$run,$L,$A1,$A2,$βc,$Δβc,$str")
+            println(io,"$run,$T,$L,$A1,$A2,$βc,$Δβc,$str")
         catch 
             @warn "Cannot determin critical coupling for run $run"
-            println(io,"$run,$L,$A1,$A2,NaN,NaN,NaN(NaN)")
+            println(io,"$run,$T,$L,$A1,$A2,NaN,NaN,NaN(NaN)")
         end
     end
     close(io)
@@ -40,7 +41,11 @@ function parse_commandline()
             help = "upper limit of β for finding the critical coupling"
             arg_type = Float64
             required = true
-    end
+        "--relative_peak_height"
+            help = "Ratio of peak heights used for finding the critical coupling"
+            arg_type = Int
+            default = 1
+        end
     return parse_args(s)
 end
 function main()
@@ -48,10 +53,10 @@ function main()
     βmin = args["beta_min"]
     βmax = args["beta_max"]
     file = args["h5file"]
+    A1   = args["relative_peak_height"]
     β0   = (βmax+βmin)/2
     outfile = args["outfile"]
     isfile(outfile) && rm(outfile)
-    all_critical_beta(file, outfile, β0, βmin, βmax)
-    all_critical_beta(file, outfile, β0, βmin, βmax; A1=2, A2=1)
+    all_critical_beta(file, outfile, β0, βmin, βmax; A1=A1, A2=1)
 end
 main()
