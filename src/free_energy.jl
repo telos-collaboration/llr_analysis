@@ -53,8 +53,6 @@ end
 function plot_free_energies(file,plotdir)
     h5dset = h5open(file)
     runs   = keys(h5dset)
-    tmin, tmax = +Inf, -Inf
-    fmin, fmax = -Inf, +Inf
     plt_s = plot()
     for r in runs
         a, Δa, S0, _ = a_vs_central_action(h5dset,r)
@@ -72,21 +70,27 @@ function plot_free_energies(file,plotdir)
         g(x)  = itp1(x) - itp2(x)
         t1,t2 = extrema(filter(t -> isfinite(g(t)), vcat(t[r1],t[r2]) ))
         tc    = find_zero(g,(t1,t2))
-        f     = (f .- itp1(tc)) 
-        @. f  = f * 10^6
-        @. Δf = Δf * 10^6
+        fc    = itp1(tc)
         
         # set plot limits
-        tmin = min(t[pks],tmin) 
-        tmax = max(t[mns],tmax) 
-        fmin = max(f[pks],fmin) 
-        fmax = min(f[mns],fmax)
-        δt, δf = tmax-tmin, fmax-fmin 
+        tmin, tmax = extrema((t[pks],t[mns])) 
+        δt = tmax - tmin  
+        tmin, tmax = tmin-δt/4, tmax+δt/4 
+        fmin, fmax = extrema((f[pks],f[mns]))
+        δf = fmax - fmin
+        fmin, fmax = extrema((itp2(tmin),itp1(tmax),fmin-δf/3,fmax+δf/3)) 
+
+        # rescale free energy for nicer, centred plots
+        scale = 10^6
+        @. f  = f - fc 
+        @. f  = f * scale 
+        @. Δf = Δf * scale
+        fmin, fmax = (fmin - fc)*scale, (fmax - fc)*scale
         
         plt = plot(title=LLRParsing.fancy_title(r)*" - no entropy subtraction")
         plot!(;ylabel=L"(f - f_c^+ )/ 10^{-6}", xlabel=L"t = 1/a_n")
         plot!(plt,t,f,xerr=Δt,yerr=Δf,ms=1,label="")
-        plot!(plt,ylims=(fmin-δf,fmax+δf/2),xlims=(tmin-δt/4,tmax+δt/4))
+        plot!(plt,ylims=(fmin,fmax),xlims=(tmin,tmax))
         ispath(plotdir) || mkpath(plotdir)
         savefig(plt,joinpath(plotdir,"$r.pdf"))
         plot!(plt_s,t,s,xerr=Δt,yerr=Δs,ms=1,label=r)
