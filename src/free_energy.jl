@@ -1,4 +1,3 @@
-
 function thermodynamic_potentials_repeats(h5dset,run; kws...)
     a, S0_all, ind = LLRParsing.a_vs_central_action_repeats(h5dset,run)
     Nl = read(h5dset[run],"Nl")
@@ -31,7 +30,8 @@ function thermodynamic_potentials_repeats(a, S0, V; logρ0 = 0.0)
             t[i,r] = 1/a0[i]
         end
         # Perform additive constant to the entropy 
-        @. s = s + logρ0
+        min_s = minimum(s[:,r])
+        @. s[:,r]  = s[:,r] - min_s
         for i in 1:replicas    
             u      = 6 - E[i]
             f[i,r] = u - t[i,r]*s[i,r]
@@ -60,7 +60,7 @@ function plot_free_energies(file,plotdir)
         pks = only(findmaxima(a,5).indices)
         mns = only(findminima(a,5).indices)
         r1  = 1:pks
-        r2  = mns:length(a)   
+        r2  = mns:length(a)
 
         perm1 = sortperm(t[r1])
         perm2 = sortperm(t[r2])
@@ -86,7 +86,7 @@ function plot_free_energies(file,plotdir)
         @. f  = f * scale 
         @. Δf = Δf * scale
         fmin, fmax = (fmin - fc)*scale, (fmax - fc)*scale
-        
+
         plt = plot(title=LLRParsing.fancy_title(r)*" - no entropy subtraction")
         plot!(;ylabel=L"(f - f_c^+ )/ 10^{-6}", xlabel=L"t = 1/a_n")
         plot!(plt,t,f,xerr=Δt,yerr=Δf,ms=1,label="")
