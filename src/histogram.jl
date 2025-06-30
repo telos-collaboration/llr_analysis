@@ -41,6 +41,15 @@ function probability_density_repeats(fid, run, beta; kws...)
     a, S, Nt, Nl, V = _set_up_histogram(fid,run)
     return probability_density_repeats(a, S, beta, V; kws...)
 end
+function trapz(x,y)
+    s = zero(eltype(x))
+    @assert issorted(x)
+    for i in eachindex(x)
+        i == 1 && continue
+        s += (y[i]+y[i-1])*(x[i]-x[i-1])/2
+    end
+    return s 
+end
 function probability_density_repeats(a, S, beta, V; nbins=length(S))
     dS  = S[2] - S[1]
     E   = range(minimum(S) + dS, maximum(S), length=nbins)
@@ -55,6 +64,9 @@ function probability_density_repeats(a, S, beta, V; nbins=length(S))
             log_ρ  = log_rho(E[j], S, dS, a[:,i]; cumsum_a=csa)
             P[j,i] = exp(log_ρ + beta*E[j] - logZ)
         end
+        # not really needed. ∫PdE is already approx. 1
+        # intP = trapz(E,P[:,i])
+        # @. P[:,i] = P[:,i] / intP
     end
     return ups, P, V, dS
 end
