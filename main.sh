@@ -1,5 +1,5 @@
 path="."
-sdir="scripts/done" 
+sdir="scripts" 
 julia scripts/instantiate.jl
 
 # h5 files
