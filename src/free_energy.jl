@@ -1,4 +1,3 @@
-
 function thermodynamic_potentials_repeats(h5dset,run; kws...)
     a, S0_all, ind = LLRParsing.a_vs_central_action_repeats(h5dset,run)
     Nl = read(h5dset[run],"Nl")
@@ -26,9 +25,13 @@ function thermodynamic_potentials_repeats(a, S0, V; logρ0 = 0.0)
         cs = cumsum(a0)
         for i in 1:replicas
             logρ  = LLRParsing.log_rho(E[i], S0, dS, a0; cumsum_a=cs)
-            u      = (6V - E[i])/V
-            s[i,r] = (logρ + logρ0)/V
+            s[i,r] = logρ/V
             t[i,r] = 1/a0[i]
+        end
+        # Perform additive constant to the entropy 
+        @. s = s + logρ0/V
+        for i in 1:replicas    
+            u      = (6V - E[i])/V
             f[i,r] = u - t[i,r]*s[i,r]
         end
     end
