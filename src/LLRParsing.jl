@@ -15,6 +15,7 @@ using LaTeXStrings
 using Peaks
 using Roots
 using LsqFit
+using PCHIPInterpolation
 
 include("errorstring.jl")
 export errorstring
@@ -34,5 +35,7 @@ include("histogram.jl")
 export probability_density,plot_plaquette_histogram!
 include("critical_histogram.jl")
 include("double_gaussian_fit.jl")
+include("free_energy.jl")
+export plot_free_energies
 
 end # module LLRParsing

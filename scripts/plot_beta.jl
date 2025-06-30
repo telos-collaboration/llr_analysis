@@ -14,7 +14,6 @@ function read_critical_betas(file)
     return only(unique(Nt)), Nl, βc, Δβc, only(unique(ratio))
 end
 function plot_critical_beta!(plt,file)
-    @show file
     Nt, L, βc, Δβc, ratio = read_critical_betas(file)
     tks = (inv.(L), (L"1/%$Li" for Li in L))
     scatter!(plt,inv.(L),βc,xticks=tks,yerr=Δβc,markershape=:hexagon,label=L"N_t = %$Nt:$P_\beta$ peak ratio %$ratio:1")
