@@ -21,9 +21,10 @@ function log_partition_function(a, S, beta)
 end
 _E_in_interval(E,S0,dS) = E >= (S0 - dS/2) && E < (S0 + dS/2)
 function log_rho(E, S, dS, a; cumsum_a = cumsum(a))
-    for i in eachindex(S, a)   
+    for i in eachindex(S, a)
         if _E_in_interval(E,S[i],dS)
-            log_ρ = a[i] * (S[i] - dS/2 - E) - cumsum_a[i-1]*dS
+            cs = i==1 ? zero(dS) : cumsum_a[i-1]
+            log_ρ = a[i] * (S[i] - dS/2 - E) - cs*dS
             return log_ρ
         end
     end
