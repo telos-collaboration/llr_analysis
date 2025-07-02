@@ -1,9 +1,6 @@
 [submodule "libs/MadrasSokal"]
 	path = libs/MadrasSokal
 	url = https://github.com/fzierler/MadrasSokal
-[submodule "libs/HiRepOutputCleaner"]
-	path = libs/HiRepOutputCleaner
-	url = https://github.com/fzierler/HiRepOutputCleaner
 [submodule "libs/HiRepParsing"]
 	path = libs/HiRepParsing
 	url = https://github.com/fzierler/HiRepParsing

@@ -1,46 +1,25 @@
 using LLRParsing
-using HiRepOutputCleaner
 using DelimitedFiles
 using ArgParse
 
-function clean_all_llr_dirs(dir;target="./tmp/")
-    p = joinpath(target,basename(dir))
-    ispath(p) || mkpath(p)
-    clean_llr_directory(dir,p;checkpoint_pattern=nothing,last_ranges=nothing,warn=false)
-end
 function parse_skip(str)
     spl = split(chop(str, head=1),',')
     return all(isempty,spl) ? String[] : String.(spl)
 end
-function llr_alldirs_hdf5(path,metadata_file,h5file;clean=false,tmpdir="./tmp/")
+function llr_alldirs_hdf5(path,metadata_file,h5file;tmpdir="./tmp/")
     ispath(dirname(h5file)) || mkpath(dirname(h5file))
     metadata = readdlm(metadata_file,',',String,skipstart=1)
     dirs = metadata[:,1]
     skip = parse_skip.(metadata[:,2])
     runs = joinpath.(path,dirs)
-    if clean
-        for i in eachindex(runs)
-            clean_all_llr_dirs(runs[i];target=tmpdir)
-            runs[i] = joinpath(tmpdir,basename(runs[i]))
-        end
-        # if multiple runs are identical: Remove the duplicate entry 
-        # and merge the skipped repeats
-        newruns = unique(runs)
-        newskip = [vcat(skip[findall(isequal(r),runs)]...)  for r in newruns]
-        runs = newruns 
-        skip = newskip 
-    end
     for (dir,s) in zip(runs,skip)
         llr_dir_hdf5(dir,h5file;skip_repeats=s)
     end
-    if clean
-        rm(tmpdir,recursive=true)
-    end
 end
-function parse_full(path,metadata, h5file, h5file_sorted,clean)
+function parse_full(path,metadata, h5file, h5file_sorted)
     isfile(h5file) && rm(h5file)
     isfile(h5file_sorted) && rm(h5file_sorted)
-    llr_alldirs_hdf5(path,metadata,h5file; clean)
+    llr_alldirs_hdf5(path,metadata,h5file)
     sort_by_central_energy_to_hdf5(h5file, h5file_sorted)
 end
 
@@ -59,10 +38,6 @@ function parse_commandline()
         "--h5file_unsorted"
             help = "Where to write the resulting HDF5 file containing the unsorted results"
             required = true
-        "--clean"
-            help = "Run cleaning script to remove unfinished runs from logs"
-            arg_type = Bool
-            default = true
     end
     return parse_args(s)
 end
@@ -72,7 +47,6 @@ function main()
     metadata      = args["metadata"] 
     h5file        = args["h5file_unsorted"]
     h5file_sorted = args["h5file"] 
-    clean         = args["clean"] 
-    parse_full(path,metadata, h5file, h5file_sorted,clean)
+    parse_full(path,metadata, h5file, h5file_sorted)
 end
 main()
