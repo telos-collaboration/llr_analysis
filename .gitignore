@@ -11,3 +11,4 @@ tmp/
 *.pdf
 *.svg
 !test/test_data/*
+.snakemake/

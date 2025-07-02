@@ -143,7 +143,7 @@ function llr_dir_hdf5(dir,h5file;suffix="",skip_repeats=String[])
     Nt = only(unique(first.(latticesize.(files))))  
     Nl = only(unique(last.(latticesize.(files))))
 
-    name = "$(Nt)x$(Nl)_$(N_repeats)repeats_$(N_replicas)replicas"*suffix
+    name = "$(Nt)x$(Nl)_$(N_replicas)replicas"*suffix
     write(fid,joinpath(name,"N_repeats"),N_repeats)
     write(fid,joinpath(name,"N_replicas"),N_replicas)
     write(fid,joinpath(name,"repeats"),repeats)

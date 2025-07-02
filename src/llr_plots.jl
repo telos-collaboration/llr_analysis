@@ -135,11 +135,12 @@ function plot_a_repeat_average!(plt,h5dset,run;replica)
     hspan!(plt,[a0-Δa,a0+Δa], color = :black, alpha = 0.8, labels = L"a_n");
     return plt
 end
+# TODO: Add number of repeats in title 
 function fancy_title(run)
-    rx = r"([0-9]+)x([0-9]+)_([0-9]+)repeats_([0-9]+)replicas"
+    rx = r"([0-9]+)x([0-9]+)_([0-9]+)replicas"
     m  = match(rx,run).captures
-    Lt, Ls, Nrep, Nint = m
-    return L"%$Lt \times %$(Ls)^3: N_{\mathrm{intervals}}=%$Nint, N_{\mathrm{rep}}=%$Nrep"
+    Lt, Ls, Nint = m
+    return L"%$Lt \times %$(Ls)^3: N_{\mathrm{intervals}}=%$Nint"
 end
 function full_trajectory_plot(h5dset,run,repeat_id,replica_id;lens=true)
     plt1 = plot_a_trajectory_repeat!(plot(),h5dset,run,repeat_id,replica_id)

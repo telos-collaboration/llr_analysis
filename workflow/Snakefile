@@ -1,0 +1,100 @@
+import functools
+import pandas as pd
+
+metadata=pd.read_csv("metadata/runs.csv")
+
+def list_hdf5_datasets(metadata):
+    return [
+        f"{dataset.Nt}x{dataset.Nl}_{dataset.replicas}replicas"
+        for dataset in metadata.itertuples()
+    ]
+
+
+rule all:
+    input:
+        tables=expand("assets/tables/runs_Nt{Nt}.tex", Nt=[4, 5, 6]),
+        overview_plots=expand("assets/plots/overview/{dataset}.pdf",dataset=list_hdf5_datasets(metadata)),
+
+
+@functools.cache 
+def parse_skip(skip):
+    if skip == "[]":
+        return []
+    return list(map(int,skip.strip("[]").split(",")))
+
+
+def input_logs(wildcards):
+    Nt = int(wildcards.Nt)
+    return [ 
+        f"{dataset.runs}/{repeat_index}/Rep_{replica_index}/out_0"
+        for dataset in metadata.itertuples()
+        if dataset.Nt == Nt
+        for repeat_index in range(dataset.repeats)
+        for replica_index in range(dataset.replicas)
+        if repeat_index not in parse_skip(dataset.skip)
+    ]
+
+
+rule overview_plots:
+    input:
+        h5file="data_assets/Sp4_Nt{Nt}_sorted.hdf5",
+        script="scripts/one_trajectory_overview.jl",
+        julia_instantiated="tmp/julia_ready",
+    output:
+        plot="assets/plots/overview/{Nt}x{Nl}_{Nreplicas}replicas.pdf",
+    conda:
+        "envs/environment.yml"
+    shell:
+        'julia --project="." {input.script} --h5file {input.h5file} --plot_file {output.plot} --run_name {wildcards.Nt}x{wildcards.Nl}_{wildcards.Nreplicas}replicas'
+ 
+
+rule parse_hdf5:
+    input:
+        logs=input_logs,
+        script="scripts/parse_llr.jl",
+        julia_instantiated="tmp/julia_ready",
+        metadata="metadata/runs.csv",
+    output:
+        h5file="tmp/Sp4_Nt{Nt}.hdf5",
+    conda:
+        "envs/environment.yml"
+    shell:
+        'julia --project="." {input.script} --h5file_unsorted {output.h5file} --metadata {input.metadata}'
+
+
+rule sort_hdf5:
+    input:
+        script="scripts/sort_an.jl",
+        h5file="tmp/Sp4_Nt{Nt}.hdf5",
+        julia_instantiated="tmp/julia_ready",
+    output:
+        h5file="data_assets/Sp4_Nt{Nt}_sorted.hdf5",
+    conda:
+        "envs/environment.yml"
+    shell:
+        'julia --project="." {input.script} --h5file_unsorted {input.h5file} --h5file {output.h5file}'
+
+
+rule julia_instantiate:
+    input:
+        script="scripts/instantiate.jl",
+    output:
+        julia_instantiated="tmp/julia_ready",
+    conda:
+        "envs/environment.yml"
+    shell:
+        'julia {input.script} && touch {output.julia_instantiated}'
+
+
+rule tables:
+    input:
+        script="scripts/tables.jl",
+        h5file="data_assets/Sp4_Nt{Nt}_sorted.hdf5",
+        julia_instantiated="tmp/julia_ready",
+    output:
+        table="assets/tables/runs_Nt{Nt}.tex",
+    conda:
+        "envs/environment.yml"
+    shell:
+        'julia --project="." {input.script} --h5file {input.h5file} --outfile {output.table}'
+ 
