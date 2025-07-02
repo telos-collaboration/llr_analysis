@@ -169,67 +169,72 @@ function llr_dir_hdf5(dir,h5file;suffix="",skip_repeats=String[])
     close(fid)
 end
 function sort_by_central_energy_to_hdf5(h5file_in,h5file_out;skip_ens=nothing)
+    h5dset = h5open(h5file_in,"r")
+    runs   = keys(h5dset)
+    close(h5dset)
+    for run in runs
+        sort_by_central_energy_to_hdf5_run(h5file_in,h5file_out,run)
+    end
+end
+function sort_by_central_energy_to_hdf5_run(h5file_in,h5file_out,run)
     h5dset     = h5open(h5file_in,"r")
     h5dset_out = h5open(h5file_out,"cw")
-    for run in keys(h5dset)
-        if !isnothing(skip_ens) 
-            run ∈ skip_ens && continue
-        end
-        N_replicas = read(h5dset[run],"N_replicas")
-        N_repeats  = read(h5dset[run],"N_repeats")
-        repeats    = read(h5dset[run],"repeats")        
-        # read all last elements for a and the central action
-        for j in repeats
-            # read data for all replicas
-            a     = read_non_matching_trajectory(h5dset[run][j],Float64;key="a")
-            p     = read_non_matching_trajectory(h5dset[run][j],Float64;key="plaq")
-            is_rm = read_non_matching_trajectory(h5dset[run][j],Bool   ;key="is_rm")
-            S     = read_non_matching_trajectory(h5dset[run][j],Float64;key="S0")
-            # Check if we have any mismatches of the unsorted central energies
-            data_healthy = all(allequal ,eachslice(sort(S,dims=1),dims=1))
-            if !data_healthy
-                traj_lengths = dropdims(count(isfinite, S, dims=2),dims=2)
-                last_healthy_traj_p1, inds = find_first_duplicated_central_energies(S, traj_lengths)
-                S = S[:,1:last_healthy_traj_p1-1]
-                @warn "Run $run, repeat $j: Discarded data after step $(last_healthy_traj_p1-1)"
-                data_healthy = all(allequal ,eachslice(sort(S,dims=1),dims=1))
-            end
 
-            ntraj = dropdims(count(isfinite, S, dims=2),dims=2)
-            n_traj_min, n_traj_max = extrema(ntraj)
-            ## Sort by the central action to account for different swaps
-            for j in 1:n_traj_min
-                perm = sortperm(S[:,j])
-                S[:,j] = S[perm,j]
-                a[:,j] = a[perm,j]
-                p[:,j] = p[perm,j]
-                is_rm[:,j] = is_rm[perm,j]
-            end
-            a = a[:,1:n_traj_min]
-            p = p[:,1:n_traj_min]
-            S = S[:,1:n_traj_min]
-            is_rm = is_rm[:,1:n_traj_min]
-            # make sure that the sorted central action alwas matches, if not, discard the repeat
-            @assert data_healthy
-            for i in 1:N_replicas
-                dset    = create_group(h5dset_out, joinpath(run,"$j","Rep_$(i-1)"))
-                dset_in = h5dset[joinpath(run,"$j","Rep_$(i-1)")]
-                dS0 = read(dset_in,"dS0")
-                a0  = read(dset_in,"a0")
-                write(dset,"S0_sorted",  S[i,:])
-                write(dset,"a_sorted",   a[i,:])
-                write(dset,"plaq_sorted",p[i,:])
-                write(dset,"is_rm"      ,is_rm[i,:])
-                write(dset,"dS0"        ,dS0)
-                write(dset,"a0"         ,a0)
-            end
+    N_replicas = read(h5dset[run],"N_replicas")
+    N_repeats  = read(h5dset[run],"N_repeats")
+    repeats    = read(h5dset[run],"repeats")        
+    # read all last elements for a and the central action
+    for j in repeats
+        # read data for all replicas
+        a     = read_non_matching_trajectory(h5dset[run][j],Float64;key="a")
+        p     = read_non_matching_trajectory(h5dset[run][j],Float64;key="plaq")
+        is_rm = read_non_matching_trajectory(h5dset[run][j],Bool   ;key="is_rm")
+        S     = read_non_matching_trajectory(h5dset[run][j],Float64;key="S0")
+        # Check if we have any mismatches of the unsorted central energies
+        data_healthy = all(allequal ,eachslice(sort(S,dims=1),dims=1))
+        if !data_healthy
+            traj_lengths = dropdims(count(isfinite, S, dims=2),dims=2)
+            last_healthy_traj_p1, inds = find_first_duplicated_central_energies(S, traj_lengths)
+            S = S[:,1:last_healthy_traj_p1-1]
+            @warn "Run $run, repeat $j: Discarded data after step $(last_healthy_traj_p1-1)"
+            data_healthy = all(allequal ,eachslice(sort(S,dims=1),dims=1))
         end
-        write(h5dset_out,joinpath(run,"N_replicas"),N_replicas)
-        write(h5dset_out,joinpath(run,"N_repeats"),N_repeats)
-        write(h5dset_out,joinpath(run,"repeats"),repeats)
-        write(h5dset_out,joinpath(run,"Nt"),h5read(h5file_in,joinpath(run,"Nt")))
-        write(h5dset_out,joinpath(run,"Nl"),h5read(h5file_in,joinpath(run,"Nl")))
+
+        ntraj = dropdims(count(isfinite, S, dims=2),dims=2)
+        n_traj_min, n_traj_max = extrema(ntraj)
+        ## Sort by the central action to account for different swaps
+        for j in 1:n_traj_min
+            perm = sortperm(S[:,j])
+            S[:,j] = S[perm,j]
+            a[:,j] = a[perm,j]
+            p[:,j] = p[perm,j]
+            is_rm[:,j] = is_rm[perm,j]
+        end
+        a = a[:,1:n_traj_min]
+        p = p[:,1:n_traj_min]
+        S = S[:,1:n_traj_min]
+        is_rm = is_rm[:,1:n_traj_min]
+        # make sure that the sorted central action alwas matches, if not, discard the repeat
+        @assert data_healthy
+        for i in 1:N_replicas
+            dset    = create_group(h5dset_out, joinpath(run,"$j","Rep_$(i-1)"))
+            dset_in = h5dset[joinpath(run,"$j","Rep_$(i-1)")]
+            dS0 = read(dset_in,"dS0")
+            a0  = read(dset_in,"a0")
+            write(dset,"S0_sorted",  S[i,:])
+            write(dset,"a_sorted",   a[i,:])
+            write(dset,"plaq_sorted",p[i,:])
+            write(dset,"is_rm"      ,is_rm[i,:])
+            write(dset,"dS0"        ,dS0)
+            write(dset,"a0"         ,a0)
+        end
     end
+    write(h5dset_out,joinpath(run,"N_replicas"),N_replicas)
+    write(h5dset_out,joinpath(run,"N_repeats"),N_repeats)
+    write(h5dset_out,joinpath(run,"repeats"),repeats)
+    write(h5dset_out,joinpath(run,"Nt"),h5read(h5file_in,joinpath(run,"Nt")))
+    write(h5dset_out,joinpath(run,"Nl"),h5read(h5file_in,joinpath(run,"Nl")))
+
     close(h5dset)
     close(h5dset_out)
 end

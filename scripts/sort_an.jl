@@ -17,7 +17,6 @@ function main()
     args = parse_commandline()
     h5file        = args["h5file_unsorted"]
     h5file_sorted = args["h5file"]
-
     ispath(dirname(h5file_sorted)) || mkpath(dirname(h5file_sorted))
     isfile(h5file_sorted) && rm(h5file_sorted)
 
