@@ -1,4 +1,3 @@
-path="."
 sdir="scripts" 
 julia scripts/instantiate.jl
 
@@ -8,9 +7,9 @@ Nt5_hdf5="data_assets/Sp4_Nt5_sorted.hdf5"
 Nt6_hdf5="data_assets/Sp4_Nt6_sorted.hdf5"
 
 # parsing
-julia --project="." $sdir/parse_llr.jl --path $path --metadata "metadata/runsNt4.csv" --h5file_unsorted "data_assets/Sp4_Nt4.hdf5" --h5file $Nt4_hdf5
-julia --project="." $sdir/parse_llr.jl --path $path --metadata "metadata/runsNt5.csv" --h5file_unsorted "data_assets/Sp4_Nt5.hdf5" --h5file $Nt5_hdf5
-julia --project="." $sdir/parse_llr.jl --path $path --metadata "metadata/runsNt6.csv" --h5file_unsorted "data_assets/Sp4_Nt6.hdf5" --h5file $Nt6_hdf5
+julia --project="." $sdir/parse_llr.jl --metadata "metadata/runsNt4.csv" --h5file_unsorted "data_assets/Sp4_Nt4.hdf5" --h5file $Nt4_hdf5
+julia --project="." $sdir/parse_llr.jl --metadata "metadata/runsNt5.csv" --h5file_unsorted "data_assets/Sp4_Nt5.hdf5" --h5file $Nt5_hdf5
+julia --project="." $sdir/parse_llr.jl --metadata "metadata/runsNt6.csv" --h5file_unsorted "data_assets/Sp4_Nt6.hdf5" --h5file $Nt6_hdf5
 
 # analysis
 julia --project="." $sdir/trajectory_overview.jl --h5file $Nt4_hdf5 --plot_dir "data_assets/plots/overview"

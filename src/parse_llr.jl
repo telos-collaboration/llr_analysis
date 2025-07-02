@@ -172,7 +172,6 @@ function sort_by_central_energy_to_hdf5(h5file_in,h5file_out;skip_ens=nothing)
     h5dset     = h5open(h5file_in,"r")
     h5dset_out = h5open(h5file_out,"cw")
     for run in keys(h5dset)
-        println("sorting $h5file_in: $run")
         if !isnothing(skip_ens) 
             run ∈ skip_ens && continue
         end
@@ -231,4 +230,6 @@ function sort_by_central_energy_to_hdf5(h5file_in,h5file_out;skip_ens=nothing)
         write(h5dset_out,joinpath(run,"Nt"),h5read(h5file_in,joinpath(run,"Nt")))
         write(h5dset_out,joinpath(run,"Nl"),h5read(h5file_in,joinpath(run,"Nl")))
     end
+    close(h5dset)
+    close(h5dset_out)
 end
