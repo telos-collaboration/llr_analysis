@@ -28,7 +28,7 @@ function peak_height_difference(a, S, β, V; w=5, nbins=length(S),A1=1,A2=1,retr
         heightdiff = A2*pks.heights[end] - A1*pks.heights[1]
         return heightdiff
     else
-        @error "Found $n_peaks peak(s): Aborting."
+        @warn "Found $n_peaks peak(s): Aborting."
     end
 end
 function _count_peaks(a, S, β, V; w=5, nbins=length(S), kws...)
