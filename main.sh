@@ -15,6 +15,7 @@ julia --project="." $sdir/parse_llr.jl --metadata "metadata/runsNt6.csv" --h5fil
 julia --project="." $sdir/trajectory_overview.jl --h5file $Nt4_hdf5 --plot_dir "data_assets/plots/overview"
 julia --project="." $sdir/trajectory_overview.jl --h5file $Nt5_hdf5 --plot_dir "data_assets/plots/overview"
 julia --project="." $sdir/trajectory_overview.jl --h5file $Nt6_hdf5 --plot_dir "data_assets/plots/overview"
+#julia --project="." $sdir/one_trajectory_overview.jl --h5file $Nt5_hdf5 --run_name "5x56_25repeats_128replicas" --plot_file "data_assets/plots/overview/5x56_25repeats_128replicas.pdf"
 
 julia --project="." $sdir/an_histories.jl --h5file $Nt4_hdf5 --plot_dir "data_assets/plots/an_trajectories"
 julia --project="." $sdir/an_histories.jl --h5file $Nt5_hdf5 --plot_dir "data_assets/plots/an_trajectories"
