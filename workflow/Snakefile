@@ -3,6 +3,13 @@ import pandas as pd
 
 metadata=pd.read_csv("metadata/runs.csv")
 
+def list_hdf5_datasets_Nt(metadata,Nt):
+    return [
+        f"{dataset.Nt}x{dataset.Nl}_{dataset.replicas}replicas"
+        for dataset in metadata.itertuples()
+        if dataset.Nt == Nt
+    ]
+
 def list_hdf5_datasets(metadata):
     return [
         f"{dataset.Nt}x{dataset.Nl}_{dataset.replicas}replicas"
@@ -34,6 +41,8 @@ rule all:
         tables=expand("assets/tables/runs_Nt{Nt}.tex", Nt=[4, 5, 6]),
         overview_plots=expand("assets/plots/overview/{dataset}.pdf",dataset=list_hdf5_datasets(metadata)),
         an_trajectory_plots=expand("assets/plots/an_trajectories/{dataset}.pdf",dataset=list_hdf5_datasets(metadata)),
+        free_energy_plots_Nt4=expand("assets/plots/free_energy/{dataset}.pdf",dataset=list_hdf5_datasets_Nt(metadata,4)),
+        free_energy_plots_Nt5=expand("assets/plots/free_energy/{dataset}.pdf",dataset=list_hdf5_datasets_Nt(metadata,5)),
 
 
 rule julia_instantiate:
@@ -107,6 +116,19 @@ rule an_trajectory_plots:
         julia_instantiated="tmp/julia_ready",
     output:
         plot="assets/plots/an_trajectories/{Nt}x{Nl}_{Nreplicas}replicas.pdf",
+    conda:
+        "envs/environment.yml"
+    shell:
+        'julia --project="." {input.script} --h5file {input.h5file} --plot_file {output.plot} --run_name {wildcards.Nt}x{wildcards.Nl}_{wildcards.Nreplicas}replicas'
+
+
+rule free_energy_plots:
+    input:
+        h5file="data_assets/Sp4_Nt{Nt}_sorted.hdf5",
+        script="scripts/one_free_energy.jl",
+        julia_instantiated="tmp/julia_ready",
+    output:
+        plot="assets/plots/free_energy/{Nt}x{Nl}_{Nreplicas}replicas.pdf",
     conda:
         "envs/environment.yml"
     shell:

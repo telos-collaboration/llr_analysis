@@ -53,49 +53,62 @@ end
 function plot_free_energies(file,plotdir)
     h5dset = h5open(file)
     runs   = keys(h5dset)
-    plt_s = plot()
+    close(h5dset)
     for r in runs
-        a, Δa, S0, _ = a_vs_central_action(h5dset,r)
-        t, Δt, f, Δf, s, Δs = thermodynamic_potentials(h5dset,r)
-        pks = only(findmaxima(a,5).indices)
-        mns = only(findminima(a,5).indices)
-        r1  = 1:pks
-        r2  = mns:length(a)
-
-        perm1 = sortperm(t[r1])
-        perm2 = sortperm(t[r2])
-        itp1 = Interpolator(t[r1][perm1],f[r1][perm1])
-        itp2 = Interpolator(t[r2][perm2],f[r2][perm2])
-
-        g(x)  = itp1(x) - itp2(x)
-        t1,t2 = extrema(filter(t -> isfinite(g(t)), vcat(t[r1],t[r2]) ))
-        tc    = find_zero(g,(t1,t2))
-        fc    = itp1(tc)
-        
-        # set plot limits
-        tmin, tmax = extrema((t[pks],t[mns])) 
-        δt = tmax - tmin  
-        tmin, tmax = tmin-δt/4, tmax+δt/4 
-        fmin, fmax = extrema((f[pks],f[mns]))
-        δf = fmax - fmin
-        fmin, fmax = extrema((itp2(tmin),itp1(tmax),fmin-δf/3,fmax+δf/3)) 
-
-        # rescale free energy for nicer, centred plots
-        scale = 10^6
-        @. f  = f - fc 
-        @. f  = f * scale 
-        @. Δf = Δf * scale
-        fmin, fmax = (fmin - fc)*scale, (fmax - fc)*scale
-
-        plt = plot(title=LLRParsing.fancy_title(r)*" - no entropy subtraction")
-        plot!(;ylabel=L"(f - f_c^+ )/ 10^{-6}", xlabel=L"t = 1/a_n")
-        plot!(plt,t,f,xerr=Δt,yerr=Δf,ms=1,label="")
-        plot!(plt,ylims=(fmin,fmax),xlims=(tmin,tmax))
-        ispath(plotdir) || mkpath(plotdir)
-        savefig(plt,joinpath(plotdir,"$r.pdf"))
-        plot!(plt_s,t,s,xerr=Δt,yerr=Δs,ms=1,label=r)
+        plot_free_energy(file,joinpath(plotdir,"$r.pdf"),r)
     end
-    Nt = read(h5dset[first(runs)],"Nt")
-    plot!(legend=:bottomright, xlabel=L"t = 1/a_n", ylabel=L"unsubtracted entropy $s = \log(\rho)$")
-    savefig(plt_s,joinpath(plotdir,"entropy_Nt$Nt.pdf"))
+end
+function plot_free_energy(file,plotfile,run)
+    h5dset = h5open(file)
+    
+    a, Δa, S0, _ = a_vs_central_action(h5dset,run)
+    t, Δt, f, Δf, s, Δs = thermodynamic_potentials(h5dset,run)
+    pks = only(findmaxima(a,5).indices)
+    mns = only(findminima(a,5).indices)
+    r1  = 1:pks
+    r2  = mns:length(a)
+
+    perm1 = sortperm(t[r1])
+    perm2 = sortperm(t[r2])
+    itp1 = Interpolator(t[r1][perm1],f[r1][perm1])
+    itp2 = Interpolator(t[r2][perm2],f[r2][perm2])
+
+    g(x)  = itp1(x) - itp2(x)
+    t1,t2 = extrema(filter(t -> isfinite(g(t)), vcat(t[r1],t[r2]) ))
+    tc    = find_zero(g,(t1,t2))
+    fc    = itp1(tc)
+        
+    # set plot limits
+    tmin, tmax = extrema((t[pks],t[mns])) 
+    δt = tmax - tmin  
+    tmin, tmax = tmin-δt/4, tmax+δt/4 
+    fmin, fmax = extrema((f[pks],f[mns]))
+    δf = fmax - fmin
+    fmin, fmax = extrema((itp2(tmin),itp1(tmax),fmin-δf/3,fmax+δf/3)) 
+
+    # rescale free energy for nicer, centred plots
+    scale = 10^6
+    @. f  = f - fc 
+    @. f  = f * scale 
+    @. Δf = Δf * scale
+    fmin, fmax = (fmin - fc)*scale, (fmax - fc)*scale
+
+    ispath(dirname(plotfile)) || mkpath(dirname(plotfile))
+    plt = plot(title=LLRParsing.fancy_title(run))
+    plot!(;ylabel=L"(f - f_c^+ )/ 10^{-6}", xlabel=L"t = 1/a_n")
+    plot!(plt,t,f,xerr=Δt,yerr=Δf,ms=1,label="")
+    plot!(plt,ylims=(fmin,fmax),xlims=(tmin,tmax))
+    savefig(plt,plotfile)
+    close(h5dset)
+end
+function plot_entropy(file,plotfile)
+    h5dset = h5open(file)
+    runs   = keys(h5dset)
+    plt    = plot()
+    for r in runs
+        t, Δt, f, Δf, s, Δs = thermodynamic_potentials(h5dset,r)
+        plot!(plt,t,s,xerr=Δt,yerr=Δs,ms=1,label=r)
+    end
+    plot!(plt,legend=:bottomright, xlabel=L"t = 1/a_n", ylabel=L"unsubtracted entropy $s = \log(\rho)$")
+    savefig(plt,plotfile)
 end
