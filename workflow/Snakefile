@@ -10,12 +10,6 @@ def list_hdf5_datasets(metadata):
     ]
 
 
-rule all:
-    input:
-        tables=expand("assets/tables/runs_Nt{Nt}.tex", Nt=[4, 5, 6]),
-        overview_plots=expand("assets/plots/overview/{dataset}.pdf",dataset=list_hdf5_datasets(metadata)),
-
-
 @functools.cache 
 def parse_skip(skip):
     if skip == "[]":
@@ -35,18 +29,23 @@ def input_logs(wildcards):
     ]
 
 
-rule overview_plots:
+rule all:
     input:
-        h5file="data_assets/Sp4_Nt{Nt}_sorted.hdf5",
-        script="scripts/one_trajectory_overview.jl",
-        julia_instantiated="tmp/julia_ready",
+        tables=expand("assets/tables/runs_Nt{Nt}.tex", Nt=[4, 5, 6]),
+        overview_plots=expand("assets/plots/overview/{dataset}.pdf",dataset=list_hdf5_datasets(metadata)),
+        an_trajectory_plots=expand("assets/plots/an_trajectories/{dataset}.pdf",dataset=list_hdf5_datasets(metadata)),
+
+
+rule julia_instantiate:
+    input:
+        script="scripts/instantiate.jl",
     output:
-        plot="assets/plots/overview/{Nt}x{Nl}_{Nreplicas}replicas.pdf",
+        julia_instantiated="tmp/julia_ready",
     conda:
         "envs/environment.yml"
     shell:
-        'julia --project="." {input.script} --h5file {input.h5file} --plot_file {output.plot} --run_name {wildcards.Nt}x{wildcards.Nl}_{wildcards.Nreplicas}replicas'
- 
+        'julia {input.script} && touch {output.julia_instantiated}'
+
 
 rule parse_hdf5:
     input:
@@ -75,17 +74,6 @@ rule sort_hdf5:
         'julia --project="." {input.script} --h5file_unsorted {input.h5file} --h5file {output.h5file}'
 
 
-rule julia_instantiate:
-    input:
-        script="scripts/instantiate.jl",
-    output:
-        julia_instantiated="tmp/julia_ready",
-    conda:
-        "envs/environment.yml"
-    shell:
-        'julia {input.script} && touch {output.julia_instantiated}'
-
-
 rule tables:
     input:
         script="scripts/tables.jl",
@@ -98,3 +86,28 @@ rule tables:
     shell:
         'julia --project="." {input.script} --h5file {input.h5file} --outfile {output.table}'
  
+
+rule overview_plots:
+    input:
+        h5file="data_assets/Sp4_Nt{Nt}_sorted.hdf5",
+        script="scripts/one_trajectory_overview.jl",
+        julia_instantiated="tmp/julia_ready",
+    output:
+        plot="assets/plots/overview/{Nt}x{Nl}_{Nreplicas}replicas.pdf",
+    conda:
+        "envs/environment.yml"
+    shell:
+        'julia --project="." {input.script} --h5file {input.h5file} --plot_file {output.plot} --run_name {wildcards.Nt}x{wildcards.Nl}_{wildcards.Nreplicas}replicas'
+
+
+rule an_trajectory_plots:
+    input:
+        h5file="data_assets/Sp4_Nt{Nt}_sorted.hdf5",
+        script="scripts/one_an_history.jl",
+        julia_instantiated="tmp/julia_ready",
+    output:
+        plot="assets/plots/an_trajectories/{Nt}x{Nl}_{Nreplicas}replicas.pdf",
+    conda:
+        "envs/environment.yml"
+    shell:
+        'julia --project="." {input.script} --h5file {input.h5file} --plot_file {output.plot} --run_name {wildcards.Nt}x{wildcards.Nl}_{wildcards.Nreplicas}replicas'

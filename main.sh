@@ -7,25 +7,26 @@ Nt5_hdf5="data_assets/Sp4_Nt5_sorted.hdf5"
 Nt6_hdf5="data_assets/Sp4_Nt6_sorted.hdf5"
 
 # parsing
-julia --project="." $sdir/parse_llr.jl --metadata "metadata/runs.csv" --h5file_unsorted "tmp/Sp4_Nt4.hdf5" --Nt 4
-julia --project="." $sdir/parse_llr.jl --metadata "metadata/runs.csv" --h5file_unsorted "tmp/Sp4_Nt5.hdf5" --Nt 5
-julia --project="." $sdir/parse_llr.jl --metadata "metadata/runs.csv" --h5file_unsorted "tmp/Sp4_Nt6.hdf5" --Nt 6
+#julia --project="." $sdir/parse_llr.jl --metadata "metadata/runs.csv" --h5file_unsorted "tmp/Sp4_Nt4.hdf5" --Nt 4
+#julia --project="." $sdir/parse_llr.jl --metadata "metadata/runs.csv" --h5file_unsorted "tmp/Sp4_Nt5.hdf5" --Nt 5
+#julia --project="." $sdir/parse_llr.jl --metadata "metadata/runs.csv" --h5file_unsorted "tmp/Sp4_Nt6.hdf5" --Nt 6
 
 # sorting of a_n
 #julia --project="." $sdir/sort_an.jl --h5file_unsorted "tmp/Sp4_Nt4.hdf5" --h5file $Nt4_hdf5
 #julia --project="." $sdir/sort_an.jl --h5file_unsorted "tmp/Sp4_Nt5.hdf5" --h5file $Nt5_hdf5
 #julia --project="." $sdir/sort_an.jl --h5file_unsorted "tmp/Sp4_Nt6.hdf5" --h5file $Nt6_hdf5
-#
+
 ## analysis
 #julia --project="." $sdir/trajectory_overview.jl --h5file $Nt4_hdf5 --plot_dir "data_assets/plots/overview"
 #julia --project="." $sdir/trajectory_overview.jl --h5file $Nt5_hdf5 --plot_dir "data_assets/plots/overview"
 #julia --project="." $sdir/trajectory_overview.jl --h5file $Nt6_hdf5 --plot_dir "data_assets/plots/overview"
 ##julia --project="." $sdir/one_trajectory_overview.jl --h5file $Nt5_hdf5 --run_name "5x56_128replicas" --plot_file "data_assets/plots/overview/5x56_128replicas.pdf"
-#
+
 #julia --project="." $sdir/an_histories.jl --h5file $Nt4_hdf5 --plot_dir "data_assets/plots/an_trajectories"
 #julia --project="." $sdir/an_histories.jl --h5file $Nt5_hdf5 --plot_dir "data_assets/plots/an_trajectories"
 #julia --project="." $sdir/an_histories.jl --h5file $Nt6_hdf5 --plot_dir "data_assets/plots/an_trajectories"
-#
+#julia --project="." $sdir/one_an_history.jl --h5file $Nt6_hdf5 --plotfile "data_assets/plots/an_trajectories/$run" --run_name $run
+
 #julia --project="." $sdir/free_energy.jl --h5file $Nt4_hdf5 --plot_dir "assets/plots/free_energy"
 #julia --project="." $sdir/free_energy.jl --h5file $Nt5_hdf5 --plot_dir "assets/plots/free_energy"
 #
