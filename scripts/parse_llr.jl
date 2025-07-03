@@ -19,6 +19,10 @@ function parse_commandline()
         "--h5file_unsorted"
             help = "Where to write the resulting HDF5 file containing the unsorted results"
             required = true
+        "--Nt"
+            help = "Select only ensembles with matching Nt"
+            arg_type = Int
+            default  = 0
     end
     return parse_args(s)
 end
@@ -26,14 +30,17 @@ function main()
     args = parse_commandline()
     metadata_file = args["metadata"] 
     h5file        = args["h5file_unsorted"]
+    only_Nt       = args["Nt"]
     metadata      = readdlm(metadata_file,',',String,skipstart=1)
 
     ispath(dirname(h5file)) || mkpath(dirname(h5file))
     isfile(h5file) && rm(h5file)
 
     for row in eachrow(metadata)
-        run, s = row
-        parse_full(run,s, h5file)
+        run, s, replicas, repeats, Nt, Nl = row
+        if iszero(only_Nt) || parse(Int,Nt) == only_Nt
+            parse_full(run,s, h5file)
+        end
     end
 end
 main()

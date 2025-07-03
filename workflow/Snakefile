@@ -59,7 +59,7 @@ rule parse_hdf5:
     conda:
         "envs/environment.yml"
     shell:
-        'julia --project="." {input.script} --h5file_unsorted {output.h5file} --metadata {input.metadata}'
+        'julia --project="." {input.script} --h5file_unsorted {output.h5file} --metadata {input.metadata} --Nt {wildcards.Nt}'
 
 
 rule sort_hdf5:
