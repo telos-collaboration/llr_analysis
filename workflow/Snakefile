@@ -50,7 +50,7 @@ rule overview_plots:
 
 rule parse_hdf5:
     input:
-        logs=input_logs,
+        #logs=input_logs,
         script="scripts/parse_llr.jl",
         julia_instantiated="tmp/julia_ready",
         metadata="metadata/runs.csv",
