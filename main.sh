@@ -30,9 +30,9 @@ Nt6_hdf5="data_assets/Sp4_Nt6_sorted.hdf5"
 #julia --project="." $sdir/free_energy.jl --h5file $Nt4_hdf5 --plot_dir "assets/plots/free_energy"
 #julia --project="." $sdir/free_energy.jl --h5file $Nt5_hdf5 --plot_dir "assets/plots/free_energy"
 #
-#julia --project="." $sdir/compare_volumes.jl --h5file $Nt4_hdf5 --plot_file "assets/plots/an_volume_Nt4.pdf" --title "\$a_n\$ volume dependence for \$N_t=4\$" --xmin 0.5695 --xmax 0.573  --ymin 7.337 --ymax 7.343
-#julia --project="." $sdir/compare_volumes.jl --h5file $Nt5_hdf5 --plot_file "assets/plots/an_volume_Nt5.pdf" --title "\$a_n\$ volume dependence for \$N_t=5\$" --xmin 0.5889 --xmax 0.5898 --ymin 7.488 --ymax 7.491
-#julia --project="." $sdir/compare_volumes.jl --h5file $Nt6_hdf5 --plot_file "assets/plots/an_volume_Nt6.pdf" --title "\$a_n\$ volume dependence for \$N_t=6\$" --xmin 0.6015 --xmax 0.6025 --ymin 7.615 --ymax 7.623
+#julia --project="." $sdir/compare_volumes.jl --h5file $Nt4_hdf5 --plot_file "assets/plots/an_volume_Nt4.pdf" --title "\$a_n\$ volume dependence for \$N_t=4\$"
+#julia --project="." $sdir/compare_volumes.jl --h5file $Nt5_hdf5 --plot_file "assets/plots/an_volume_Nt5.pdf" --title "\$a_n\$ volume dependence for \$N_t=5\$"
+#julia --project="." $sdir/compare_volumes.jl --h5file $Nt6_hdf5 --plot_file "assets/plots/an_volume_Nt6.pdf" --title "\$a_n\$ volume dependence for \$N_t=6\$"
 #
 #julia --project="." $sdir/double_gaussian_fit.jl --h5file $Nt4_hdf5 --plot_dir "assets/plots/plaquette_distribution" --xmin 0.567  --xmax 0.577  --beta_min 7.337 --beta_max 7.343
 #julia --project="." $sdir/double_gaussian_fit.jl --h5file $Nt5_hdf5 --plot_dir "assets/plots/plaquette_distribution" --xmin 0.5885 --xmax 0.5905 --beta_min 7.488 --beta_max 7.492

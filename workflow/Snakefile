@@ -43,6 +43,7 @@ rule all:
         an_trajectory_plots=expand("assets/plots/an_trajectories/{dataset}.pdf",dataset=list_hdf5_datasets(metadata)),
         free_energy_plots_Nt4=expand("assets/plots/free_energy/{dataset}.pdf",dataset=list_hdf5_datasets_Nt(metadata,4)),
         free_energy_plots_Nt5=expand("assets/plots/free_energy/{dataset}.pdf",dataset=list_hdf5_datasets_Nt(metadata,5)),
+        an_volume_comparison=expand("assets/plots/an_volume_Nt{Nt}.pdf", Nt=[4, 5, 6])
 
 
 rule julia_instantiate:
@@ -133,3 +134,17 @@ rule free_energy_plots:
         "envs/environment.yml"
     shell:
         'julia --project="." {input.script} --h5file {input.h5file} --plot_file {output.plot} --run_name {wildcards.Nt}x{wildcards.Nl}_{wildcards.Nreplicas}replicas'
+
+
+rule an_volume_comparison_plots:
+    input:
+        h5file="data_assets/Sp4_Nt{Nt}_sorted.hdf5",
+        script="scripts/compare_volumes.jl",
+        julia_instantiated="tmp/julia_ready",
+    output:
+        plot="assets/plots/an_volume_Nt{Nt}.pdf",
+    conda:
+        "envs/environment.yml"
+    shell:
+        'julia --project="." {input.script} --h5file {input.h5file} --plot_file {output.plot} --title "\$a_n\$ volume dependence for \$N_t={wildcards.Nt}\$"'
+
