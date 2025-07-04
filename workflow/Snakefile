@@ -45,6 +45,14 @@ rule all:
         free_energy_plots_Nt5=expand("assets/plots/free_energy/{dataset}.pdf",dataset=list_hdf5_datasets_Nt(metadata,5)),
         an_volume_plots=expand("assets/plots/an_volume_Nt{Nt}.pdf", Nt=[4, 5, 6]),
         entropy_plots=expand("assets/plots/entropy_Nt{Nt}.pdf", Nt=[4, 5]),
+        critical_beta=expand("data_assets/critical_beta_Nt{Nt}.csv", Nt = [4, 5]),
+        critical_beta_two_to_one=expand("data_assets/critical_beta_2:1_Nt{Nt}.csv", Nt = [4, 5]),
+        critical_beta_volume_plots=expand("assets/plots/critical_beta_volumes_Nt{Nt}.pdf", Nt = [4, 5]),
+        double_gaussian_volume_plots=expand("assets/plots/plaquette_distribution_Nt{Nt}_volumes.pdf", Nt = [4, 5]),
+        double_gaussian_plots_Nt4=expand("assets/plots/plaquette_distribution/{dataset}.pdf",dataset=list_hdf5_datasets_Nt(metadata,4)),
+        double_gaussian_plots_Nt5=expand("assets/plots/plaquette_distribution/{dataset}.pdf",dataset=list_hdf5_datasets_Nt(metadata,5)),
+        double_gaussian_plots_Nt4_2_to_1=expand("assets/plots/plaquette_distribution/{dataset}_two_to_one.pdf",dataset=list_hdf5_datasets_Nt(metadata,4)),
+        double_gaussian_plots_Nt5_2_to_1=expand("assets/plots/plaquette_distribution/{dataset}_two_to_one.pdf",dataset=list_hdf5_datasets_Nt(metadata,5)),
 
 rule julia_instantiate:
     input:
@@ -160,3 +168,82 @@ rule entropy_plots:
         "envs/environment.yml"
     shell:
         'julia --project="." {input.script} --h5file {input.h5file} --plot_file {output.plot}'
+
+
+rule critical_beta:
+    input:
+        h5file="data_assets/Sp4_Nt{Nt}_sorted.hdf5",
+        script="scripts/critical_beta.jl",
+        julia_instantiated="tmp/julia_ready",
+    output:
+        csv="data_assets/critical_beta_Nt{Nt}.csv",
+    conda:
+        "envs/environment.yml"
+    shell:
+        'julia --project="." {input.script} --h5file {input.h5file} --outfile {output.csv}'
+
+
+rule critical_beta_two_to_one:
+    input:
+        h5file="data_assets/Sp4_Nt{Nt}_sorted.hdf5",
+        script="scripts/critical_beta.jl",
+        julia_instantiated="tmp/julia_ready",
+    output:
+        csv="data_assets/critical_beta_2:1_Nt{Nt}.csv",
+    conda:
+        "envs/environment.yml"
+    shell:
+        'julia --project="." {input.script} --h5file {input.h5file} --outfile {output.csv} --relative_peak_height 2'
+
+
+rule double_gaussian_volume_plots:
+    input:
+        h5file="data_assets/Sp4_Nt{Nt}_sorted.hdf5",
+        script="scripts/double_gaussian_volumes.jl",
+        julia_instantiated="tmp/julia_ready",
+    output:
+        plot="assets/plots/plaquette_distribution_Nt{Nt}_volumes.pdf",
+    conda:
+        "envs/environment.yml"
+    shell:
+        'julia --project="." {input.script} --h5file {input.h5file} --plotfile {output.plot}'
+
+
+rule critical_beta_volume_plots:
+    input:
+        script="scripts/plot_beta.jl",
+        critical_beta="data_assets/critical_beta_Nt{Nt}.csv",
+        critical_beta_two_to_one="data_assets/critical_beta_2:1_Nt{Nt}.csv",
+        julia_instantiated="tmp/julia_ready",
+    output:
+        plot="assets/plots/critical_beta_volumes_Nt{Nt}.pdf",
+    conda:
+        "envs/environment.yml"
+    shell:
+        'julia --project="." {input.script} --plotfile {output.plot} {input.critical_beta} {input.critical_beta_two_to_one}'
+
+
+rule double_gaussian_plots:
+    input:
+        h5file="data_assets/Sp4_Nt{Nt}_sorted.hdf5",
+        script="scripts/one_double_gaussian_fit.jl",
+        julia_instantiated="tmp/julia_ready",
+    output:
+        plot="assets/plots/plaquette_distribution/{Nt}x{Nl}_{Nreplicas}replicas.pdf",
+    conda:
+        "envs/environment.yml"
+    shell:
+        'julia --project="." {input.script} --h5file {input.h5file} --plot_file {output.plot} --run_name {wildcards.Nt}x{wildcards.Nl}_{wildcards.Nreplicas}replicas'
+
+
+rule double_gaussian_plots_two_to_one:
+    input:
+        h5file="data_assets/Sp4_Nt{Nt}_sorted.hdf5",
+        script="scripts/one_double_gaussian_fit.jl",
+        julia_instantiated="tmp/julia_ready",
+    output:
+        plot="assets/plots/plaquette_distribution/{Nt}x{Nl}_{Nreplicas}replicas_two_to_one.pdf",
+    conda:
+        "envs/environment.yml"
+    shell:
+        'julia --project="." {input.script} --h5file {input.h5file} --plot_file {output.plot} --relative_peak_height 2 --run_name {wildcards.Nt}x{wildcards.Nl}_{wildcards.Nreplicas}replicas'

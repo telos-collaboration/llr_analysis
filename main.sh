@@ -40,15 +40,15 @@ Nt6_hdf5="data_assets/Sp4_Nt6_sorted.hdf5"
 ##julia --project="." $sdir/tables.jl --h5file $Nt5_hdf5 --outfile "assets/tables/runs.tex"
 #
 #julia --project="." $sdir/critical_beta.jl --h5file $Nt4_hdf5 --outfile "data_assets/critical_beta_Nt4.csv"     
-#julia --project="." $sdir/critical_beta.jl --h5file $Nt4_hdf5 --outfile "data_assets/critical_beta_Nt4_2:1.csv"  --relative_peak_height 2
+#julia --project="." $sdir/critical_beta.jl --h5file $Nt4_hdf5 --outfile "data_assets/critical_beta_2:1_Nt4.csv"  --relative_peak_height 2
 #julia --project="." $sdir/critical_beta.jl --h5file $Nt5_hdf5 --outfile "data_assets/critical_beta_Nt5.csv"     
-#julia --project="." $sdir/critical_beta.jl --h5file $Nt5_hdf5 --outfile "data_assets/critical_beta_Nt5_2:1.csv"  --relative_peak_height 2
-#
-#julia --project="." $sdir/double_gaussian_fit.jl --h5file $Nt4_hdf5 --plot_dir "assets/plots/plaquette_distribution"
-#julia --project="." $sdir/double_gaussian_fit.jl --h5file $Nt5_hdf5 --plot_dir "assets/plots/plaquette_distribution"
+#julia --project="." $sdir/critical_beta.jl --h5file $Nt5_hdf5 --outfile "data_assets/critical_beta_2:1_Nt5.csv"  --relative_peak_height 2
 #
 #julia --project="." $sdir/double_gaussian_volumes.jl --h5file $Nt4_hdf5 --plotfile "assets/plots/plaquette_distribution_Nt4_volumes.pdf"
 #julia --project="." $sdir/double_gaussian_volumes.jl --h5file $Nt5_hdf5 --plotfile "assets/plots/plaquette_distribution_Nt5_volumes.pdf"
 #
-#julia --project="." $sdir/plot_beta.jl --plotfile "assets/plots/critical_beta_volumes_Nt4.pdf" "data_assets/critical_beta_Nt4.csv" "data_assets/critical_beta_Nt4_2:1.csv"
-#julia --project="." $sdir/plot_beta.jl --plotfile "assets/plots/critical_beta_volumes_Nt5.pdf" "data_assets/critical_beta_Nt5.csv" "data_assets/critical_beta_Nt5_2:1.csv"
+#julia --project="." $sdir/plot_beta.jl --plotfile "assets/plots/critical_beta_volumes_Nt4.pdf" "data_assets/critical_beta_Nt4.csv" "data_assets/critical_beta_2:1_Nt4.csv"
+#julia --project="." $sdir/plot_beta.jl --plotfile "assets/plots/critical_beta_volumes_Nt5.pdf" "data_assets/critical_beta_Nt5.csv" "data_assets/critical_beta_2:1_Nt5.csv"
+#
+#julia --project="." $sdir/double_gaussian_fit.jl --h5file $Nt4_hdf5 --plot_dir "assets/plots/plaquette_distribution"
+#julia --project="." $sdir/double_gaussian_fit.jl --h5file $Nt5_hdf5 --plot_dir "assets/plots/plaquette_distribution"
