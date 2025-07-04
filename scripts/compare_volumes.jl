@@ -7,19 +7,31 @@ gr(fontfamily="Computer Modern",legend=:topleft,frame=:box,titlefontsize=11,lege
 
 a_vs_central_action_plot(h5id,runs::Vector;kws...) = a_vs_central_action_plot!(plot(),h5id,runs;kws...)
 function a_vs_central_action_plot!(plt,h5id,runs::Vector;kws...)
+    # default plot limits
+    xmin, xmax = +Inf, -Inf 
+    ymin, ymax = +Inf, -Inf 
     for run in runs
-        LLRParsing.a_vs_central_action_plot!(plt,h5id,run;kws...)
+        a0, Δa0, S0, _ = a_vs_central_action(h5id,run)
+        Nt = read(h5id[run],"Nt")
+        Nl = read(h5id[run],"Nl")
+        up = @. S0/(6*Nl^3*Nt)
+        LLRParsing.a_vs_central_action_plot!(plt,a0, Δa0, S0, Nt, Nl; kws...)
+        # find useful plot limits for the volume comparison
+        ind  = findmax(Δa0)[2]
+        δind = min(ind,length(a0)-ind)÷4
+        xmin, xmax = min(xmin,up[ind-δind]), max(xmax,up[ind+δind])
+        ymin, ymax = min(ymin,a0[ind-δind]), max(ymax,a0[ind+δind])
     end
+    plot!(plt,xlims=(xmin,xmax),ylims=(ymin,ymax))
     return plt
 end     
-function an_action_volumes(file,plotdest;title,xmin,xmax,ymin,ymax)
+function an_action_volumes(file,plotdest;title)
     ispath(dirname(plotdest)) || mkpath(dirname(plotdest))
     h5id = h5open(file)
     runs = keys(h5id)
     plt  = a_vs_central_action_plot(h5id,runs,lens=false)
     title = latexstring(title)
-    plot!(plt,xlims=(xmin,xmax),ylims=(ymin,ymax);title)
-    plot!(plt,legend=:bottomright,xlabel=L"u_p",ylabel=L"a_n")
+    plot!(plt;legend=:bottomright,xlabel=L"u_p",ylabel=L"a_n",title)
     savefig(plt,plotdest)
 end
 function parse_commandline()
@@ -34,22 +46,6 @@ function parse_commandline()
         "--title"
             help = "Title of the plot"
             required = true
-        "--xmin"
-            help = "lower limit for the plots x-axis"
-            arg_type = Float64
-            required = true
-        "--xmax"
-            help = "upper limit for the plots x-axis"
-            arg_type = Float64
-            required = true
-        "--ymin"
-            help = "lower limit for the plots y-axis"
-            arg_type = Float64
-            required = true
-        "--ymax"
-            help = "upper limit for the plots y-axis"
-            arg_type = Float64
-            required = true
     end
     return parse_args(s)
 end
@@ -58,10 +54,6 @@ function main()
     file    = args["h5file"]
     plotdst = args["plot_file"]
     title   = args["title"]
-    xmin     = args["xmin"]
-    xmax     = args["xmax"]
-    ymin     = args["ymin"]
-    ymax     = args["ymax"]
-    an_action_volumes(file,plotdst;title,xmin,xmax,ymin,ymax)
+    an_action_volumes(file,plotdst;title)
 end
 main()
