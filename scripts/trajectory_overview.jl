@@ -2,7 +2,7 @@ using LLRParsing
 using Plots
 using HDF5
 using ArgParse
-gr(fontfamily="Computer Modern",legend=:topright,frame=:box,titlefontsize=11,legendfontsize=9,labelfontsize=12,left_margin=7Plots.mm)
+gr(size=(425,282),fontfamily="Computer Modern",legend=:topright,frame=:box,titlefontsize=10,legendfontsize=7,tickfontsize=7,labelfontsize=10,left_margin=7Plots.mm)
 
 function overview(h5dset,run;repeat_id=1, replica_id = read(h5dset[run],"N_replicas")÷2)
     Nreplicas  = read(h5dset[run],"N_replicas")

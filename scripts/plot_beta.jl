@@ -2,7 +2,7 @@ using DelimitedFiles
 using Plots
 using ArgParse
 using LaTeXStrings
-gr(fontfamily="Computer Modern",legend=:topright,frame=:box,titlefontsize=11,legendfontsize=10,labelfontsize=12,left_margin=1Plots.mm)
+gr(size=(425,282),fontfamily="Computer Modern",legend=:topright,frame=:box,titlefontsize=10,legendfontsize=7,tickfontsize=7,labelfontsize=10,left_margin=1Plots.mm)
 
 function read_critical_betas(file)
     data  = readdlm(file,',',skipstart=1)
@@ -16,7 +16,7 @@ end
 function plot_critical_beta!(plt,file)
     Nt, L, βc, Δβc, ratio = read_critical_betas(file)
     tks = (inv.(L), (L"1/%$Li" for Li in L))
-    scatter!(plt,inv.(L),βc,xticks=tks,yerr=Δβc,markershape=:hexagon,label=L"N_t = %$Nt:$P_\beta$ peak ratio %$ratio:1")
+    scatter!(plt,inv.(L),βc,xticks=tks,yerr=Δβc,markershape=:hexagon,label=L"$N_t=%$Nt:P_\beta$ peak ratio %$ratio:1")
 end
 function plot_critical_beta(files,plotfile)
     ispath(dirname(plotfile)) || mkpath(dirname(plotfile))
@@ -24,7 +24,7 @@ function plot_critical_beta(files,plotfile)
     for file in files
         plot_critical_beta!(plt,file)
     end
-    plot!(plt;xflip=true)
+    plot!(plt;xflip=true,legend=:left)
     savefig(plt,plotfile)
 end
 

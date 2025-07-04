@@ -3,7 +3,7 @@ using LaTeXStrings
 using HDF5
 using Plots
 using ArgParse
-gr(fontfamily="Computer Modern",legend=:topleft,frame=:box,titlefontsize=11,legendfontsize=9,labelfontsize=12,left_margin=0Plots.mm)
+gr(size=(425,282),fontfamily="Computer Modern",legend=:topleft,frame=:box,titlefontsize=10,legendfontsize=7,tickfontsize=7,labelfontsize=10,left_margin=0Plots.mm)
 
 a_vs_central_action_plot(h5id,runs::Vector;kws...) = a_vs_central_action_plot!(plot(),h5id,runs;kws...)
 function a_vs_central_action_plot!(plt,h5id,runs::Vector;kws...)
@@ -14,8 +14,10 @@ function a_vs_central_action_plot!(plt,h5id,runs::Vector;kws...)
         a0, Δa0, S0, _ = a_vs_central_action(h5id,run)
         Nt = read(h5id[run],"Nt")
         Nl = read(h5id[run],"Nl")
+        Nrep = read(h5id[run],"N_replicas")
         up = @. S0/(6*Nl^3*Nt)
-        LLRParsing.a_vs_central_action_plot!(plt,a0, Δa0, S0, Nt, Nl; kws...)
+        label=L"N_l\!=\!%$Nl,N_{\!\mathrm{rep}}\!=\!%$Nrep"
+        LLRParsing.a_vs_central_action_plot!(plt,a0, Δa0, S0, Nt, Nl, Nrep; label, kws...)
         # find useful plot limits for the volume comparison
         ind  = findmax(Δa0)[2]
         δind = min(ind,length(a0)-ind)÷4

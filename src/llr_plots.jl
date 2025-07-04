@@ -60,12 +60,13 @@ function a_vs_central_action_plot!(plt,h5dset,run;index=nothing,kws...)
     a0, Δa0, S0, ind = a_vs_central_action(h5dset,run;ind=index)
     Nt = read(h5dset[run],"Nt")
     Nl = read(h5dset[run],"Nl")
-    return a_vs_central_action_plot!(plt,a0, Δa0, S0, Nt, Nl;kws...)
+    Nrep = read(h5dset[run],"N_replicas")
+    return a_vs_central_action_plot!(plt,a0, Δa0, S0, Nt, Nl, Nrep;kws...)
 end
-function a_vs_central_action_plot!(plt,a0, Δa0, S0, Nt, Nl;highlight_index=nothing,lens=true)
+function a_vs_central_action_plot!(plt,a0, Δa0, S0, Nt, Nl, replicas;label=LLRParsing.fancy_title(Nt,Nl,replicas),highlight_index=nothing,lens=true)
     V  = Nl^3 * Nt
     up = S0/(6V)
-    plot!(plt,up,a0,yerr=Δa0,marker=:auto,label="$Nt×$(Nl) (ΔE=$(round(2(S0[2]-S0[1])/6V,sigdigits=1)))")
+    plot!(plt,up,a0,yerr=Δa0,marker=:auto;label)
     if !isnothing(highlight_index)
         mid = up[highlight_index]
         del = (up[highlight_index+1] - up[highlight_index])/2
@@ -135,12 +136,12 @@ function plot_a_repeat_average!(plt,h5dset,run;replica)
     hspan!(plt,[a0-Δa,a0+Δa], color = :black, alpha = 0.8, labels = L"a_n");
     return plt
 end
-# TODO: Add number of repeats in title 
+fancy_title(Lt, Ls, Nint) = L"%$Lt\!\times\!%$(Ls)^3\!, N_{\!\mathrm{rep}}\!\!=%$Nint"
 function fancy_title(run)
     rx = r"([0-9]+)x([0-9]+)_([0-9]+)replicas"
     m  = match(rx,run).captures
     Lt, Ls, Nint = m
-    return L"%$Lt \times %$(Ls)^3: N_{\mathrm{intervals}}=%$Nint"
+    return fancy_title(Lt, Ls, Nint)
 end
 function full_trajectory_plot(h5dset,run,repeat_id,replica_id;lens=true)
     plt1 = plot_a_trajectory_repeat!(plot(),h5dset,run,repeat_id,replica_id)
@@ -156,7 +157,7 @@ function full_trajectory_plot(h5dset,run,repeat_id,replica_id;lens=true)
     plot!(plt3, title="", xlabel="",ylabel=L"a_n")  
     plot!(plt4, title="", xlabel=L"\textrm{central}~\textrm{plaquette}~u_p",ylabel=L"\Delta a_n")
     if lens
-        plot!(plt3, subplot=2, left_margin=0Plots.mm, tickfontsize=7, ylabel="")  
+        plot!(plt3, subplot=2, left_margin=0Plots.mm, tickfontsize=8, ylabel="")  
     end
     l   =  grid(4, 1, heights=[0.29 ,0.29, 0.29, 0.13])
     plt = plot(plt1, plt2, plt3, plt4, layout = l, size=(500,1000))

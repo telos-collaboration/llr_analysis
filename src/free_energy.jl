@@ -97,19 +97,19 @@ function plot_free_energy(file,plotfile,run)
     plt = plot(title=LLRParsing.fancy_title(run))
     plot!(;ylabel=L"(f - f_c^+ )/ 10^{-6}", xlabel=L"t = 1/a_n")
     plot!(plt,t,f,xerr=Δt,yerr=Δf,ms=1,label="")
-    plot!(plt,ylims=(fmin,fmax),xlims=(tmin,tmax))
+    plot!(plt,ylims=(fmin,fmax),xlims=(tmin,tmax),xformatter=:plain)
     savefig(plt,plotfile)
     close(h5dset)
 end
 function plot_entropy(file,plotfile)
     h5dset = h5open(file)
     runs   = keys(h5dset)
-    plt    = plot()
+    plt    = plot(title=L"entropy $s = \log(\rho) - \log(\rho_0)$")
     for r in runs
         t, Δt, f, Δf, s, Δs = thermodynamic_potentials(h5dset,r)
-        plot!(plt,t,s,xerr=Δt,yerr=Δs,ms=1,label=r)
+        plot!(plt,t,s,xerr=Δt,yerr=Δs,ms=1,label=LLRParsing.fancy_title(r))
     end
     ispath(dirname(plotfile)) || mkpath(dirname(plotfile))
-    plot!(plt,legend=:bottomright, xlabel=L"t = 1/a_n", ylabel=L"unsubtracted entropy $s = \log(\rho)$")
+    plot!(plt,legend=:bottomright, xlabel=L"t = 1/a_n", ylabel=L"entropy $s$")
     savefig(plt,plotfile)
 end

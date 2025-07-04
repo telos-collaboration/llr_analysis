@@ -1,7 +1,7 @@
 using ArgParse
 using Plots
 using LLRParsing
-gr(fontfamily="Computer Modern",legend=:topleft,frame=:box,titlefontsize=11,legendfontsize=9,labelfontsize=12,left_margin=1Plots.mm)
+gr(size=(425,282),fontfamily="Computer Modern",legend=:topleft,frame=:box,titlefontsize=10,legendfontsize=7,tickfontsize=7,labelfontsize=10,left_margin=1Plots.mm)
 
 function parse_commandline()
     s = ArgParseSettings()

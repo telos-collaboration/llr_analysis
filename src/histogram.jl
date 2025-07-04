@@ -87,7 +87,7 @@ end
 function plot_plaquette_histogram!(plt,fid,run,beta;kws...)
     a, S, Nt, Nl, V = _set_up_histogram(fid,run)
     ups, P, ΔP, covP, V, dS = probability_density(a, S, beta, V)
-    label  = "$(Nt)x$(Nl): ΔE=$(round(2(dS)/6V,sigdigits=1))"
+    label  = LLRParsing.fancy_title(run)
     xlabel = L"u_p"
     ylabel = L"P_{\beta}(u_p)"
     plot!(plt;xlabel,ylabel,yticks=:none,left_margin=5Plots.mm)

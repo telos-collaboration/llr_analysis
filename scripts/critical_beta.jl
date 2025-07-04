@@ -2,7 +2,7 @@ using LLRParsing
 using HDF5
 using Plots
 using ArgParse
-gr(fontfamily="Computer Modern",legend=:topright,frame=:box,titlefontsize=11,legendfontsize=9,labelfontsize=12,left_margin=0Plots.mm)
+gr(size=(425,282),fontfamily="Computer Modern",legend=:topright,frame=:box,titlefontsize=10,legendfontsize=7,tickfontsize=7,labelfontsize=10,left_margin=0Plots.mm)
 
 function all_critical_beta(file, outfile; A1=1, A2=1)
     fid    = h5open(file)

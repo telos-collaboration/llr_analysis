@@ -4,7 +4,7 @@ using Statistics
 using Plots
 using LaTeXStrings
 using LinearAlgebra
-gr(fontfamily="Computer Modern",legend=:topleft,frame=:box,titlefontsize=11,legendfontsize=9,labelfontsize=12,left_margin=0Plots.mm)
+gr(size=(425,282),fontfamily="Computer Modern",legend=:topleft,frame=:box,titlefontsize=10,legendfontsize=7,tickfontsize=7,labelfontsize=10,left_margin=0Plots.mm)
 
 function plot_pearson_correlation_matrix(ups,cor;title)
     ylabel = L"u_p"
