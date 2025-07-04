@@ -7,9 +7,9 @@ gr(fontfamily="Computer Modern",legend=:topright,frame=:box,titlefontsize=11,leg
 function plot_all_histogram_fits(file, plotfile, run; fit, A1=1, A2=1, name="fit")
     plotdir = dirname(plotfile)
     ispath(plotdir) || mkpath(plotdir)
-    fid  = h5open(file)
+    fid = h5open(file)
+    plt = plot(title=LLRParsing.fancy_title(run))
     try
-        plt = plot(title=LLRParsing.fancy_title(run))
         βc  = LLRParsing.beta_at_equal_heights(fid,run;A1,A2)
         plot_plaquette_histogram!(plt,fid,run,βc)
         if fit 
@@ -17,10 +17,11 @@ function plot_all_histogram_fits(file, plotfile, run; fit, A1=1, A2=1, name="fit
             LLRParsing.plot_double_gaussian_fit_difference(plt,fid,run, βc)
             plot!(plt,ups,f,ribbon=Δf,label="double Gaussian fit",lw=2)
         end
-        savefig(plotfile)
     catch
         @warn "Error for plot with peak-ratio $A1:$A2 for $run"
     end
+    savefig(plotfile)
+    close(fid)
 end
 function parse_commandline()
     s = ArgParseSettings()
