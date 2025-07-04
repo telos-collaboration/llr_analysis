@@ -13,31 +13,31 @@ function overview(h5dset,run;repeat_id=1, replica_id = read(h5dset[run],"N_repli
     plt = plot(plt3, plt1, plt2, layout = grid(1, 3), size=(1400,1000))
     return plt
 end
-function all_overview_plots(file,plotdir)
+function overview_plot(file,run,plotfile)
     h5dset = h5open(file)
-    runs   = keys(h5dset)
-    ispath(plotdir) || mkpath(plotdir)
-    for run in runs
-        Δa0 = a_vs_central_action(h5dset,run)[2]
-        ind = findmax(Δa0)[2]
-        plt = overview(h5dset,run,repeat_id=1,replica_id=ind)
-        savefig(plt,joinpath(plotdir,"$run.pdf"))
-    end
+    ispath(dirname(plotfile)) || mkpath(dirname(plotfile))
+    Δa0 = a_vs_central_action(h5dset,run)[2]
+    ind = findmax(Δa0)[2]
+    plt = overview(h5dset,run,repeat_id=1,replica_id=ind)
+    savefig(plt,plotfile)
 end
-function parse_commandline()
+function parse_commandline_per_run()
     s = ArgParseSettings()
     @add_arg_table s begin
         "--h5file"
             help = "HDF5 file containing the sorted results"
             required = true
-        "--plot_dir"
+        "--plot_file"
             help = "Where to save the plots"
+            required = true
+        "--run_name"
+            help = "Which dataset in the HDF5 file to plot"
             required = true
     end
     return parse_args(s)
 end
-function main()
-    args = parse_commandline()
-    all_overview_plots(args["h5file"],args["plot_dir"])
+function main_per_run()
+    args = parse_commandline_per_run()
+    overview_plot(args["h5file"],args["run_name"],args["plot_file"])
 end
-main()
+main_per_run()
