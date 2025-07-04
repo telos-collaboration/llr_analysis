@@ -4,7 +4,7 @@ using Plots
 using ArgParse
 gr(fontfamily="Computer Modern",legend=:topright,frame=:box,titlefontsize=11,legendfontsize=9,labelfontsize=12,left_margin=0Plots.mm)
 
-function all_critical_beta(file, outfile, β0, βmin, βmax; A1=1, A2=1)
+function all_critical_beta(file, outfile; A1=1, A2=1)
     fid    = h5open(file)
     runs   = keys(fid)
     header = !isfile(outfile)
@@ -14,11 +14,11 @@ function all_critical_beta(file, outfile, β0, βmin, βmax; A1=1, A2=1)
         L   = read(fid[run],"Nl")
         T   = read(fid[run],"Nt")
         try
-            βc, Δβc = LLRParsing.βc_jackknife(fid,run;β0,βmin,βmax,A1,A2)
+            βc, Δβc = LLRParsing.βc_jackknife(fid,run;A1,A2)
             str = errorstring(βc, Δβc; nsig=1)
             println(io,"$run,$T,$L,$A1,$A2,$βc,$Δβc,$str")
         catch 
-            @warn "Cannot determin critical coupling for run $run"
+            @warn "Cannot determine critical coupling for run $run with peak ratio $A1:$A2"
             println(io,"$run,$T,$L,$A1,$A2,NaN,NaN,NaN(NaN)")
         end
     end
@@ -33,14 +33,6 @@ function parse_commandline()
         "--outfile"
             help = "Where to save results"
             required = true
-        "--beta_min"
-            help = "lower limit of β for finding the critical coupling"
-            arg_type = Float64
-            required = true
-        "--beta_max"
-            help = "upper limit of β for finding the critical coupling"
-            arg_type = Float64
-            required = true
         "--relative_peak_height"
             help = "Ratio of peak heights used for finding the critical coupling"
             arg_type = Int
@@ -50,13 +42,10 @@ function parse_commandline()
 end
 function main()
     args = parse_commandline()
-    βmin = args["beta_min"]
-    βmax = args["beta_max"]
     file = args["h5file"]
     A1   = args["relative_peak_height"]
-    β0   = (βmax+βmin)/2
     outfile = args["outfile"]
     isfile(outfile) && rm(outfile)
-    all_critical_beta(file, outfile, β0, βmin, βmax; A1=A1, A2=1)
+    all_critical_beta(file, outfile; A1=A1, A2=1)
 end
 main()

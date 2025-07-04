@@ -71,13 +71,13 @@ function histogram_jackknife_fit(fid,run)
     Δf = sqrt(N-1)*dropdims(std(fitted,dims=2),dims=2)
     return ups, f, Δf
 end
-function βc_jackknife(fid,run; β0, βmin, βmax ,kws...)
+function βc_jackknife(fid,run; kws...)
     a, S, Nt, Nl, V = LLRParsing._set_up_histogram(fid,run)
     a_jk = jackknife_resamples(a) 
     beta = zeros(size(a_jk)[2])
     for i in axes(a_jk,2)
         ai      = a_jk[:,i:i]
-        beta[i] = LLRParsing.beta_at_equal_heights(ai, S, V, β0, βmin, βmax; kws...)
+        beta[i] = LLRParsing.beta_at_equal_heights(ai, S, V; kws...)
     end
     N   = length(beta)
     βc  = mean(beta)
