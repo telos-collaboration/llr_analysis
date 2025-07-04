@@ -30,6 +30,9 @@ Nt6_hdf5="data_assets/Sp4_Nt6_sorted.hdf5"
 #julia --project="." $sdir/free_energy.jl --h5file $Nt4_hdf5 --plot_dir "assets/plots/free_energy"
 #julia --project="." $sdir/free_energy.jl --h5file $Nt5_hdf5 --plot_dir "assets/plots/free_energy"
 #
+#julia --project="." $sdir/entropy.jl --h5file $Nt4_hdf5 --plot_file "assets/plots/entropy_Nt4.pdf"
+#julia --project="." $sdir/entropy.jl --h5file $Nt5_hdf5 --plot_file "assets/plots/entropy_Nt5.pdf"
+#
 #julia --project="." $sdir/compare_volumes.jl --h5file $Nt4_hdf5 --plot_file "assets/plots/an_volume_Nt4.pdf" --title "\$a_n\$ volume dependence for \$N_t=4\$"
 #julia --project="." $sdir/compare_volumes.jl --h5file $Nt5_hdf5 --plot_file "assets/plots/an_volume_Nt5.pdf" --title "\$a_n\$ volume dependence for \$N_t=5\$"
 #julia --project="." $sdir/compare_volumes.jl --h5file $Nt6_hdf5 --plot_file "assets/plots/an_volume_Nt6.pdf" --title "\$a_n\$ volume dependence for \$N_t=6\$"

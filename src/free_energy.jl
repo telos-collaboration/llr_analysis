@@ -109,6 +109,7 @@ function plot_entropy(file,plotfile)
         t, Δt, f, Δf, s, Δs = thermodynamic_potentials(h5dset,r)
         plot!(plt,t,s,xerr=Δt,yerr=Δs,ms=1,label=r)
     end
+    ispath(dirname(plotfile)) || mkpath(dirname(plotfile))
     plot!(plt,legend=:bottomright, xlabel=L"t = 1/a_n", ylabel=L"unsubtracted entropy $s = \log(\rho)$")
     savefig(plt,plotfile)
 end
