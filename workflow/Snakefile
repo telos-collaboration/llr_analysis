@@ -53,6 +53,7 @@ rule all:
         double_gaussian_plots_Nt5=expand("assets/plots/plaquette_distribution/{dataset}.pdf",dataset=list_hdf5_datasets_Nt(metadata,5)),
         double_gaussian_plots_Nt4_2_to_1=expand("assets/plots/plaquette_distribution/{dataset}_two_to_one.pdf",dataset=list_hdf5_datasets_Nt(metadata,4)),
         double_gaussian_plots_Nt5_2_to_1=expand("assets/plots/plaquette_distribution/{dataset}_two_to_one.pdf",dataset=list_hdf5_datasets_Nt(metadata,5)),
+        an_replica_plots=expand("assets/plots/an_replicas_Nt{Nt}_Nl{Nl}.pdf", zip, Nt = [5, 5, 6], Nl = [48, 56, 72]),
 
 rule julia_instantiate:
     input:
@@ -155,6 +156,19 @@ rule an_volume_comparison_plots:
         "envs/environment.yml"
     shell:
         'julia --project="." {input.script} --h5file {input.h5file} --plot_file {output.plot} --title "\$a_n\$ volume dependence for \$N_t={wildcards.Nt}\$"'
+
+
+rule an_replica_comparison_plots:
+    input:
+        h5file="data_assets/Sp4_Nt{Nt}_sorted.hdf5",
+        script="scripts/compare_replicas.jl",
+        julia_instantiated="tmp/julia_ready",
+    output:
+        plot="assets/plots/an_replicas_Nt{Nt}_Nl{Nl}.pdf",
+    conda:
+        "envs/environment.yml"
+    shell:
+        'julia --project="." {input.script} --h5file {input.h5file} --plot_file {output.plot} --Nt {wildcards.Nt} --Nl {wildcards.Nl}'
 
 
 rule entropy_plots:
