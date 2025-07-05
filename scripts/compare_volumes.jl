@@ -6,6 +6,17 @@ using ArgParse
 gr(size=(425,282),fontfamily="Computer Modern",legend=:topleft,frame=:box,titlefontsize=10,legendfontsize=7,tickfontsize=7,labelfontsize=10,left_margin=0Plots.mm)
 
 a_vs_central_action_plot(h5id,runs::Vector;kws...) = a_vs_central_action_plot!(plot(),h5id,runs;kws...)
+function largets_replica_runs(h5id,runs)
+    # Only include one run per volume with the largest number of N_replicas
+    data = [[read(h5id[r],"Nt"), read(h5id[r],"Nl"), read(h5id[r],"N_replicas")] for r in runs]
+    maxr = similar(runs)
+    for i in eachindex(data)
+        matches = findall(x->x[1:2]==data[i][1:2],data)
+        j = findmax(x->data[x][3],matches)[2]
+        maxr[i] = runs[matches[j]]
+    end
+    return unique(maxr)
+end
 function a_vs_central_action_plot!(plt,h5id,runs::Vector;kws...)
     # default plot limits
     xmin, xmax = +Inf, -Inf 
@@ -31,6 +42,7 @@ function an_action_volumes(file,plotdest;title)
     ispath(dirname(plotdest)) || mkpath(dirname(plotdest))
     h5id = h5open(file)
     runs = keys(h5id)
+    runs = largets_replica_runs(h5id,runs)
     plt  = a_vs_central_action_plot(h5id,runs,lens=false)
     title = latexstring(title)
     plot!(plt;legend=:bottomright,xlabel=L"u_p",ylabel=L"a_n",title)
