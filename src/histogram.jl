@@ -3,7 +3,7 @@
 #   mp.prec = 53                [default: 53]
 #   mp.dps = 15                 [default: 15]
 #   mp.trap_complex = False     [default: False]
-setprecision(BigFloat, 53)
+setprecision(BigFloat, 106)
 
 function log_partition_function(a, S, beta, ::Type{T}=BigFloat) where T
     # David uses a different sign for a
@@ -57,11 +57,11 @@ function energy_moment(S,a,β,N::Int,::Type{T}=Float64,::Type{U}=BigFloat) where
             sh = sinh(A*δS/2)
             ch = cosh(A*δS/2)
             Ap = A^(m-N-1)
-            En += 2*factorial(N)*full_exp*(sh*sinh_term + ch*cosh_term)*Ap*(-1)^(N-m)
+            En += full_exp*(sh*sinh_term + ch*cosh_term)*Ap*(-1)^(N-m)
         end   
         pi_exp -= ai*δS
     end
-    return En
+    return 2*factorial(N)*En
 end
 
 _E_in_interval(E,S0,dS) = E >= (S0 - dS/2) && E < (S0 + dS/2)

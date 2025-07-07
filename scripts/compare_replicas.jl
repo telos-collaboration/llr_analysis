@@ -13,7 +13,6 @@ function a_vs_central_action_plot!(plt,h5id,runs::Vector,Nt,Nl;kws...)
     for run in runs
         Nt0 = read(h5id[run],"Nt")
         Nl0 = read(h5id[run],"Nl")
-        @show Nt, Nl
         if Nt0 == Nt && Nl0 == Nl
             a0, Δa0, S0, _ = a_vs_central_action(h5id,run)
             Nrep = read(h5id[run],"N_replicas")
