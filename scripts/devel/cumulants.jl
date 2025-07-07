@@ -6,14 +6,14 @@
 setprecision(BigFloat, 53)
 using LLRParsing
 
-function log_partition_function(a, S, beta)
+function log_partition_function(a, S, beta, ::Type{T}=BigFloat) where T
     # David uses a different sign for a
     dS     = S[2] - S[1]    
-    pi_exp = 0.0
-    Z      = BigFloat(0)
+    pi_exp = T(0)
+    Z      = T(0)
     for (ai, Si) in zip(a,S)
         A           = beta - ai
-        exp_factor  = exp(BigFloat(pi_exp + Si*beta - ai*dS/2))
+        exp_factor  = exp(T(pi_exp + Si*beta - ai*dS/2))
         sinh_factor = iszero(A) ? dS/2 : sinh(A*dS/2)/A
         Z      += exp_factor*sinh_factor
         pi_exp -= ai*dS
@@ -31,12 +31,15 @@ end
     in python (10.5281/zenodo.13807993). It follows Eqs. (3.1.18) and
     (3.1.19) from David Masons's PhD thesis. 
 
-    By default, we use julia's BigFloat datatype for floating point 
-    calculations in extended precision. This can be overwritten by specifying
+    By default, we use julia's BigFloat together with the double precision Float64 
+    datatype for floating point calculations. This can be overwritten by specifying
     the datatype `T` to be used instead.
+
+    Typically, it suffices to use Float64 for all calculations in here as long 
+    as the log of the partition function is calculated in higher precision.
 """
-function llr_energy_momenta(S,a,β,N::Int,::Type{T}) where T
-    pi_exp = - T(log_partition_function(a, S, β))
+function llr_energy_momenta(S,a,β,N::Int,::Type{T}=Float64) where T
+    pi_exp = - T(log_partition_function(a, S, β, BigFloat))
     full_exp = T(0)
     En = T(0)
     δS = S[2] - S[1]
@@ -74,6 +77,8 @@ using Plots
 using HDF5
 using BenchmarkTools
 using Profile
+using LaTeXStrings
+gr(size=(425,282),fontfamily="Computer Modern",legend=:topleft,frame=:box,titlefontsize=10,legendfontsize=7,tickfontsize=7,labelfontsize=10,left_margin=0Plots.mm)
 
 h5file = "data_assets/Sp4_Nt4_sorted.hdf5"
 fid = h5open(h5file) 
@@ -81,18 +86,24 @@ r = keys(fid)[1]
 
 a, S, Nt, Nl, V = _set_up_histogram(fid,r)
 mina, maxa = extrema(a)
-βs = collect(range(start=mina,stop=maxa,length=1000))
-    
-energy_cumulant.(Ref(S),Ref(0),βs,4)
-Profile.init()
-@profview energy_cumulant.(Ref(S),Ref(0),βs,4)
-@time energy_cumulant.(Ref(S),Ref(0),βs,4)
-@btime energy_cumulant.(Ref(S),Ref(0),βs,4)
+βs = collect(range(start=7.3402,stop=7.3405,length=1000))
 
-E0 = energy_cumulant.(Ref(S),Ref(a),βs,0)/(6V)^0;
-E1 = energy_cumulant.(Ref(S),Ref(a),βs,1)/(6V)^1;
-E2 = energy_cumulant.(Ref(S),Ref(a),βs,2)/(6V)^2;
-E4 = energy_cumulant.(Ref(S),Ref(a),βs,4)/(6V)^4;
+println("Timings for T = Float64")
+@btime begin 
+    llr_energy_momenta.(Ref(S),Ref(a),βs,1,Float64)/(6V)^1;
+    llr_energy_momenta.(Ref(S),Ref(a),βs,2,Float64)/(6V)^2;
+end
+println("Timings for T = BigFloat (precision = $(precision(BigFloat(0))))")
+@btime begin 
+    llr_energy_momenta.(Ref(S),Ref(a),βs,1,BigFloat)/(6V)^1;
+    llr_energy_momenta.(Ref(S),Ref(a),βs,2,BigFloat)/(6V)^2;
+end
 
-CV = @. 6V*(E2 - E1^2)
-plot(βs, CV)
+plt = plot()
+for T in [Float64, BigFloat]
+    E1 = llr_energy_momenta.(Ref(S),Ref(a),βs,1,T)/(6V)^1;
+    E2 = llr_energy_momenta.(Ref(S),Ref(a),βs,2,T)/(6V)^2;
+    CV = @. 6V*(E2 - E1^2)
+    plot!(plt, βs, CV, label="$T", xlabel=L"\beta", ylabel=L"specific heat $C_V(\beta)$")
+end
+plt
