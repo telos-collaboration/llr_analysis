@@ -18,26 +18,34 @@ function log_partition_function(a, S, beta)
         Z      += exp_factor*sinh_factor
         pi_exp -= ai*dS
     end
-    return log(2Z)
+    return Float64(log(2Z))
 end
 
 """
-    Calculate n-th cumulant of the energy from the d.o.s.
+    llr_energy_momenta(S,a,β,N,[::Type{T}])
+
+    Calculate N-th cumulant of the energy from the d.o.s. coefficients `a`
+    at the central energies `S` at the inverse coupling β.
+
     This code has been ported over from David Mason's implementation
     in python (10.5281/zenodo.13807993). It follows Eqs. (3.1.18) and
     (3.1.19) from David Masons's PhD thesis. 
+
+    By default, we use julia's BigFloat datatype for floating point 
+    calculations in extended precision. This can be overwritten by specifying
+    the datatype `T` to be used instead.
 """
-function energy_cumulant(S,a,β::Number,N::Int)
-    pi_exp = - log_partition_function(a, S, β)
-    full_exp = BigFloat(0)
-    En = BigFloat(0)
+function llr_energy_momenta(S,a,β,N::Int,::Type{T}) where T
+    pi_exp = - T(log_partition_function(a, S, β))
+    full_exp = T(0)
+    En = T(0)
     δS = S[2] - S[1]
     for (Si,ai) in zip(S,a)
-        A = BigFloat( - ai + β)
-        full_exp = 2*factorial(N)*exp(pi_exp + β*(Si-δS/2) + A*δS/2 ) 
+        A = T(- ai + β)
+        full_exp = exp(pi_exp + β*(Si-δS/2) + A*δS/2 ) 
         for m in 0:N
-            sinh_term = BigFloat(0)
-            cosh_term = BigFloat(0)
+            sinh_term = T(0)
+            cosh_term = T(0)
             for j in 0:div(m,2,RoundDown)
                 sinh_term += (δS/2)^(2j)*Si^(m-2j)/factorial(2j)/factorial(m-2j)
             end
@@ -47,7 +55,7 @@ function energy_cumulant(S,a,β::Number,N::Int)
             sh = sinh(A*δS/2)
             ch = cosh(A*δS/2)
             Ap = A^(m-N-1)
-            En += full_exp*(sh*sinh_term + ch*cosh_term)*Ap*(-1)^(N-m)
+            En += 2*factorial(N)*full_exp*(sh*sinh_term + ch*cosh_term)*Ap*(-1)^(N-m)
         end   
         pi_exp -= ai*δS
     end
