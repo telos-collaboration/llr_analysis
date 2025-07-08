@@ -51,7 +51,9 @@ function energy_moment(S,a,β,N::Int,::Type{T}=Float64,::Type{U}=BigFloat) where
             for j in 0:div(m,2,RoundDown)
                 sinh_term += (δS/2)^(2j)*Si^(m-2j)/factorial(2j)/factorial(m-2j)
             end
-            for j in 1:div(m,2,RoundUp)
+            for j in 1:div(m,2,RoundDown)+1
+                isequal(-1,2j-1)   && continue # for these two terms the contribution is zero
+                isequal(-1,m-2j+1) && continue # since 1/(-1)! = 1/Γ(0) → 0 
                 cosh_term += (δS/2)^(2j-1)*Si^(m-2j+1)/factorial(2j-1)/factorial(m-2j+1)
             end
             sh = sinh(A*δS/2)
