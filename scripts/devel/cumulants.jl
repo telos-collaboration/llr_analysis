@@ -20,8 +20,8 @@ end
 
 function main(h5file,β)
     fid   = h5open(h5file) 
-    pltCV = plot(xlabel=L"\beta", ylabel=L"C_V(\beta)", title = "specific heat")
-    pltBC = plot(xlabel=L"\beta", ylabel=L"B_L(\beta)", title = "Binder cumulant")
+    pltCV = plot(legend=:outerright, xlabel=L"\beta", ylabel=L"C_V(\beta)", title = "specific heat")
+    pltBC = plot(legend=:outerright, xlabel=L"\beta", ylabel=L"B_L(\beta)", title = "Binder cumulant")
     runs  = largets_replica_runs(fid,keys(fid))
 
     for r in runs
@@ -33,11 +33,9 @@ function main(h5file,β)
         BC0 = zeros((length(β),repeats))
 
         for i in 1:repeats
-            plaquette_moment(β,N) = LLRParsing.energy_moment(S,a[:,i],β,N,BigFloat)
-            E1 = plaquette_moment.(β,1)./((6V)^1)
-            E2 = plaquette_moment.(β,2)./((6V)^2)
-            E4 = plaquette_moment.(β,4)./((6V)^4)
-
+            E1 = LLRParsing.energy_moment.(Ref(S),Ref(a[:,i]),β,1)./((6V)^1)
+            E2 = LLRParsing.energy_moment.(Ref(S),Ref(a[:,i]),β,2)./((6V)^2)
+            E4 = LLRParsing.energy_moment.(Ref(S),Ref(a[:,i]),β,4)./((6V)^4)
             @. CV0[:,i] = 6V*(E2 - E1^2)
             @. BC0[:,i] = 1 - E4/(3*E2^2)
         end
@@ -50,6 +48,7 @@ function main(h5file,β)
         plot!(pltCV,β,CV,ribbon=ΔCV,label=LLRParsing.fancy_title(r),lw=2)
         plot!(pltBC,β[2:end-1],BC[2:end-1],ribbon=ΔBC[2:end-1],label=LLRParsing.fancy_title(r),lw=2)
         display(pltCV)
+        display(pltBC)
     end
     return pltCV, pltBC
 end
@@ -57,9 +56,9 @@ end
 h5file = "data_assets/Sp4_Nt4_sorted.hdf5"
 β      = range(start=7.338,stop=7.342,length=100)
 pltCV, pltBC  = main(h5file,β)
-savefig(pltCV,"specific_heat_Nt4.pdf")
+#savefig(pltCV,"specific_heat_Nt4.pdf")
 
-h5file = "data_assets/Sp4_Nt5_sorted.hdf5"
-β      = range(start=7.489,stop=7.491,length=100)
-pltCV, pltBC  = main(h5file,β)
-savefig(pltCV,"specific_heat_Nt5.pdf")
+#h5file = "data_assets/Sp4_Nt5_sorted.hdf5"
+#β      = range(start=7.489,stop=7.4905,length=100)
+#pltCV, pltBC  = main(h5file,β)
+##savefig(pltCV,"specific_heat_Nt5.pdf")
