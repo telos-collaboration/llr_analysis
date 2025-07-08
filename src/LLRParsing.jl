@@ -32,7 +32,7 @@ export a_vs_central_action, full_trajectory_plot
 include("clean_corrupted_replicas.jl")
 export remove_non_matching_trajectories_in_replicas
 include("histogram.jl")
-export probability_density,plot_plaquette_histogram!
+export probability_density, plot_plaquette_histogram!
 include("critical_histogram.jl")
 include("double_gaussian_fit.jl")
 include("free_energy.jl")
