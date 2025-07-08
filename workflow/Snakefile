@@ -155,7 +155,7 @@ rule an_volume_comparison_plots:
     conda:
         "envs/environment.yml"
     shell:
-        'julia --project="." {input.script} --h5file {input.h5file} --plot_file {output.plot} --title "\$a_n\$ volume dependence for \$N_t={wildcards.Nt}\$"'
+        r'julia --project="." {input.script} --h5file {input.h5file} --plot_file {output.plot} --title "\$a_n\$ volume dependence for \$N_t={wildcards.Nt}\$"'
 
 
 rule an_replica_comparison_plots:
