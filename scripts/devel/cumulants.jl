@@ -43,9 +43,9 @@ function main(h5file, β)
         BC0 = zeros((length(β), repeats))
 
         for i in 1:repeats
-            E1 = LLRParsing.energy_moment.(Ref(S), Ref(a[:, i]), β, 1, BigFloat) ./ (6V)
-            E2 = LLRParsing.energy_moment.(Ref(S), Ref(a[:, i]), β, 2, BigFloat) ./ (6V) ./ (6V)
-            E4 = LLRParsing.energy_moment.(Ref(S), Ref(a[:, i]), β, 4, BigFloat) ./ (6V) ./ (6V) ./ (6V) ./ (6V)
+            E1 = LLRParsing.energy_moment.(Ref(S), Ref(a[:, i]), β, 1, Float64) ./ (6V)
+            E2 = LLRParsing.energy_moment.(Ref(S), Ref(a[:, i]), β, 2, Float64) ./ (6V) ./ (6V)
+            E4 = LLRParsing.energy_moment.(Ref(S), Ref(a[:, i]), β, 4, Float64) ./ (6V) ./ (6V) ./ (6V) ./ (6V)
             @. CV0[:, i] = 6V * (E2 - E1^2)
             @. BC0[:, i] = 1 - E4 / (3 * E2^2)
         end
