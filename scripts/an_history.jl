@@ -18,8 +18,8 @@ gr(
 )
 
 function plot_repeat(fid, run, repeat, Nrep; kws...)
-    title = LLRParsing.fancy_title(run)*", repeat #$repeat"
-    a0 = hcat([read(fid[run], "$repeat/Rep_$i/a_sorted") for i = 0:(Nrep-1)]...)
+    title = LLRParsing.fancy_title(run) * ", repeat #$repeat"
+    a0 = hcat([read(fid[run], "$repeat/Rep_$i/a_sorted") for i in 0:(Nrep - 1)]...)
     NRpRM = first(size(a0))
     plt = plot(
         a0;
@@ -30,7 +30,7 @@ function plot_repeat(fid, run, repeat, Nrep; kws...)
         xlabel = "updates (NR + RM = $NRpRM)",
         ylabel = L"a_n",
     )
-    plot!(plt; kws...)
+    return plot!(plt; kws...)
 end
 function plot_all_an_trajectories(file, outfile, run; kws...)
     fid = h5open(file)
@@ -40,13 +40,13 @@ function plot_all_an_trajectories(file, outfile, run; kws...)
 
     ispath(dirname(outfile)) || mkpath(dirname(outfile))
     isfile(outfile) && rm(outfile)
-    tmp_plt_pdf=tempname()*".pdf"
+    tmp_plt_pdf = tempname() * ".pdf"
     for r in repeats
         plt = plot_repeat(fid, run, r, Nrep; kws...)
         savefig(plt, tmp_plt_pdf)
         append_pdf!(outfile, tmp_plt_pdf, cleanup = true)
     end
-    close(fid)
+    return close(fid)
 
 end
 function parse_commandline()
@@ -67,6 +67,6 @@ end
 
 function main()
     args = parse_commandline()
-    plot_all_an_trajectories(args["h5file"], args["plot_file"], args["run_name"])
+    return plot_all_an_trajectories(args["h5file"], args["plot_file"], args["run_name"])
 end
 main()

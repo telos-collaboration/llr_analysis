@@ -20,6 +20,6 @@ function main()
     ispath(dirname(h5file_sorted)) || mkpath(dirname(h5file_sorted))
     isfile(h5file_sorted) && rm(h5file_sorted)
 
-    sort_by_central_energy_to_hdf5(h5file, h5file_sorted)
+    return sort_by_central_energy_to_hdf5(h5file, h5file_sorted)
 end
 main()

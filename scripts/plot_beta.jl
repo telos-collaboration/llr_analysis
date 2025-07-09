@@ -26,7 +26,7 @@ end
 function plot_critical_beta!(plt, file)
     Nt, L, βc, Δβc, ratio = read_critical_betas(file)
     tks = (inv.(L), (L"1/%$Li" for Li in L))
-    scatter!(
+    return scatter!(
         plt,
         inv.(L),
         βc,
@@ -43,7 +43,7 @@ function plot_critical_beta(files, plotfile)
         plot_critical_beta!(plt, file)
     end
     plot!(plt; xflip = true, legend = :left)
-    savefig(plt, plotfile)
+    return savefig(plt, plotfile)
 end
 
 function parse_commandline()
@@ -63,6 +63,6 @@ function main()
     args = parse_commandline()
     plotfile = args["plotfile"]
     file = args["arg"]
-    plot_critical_beta(file, plotfile)
+    return plot_critical_beta(file, plotfile)
 end
 main()

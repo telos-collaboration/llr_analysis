@@ -27,14 +27,7 @@ repos:
   rev: v0.10.2
   hooks:
     - id: snakefmt
-- repo: https://github.com/domluna/JuliaFormatter.jl
-  rev: v2.1.2
+- repo: https://github.com/fredrikekre/runic-pre-commit
+  rev: v2.0.1
   hooks:
-  - id: julia-formatter
-    name: "Julia Formatter"
-    entry: "julia -e 'import Pkg; Pkg.activate(;temp=true); Pkg.add(\"JuliaFormatter\"); import JuliaFormatter: format; format(\".\")'"
-    pass_filenames: true
-    always_run: false
-    types: [file]
-    files: \.(jl|[jq]?md)$
-    language: "system"
+    - id: runic

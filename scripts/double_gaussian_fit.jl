@@ -31,7 +31,7 @@ function plot_all_histogram_fits(file, plotfile, run; fit, A1 = 1, A2 = 1, name 
         @warn "Error for plot with peak-ratio $A1:$A2 for $run"
     end
     savefig(plotfile)
-    close(fid)
+    return close(fid)
 end
 function parse_commandline()
     s = ArgParseSettings()
@@ -58,7 +58,7 @@ function main()
     plotfile = args["plot_file"]
     run_name = args["run_name"]
     A1 = args["relative_peak_height"]
-    plot_all_histogram_fits(
+    return plot_all_histogram_fits(
         file,
         plotfile,
         run_name;

@@ -3,9 +3,9 @@ function get_repeat_and_replica_dirs(base_dir, skip_repeats = String[])
     repeat_dirs = filter(str -> all(isdigit, str), readdir(base_dir))
     sort!(repeat_dirs, lt = natural)
     if !isempty(skip_repeats)
-        repeat_dirs = filter(i->i ∉ skip_repeats, repeat_dirs)
+        repeat_dirs = filter(i -> i ∉ skip_repeats, repeat_dirs)
     end
-    dir_dict = Dict{String,Vector{String}}()
+    dir_dict = Dict{String, Vector{String}}()
     for repeat in repeat_dirs
         rx = r"Rep_[0-9]+"
         repeat_path = joinpath(base_dir, repeat)
@@ -35,7 +35,7 @@ function parse_dS0(file)
     pattern = "[MAIN][0]LLR Delta S"
     for line in eachline(file)
         if startswith(line, pattern)
-            dS0 = parse(Float64, line[(length(pattern)+1):end])
+            dS0 = parse(Float64, line[(length(pattern) + 1):end])
             return dS0
         end
     end
@@ -46,7 +46,7 @@ function parse_initial_a(file)
     pattern = "[MAIN][0]LLR Initial a"
     for line in eachline(file)
         if startswith(line, pattern)
-            a0 = parse(Float64, line[(length(pattern)+1):end])
+            a0 = parse(Float64, line[(length(pattern) + 1):end])
             return a0
         end
     end
@@ -55,9 +55,10 @@ end
 function _parse_data!(array, string; n)
     opts = Parsers.Options(delim = ' ', ignorerepeated = true)
     io = IOBuffer(string)
-    for i = 1:n
+    for i in 1:n
         array[i] = Parsers.parse(Float64, io, opts)
     end
+    return
 end
 function parse_llr(file; skiplines = Int[])
     pattern_poly = "[FUND_POLYAKOV][0]Polyakov direction 0 = "
@@ -111,7 +112,7 @@ function parse_llr(file; skiplines = Int[])
         end
         if !is_fxa && startswith(line, patternS0)
             pos2 = first(findnext("dS", line, posS0))
-            append!(S0, parse(Float64, line[posS0:(pos2-1)]))
+            append!(S0, parse(Float64, line[posS0:(pos2 - 1)]))
         end
         if is_fxa && startswith(line, "[llr:setreplica][0]New LLR Param:")
             vals = match(rx, line).captures
@@ -121,10 +122,10 @@ function parse_llr(file; skiplines = Int[])
         end
         if startswith(line, pattern_poly)
             _parse_data!(tmp_poly, line[pos_poly:end]; n = 2)
-            append!(poly, tmp_poly[1] + im*tmp_poly[2])
+            append!(poly, tmp_poly[1] + im * tmp_poly[2])
         end
     end
-    return dS0, S0, plaq, a, is_rm, S0_fxa[1:(end-1)], a_fxa[1:(end-1)], poly
+    return dS0, S0, plaq, a, is_rm, S0_fxa[1:(end - 1)], a_fxa[1:(end - 1)], poly
 end
 function llr_dir_hdf5(dir, h5file; suffix = "", skip_repeats = String[])
     fid = h5open(h5file, "cw")
@@ -143,14 +144,14 @@ function llr_dir_hdf5(dir, h5file; suffix = "", skip_repeats = String[])
     Nt = only(unique(first.(latticesize.(files))))
     Nl = only(unique(last.(latticesize.(files))))
 
-    name = "$(Nt)x$(Nl)_$(N_replicas)replicas"*suffix
+    name = "$(Nt)x$(Nl)_$(N_replicas)replicas" * suffix
     write(fid, joinpath(name, "N_repeats"), N_repeats)
     write(fid, joinpath(name, "N_replicas"), N_replicas)
     write(fid, joinpath(name, "repeats"), repeats)
     write(fid, joinpath(name, "Nt"), Nt)
     write(fid, joinpath(name, "Nl"), Nl)
 
-    @showprogress desc="parsing $name" for repeat in repeats
+    @showprogress desc = "parsing $name" for repeat in repeats
         for rep in replica_dirs[repeat]
             file = joinpath(dir, repeat, rep, "out_0")
             a0 = parse_initial_a(file)
@@ -166,7 +167,7 @@ function llr_dir_hdf5(dir, h5file; suffix = "", skip_repeats = String[])
             write(fid, joinpath(name, repeat, rep, "poly"), poly)
         end
     end
-    close(fid)
+    return close(fid)
 end
 function sort_by_central_energy_to_hdf5(h5file_in, h5file_out; skip_ens = nothing)
     h5dset = h5open(h5file_in, "r")
@@ -175,6 +176,7 @@ function sort_by_central_energy_to_hdf5(h5file_in, h5file_out; skip_ens = nothin
     for run in runs
         sort_by_central_energy_to_hdf5_run(h5file_in, h5file_out, run)
     end
+    return
 end
 function sort_by_central_energy_to_hdf5_run(h5file_in, h5file_out, run)
     h5dset = h5open(h5file_in, "r")
@@ -196,15 +198,15 @@ function sort_by_central_energy_to_hdf5_run(h5file_in, h5file_out, run)
             traj_lengths = dropdims(count(isfinite, S, dims = 2), dims = 2)
             last_healthy_traj_p1, inds =
                 find_first_duplicated_central_energies(S, traj_lengths)
-            S = S[:, 1:(last_healthy_traj_p1-1)]
-            @warn "Run $run, repeat $j: Discarded data after step $(last_healthy_traj_p1-1)"
+            S = S[:, 1:(last_healthy_traj_p1 - 1)]
+            @warn "Run $run, repeat $j: Discarded data after step $(last_healthy_traj_p1 - 1)"
             data_healthy = all(allequal, eachslice(sort(S, dims = 1), dims = 1))
         end
 
         ntraj = dropdims(count(isfinite, S, dims = 2), dims = 2)
         n_traj_min, n_traj_max = extrema(ntraj)
         ## Sort by the central action to account for different swaps
-        for j = 1:n_traj_min
+        for j in 1:n_traj_min
             perm = sortperm(S[:, j])
             S[:, j] = S[perm, j]
             a[:, j] = a[perm, j]
@@ -217,9 +219,9 @@ function sort_by_central_energy_to_hdf5_run(h5file_in, h5file_out, run)
         is_rm = is_rm[:, 1:n_traj_min]
         # make sure that the sorted central action alwas matches, if not, discard the repeat
         @assert data_healthy
-        for i = 1:N_replicas
-            dset = create_group(h5dset_out, joinpath(run, "$j", "Rep_$(i-1)"))
-            dset_in = h5dset[joinpath(run, "$j", "Rep_$(i-1)")]
+        for i in 1:N_replicas
+            dset = create_group(h5dset_out, joinpath(run, "$j", "Rep_$(i - 1)"))
+            dset_in = h5dset[joinpath(run, "$j", "Rep_$(i - 1)")]
             dS0 = read(dset_in, "dS0")
             a0 = read(dset_in, "a0")
             write(dset, "S0_sorted", S[i, :])
@@ -237,5 +239,5 @@ function sort_by_central_energy_to_hdf5_run(h5file_in, h5file_out, run)
     write(h5dset_out, joinpath(run, "Nl"), h5read(h5file_in, joinpath(run, "Nl")))
 
     close(h5dset)
-    close(h5dset_out)
+    return close(h5dset_out)
 end

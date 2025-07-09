@@ -5,14 +5,14 @@ function a_vs_central_action_repeats(h5dset, run; ind = nothing)
     S = zeros(N_replicas, N_repeats)
     repeat_indices = Int[]
     # read all last elements for a and the central action
-    for i = 1:N_replicas, j = 1:N_repeats
-        if haskey(h5dset[run], "$(j-1)")
-            n_steps = length(h5dset[run]["$(j-1)/Rep_$(i-1)/is_rm"])
+    for i in 1:N_replicas, j in 1:N_repeats
+        if haskey(h5dset[run], "$(j - 1)")
+            n_steps = length(h5dset[run]["$(j - 1)/Rep_$(i - 1)/is_rm"])
             if n_steps > 0
                 ind = isnothing(ind) ? n_steps : min(ind, n_steps)
                 ind = max(1, ind)
-                a[i, j] = h5dset[run]["$(j-1)/Rep_$(i-1)/a_sorted"][ind]
-                S[i, j] = h5dset[run]["$(j-1)/Rep_$(i-1)/S0_sorted"][ind]
+                a[i, j] = h5dset[run]["$(j - 1)/Rep_$(i - 1)/a_sorted"][ind]
+                S[i, j] = h5dset[run]["$(j - 1)/Rep_$(i - 1)/S0_sorted"][ind]
                 append!(repeat_indices, j)
             end
         end
@@ -25,7 +25,7 @@ function a_vs_central_action(h5dset, run; ind = nothing)
     N = size(a)[2]
     S0 = S[:, 1]
     a0 = dropdims(mean(a, dims = 2), dims = 2)
-    Δa0 = dropdims(std(a, dims = 2), dims = 2)/sqrt(N)
+    Δa0 = dropdims(std(a, dims = 2), dims = 2) / sqrt(N)
     return a0, Δa0, S0, ind
 end
 function a_vs_central_action_plot(h5dset, runs; indices)
@@ -36,14 +36,14 @@ function a_vs_central_action_plot(h5dset, runs; indices)
             Nt = read(fid[run], "Nt")
             Nl = read(fid[run], "Nl")
             V = Nl^3 * Nt
-            up = S0/(6V)
+            up = S0 / (6V)
             plot!(
                 plt,
                 up,
                 a0,
                 yerr = Δa0,
                 marker = :auto,
-                label = "$(Nt)x$(Nl): ΔE=$(round(2(S0[2]-S0[1])/6V,sigdigits=1)) (Nr+RM steps=$ind)",
+                label = "$(Nt)x$(Nl): ΔE=$(round(2(S0[2] - S0[1]) / 6V, sigdigits = 1)) (Nr+RM steps=$ind)",
             )
         end
     end
@@ -55,11 +55,11 @@ function _lens_location(a0, Δa0, up)
     #   1) the maximum before the midpoint
     #   2) the minimum after the midpoint
     mid, m_ind = findmax(Δa0)
-    peak, p_ind = findmax(a0[1:(m_ind+1)])
+    peak, p_ind = findmax(a0[1:(m_ind + 1)])
     dip, d_ind = findmin(a0[m_ind:end])
-    delta_peak_dip = max((m_ind-p_ind), d_ind)
-    ylms = [dip, peak] .+ [dip-peak, peak-dip] ./ 3
-    xinds = [p_ind - 3delta_peak_dip÷2, m_ind + 7delta_peak_dip÷2]
+    delta_peak_dip = max((m_ind - p_ind), d_ind)
+    ylms = [dip, peak] .+ [dip - peak, peak - dip] ./ 3
+    xinds = [p_ind - 3delta_peak_dip ÷ 2, m_ind + 7delta_peak_dip ÷ 2]
     xlms = up[xinds]
     return ylms, xlms, [dip, peak], up[[p_ind, m_ind + d_ind]]
 end
@@ -71,51 +71,51 @@ function a_vs_central_action_plot!(plt, h5dset, run; index = nothing, kws...)
     return a_vs_central_action_plot!(plt, a0, Δa0, S0, Nt, Nl, Nrep; kws...)
 end
 function a_vs_central_action_plot!(
-    plt,
-    a0,
-    Δa0,
-    S0,
-    Nt,
-    Nl,
-    replicas;
-    label = LLRParsing.fancy_title(Nt, Nl, replicas),
-    highlight_index = nothing,
-    lens = true,
-)
+        plt,
+        a0,
+        Δa0,
+        S0,
+        Nt,
+        Nl,
+        replicas;
+        label = LLRParsing.fancy_title(Nt, Nl, replicas),
+        highlight_index = nothing,
+        lens = true,
+    )
     V = Nl^3 * Nt
-    up = S0/(6V)
+    up = S0 / (6V)
     plot!(plt, up, a0, yerr = Δa0, marker = :auto; label)
     if !isnothing(highlight_index)
         mid = up[highlight_index]
-        del = (up[highlight_index+1] - up[highlight_index])/2
-        vspan!(plt, [mid-del, mid+del], color = :green, alpha = 0.7, labels = "replica");
+        del = (up[highlight_index + 1] - up[highlight_index]) / 2
+        vspan!(plt, [mid - del, mid + del], color = :green, alpha = 0.7, labels = "replica")
     end
     if lens
         ylms, xlms, yticks, xticks = _lens_location(a0, Δa0, up)
         xticks = round.(xticks, sigdigits = 4)
         yticks = round.(yticks, sigdigits = 5)
-        lens!(plt, xlms, ylms, inset = (1, bbox(0.60, 0.50, 0.38, 0.38)))
+        lens!(plt, xlms, ylms, inset = (1, bbox(0.6, 0.5, 0.38, 0.38)))
         plot!(; subplot = 2, yticks, xticks)
     end
     return plt
 end
 function a_variance_vs_central_action_plot!(
-    plt,
-    h5dset,
-    run;
-    index = nothing,
-    highlight_index = nothing,
-)
+        plt,
+        h5dset,
+        run;
+        index = nothing,
+        highlight_index = nothing,
+    )
     a0, Δa0, S0, ind = a_vs_central_action(h5dset, run; ind = index)
     Nt = read(h5dset[run], "Nt")
     Nl = read(h5dset[run], "Nl")
     V = Nl^3 * Nt
-    up = S0/(6V)
+    up = S0 / (6V)
     plot!(plt, up, zero(a0), ribbon = (zero(Δa0), Δa0), label = L"\Delta a_n")
-    if !isnothing(highlight_index)
+    return if !isnothing(highlight_index)
         mid = up[highlight_index]
-        del = (up[highlight_index+1] - up[highlight_index])/2
-        vspan!(plt, [mid-del, mid+del], color = :green, alpha = 0.8, labels = "replica");
+        del = (up[highlight_index + 1] - up[highlight_index]) / 2
+        vspan!(plt, [mid - del, mid + del], color = :green, alpha = 0.8, labels = "replica")
     end
 end
 function a_trajectory(h5dset, run; replica = 0)
@@ -144,20 +144,20 @@ function plot_a_trajectory_all!(plt, h5dset, run, replica)
 end
 function plot_nr_rm_shading!(plt, h5dset, run, repeat, replica)
     isrm = read(h5dset[run], "$repeat/Rep_$replica/is_rm")
-    nr, rm = findlast(x->!x, isrm)-1, length(isrm)
+    nr, rm = findlast(x -> !x, isrm) - 1, length(isrm)
     nr = isnothing(nr) ? 0 : nr
-    vspan!(plt, [1, nr+1], color = :green, alpha = 0.2, labels = "NR");
-    vspan!(plt, [nr+1, rm], color = :blue, alpha = 0.2, labels = "RM");
+    vspan!(plt, [1, nr + 1], color = :green, alpha = 0.2, labels = "NR")
+    vspan!(plt, [nr + 1, rm], color = :blue, alpha = 0.2, labels = "RM")
     return plt
 end
 function plot_a_repeat_average!(plt, h5dset, run; replica)
     a = a_trajectory(h5dset, run; replica)
     # remove repeats that have a zero-length trajectory
-    filter!(x->length(x)>0, a)
+    filter!(x -> length(x) > 0, a)
     a_last = last.(a)
     N_repeats = length(a_last)
-    a0, Δa = mean(a_last), std(a_last)/sqrt(N_repeats)
-    hspan!(plt, [a0-Δa, a0+Δa], color = :black, alpha = 0.8, labels = L"a_n");
+    a0, Δa = mean(a_last), std(a_last) / sqrt(N_repeats)
+    hspan!(plt, [a0 - Δa, a0 + Δa], color = :black, alpha = 0.8, labels = L"a_n")
     return plt
 end
 fancy_title(Lt, Ls, Nint) = L"%$Lt\!\times\!%$(Ls)^3\!, N_{\!\mathrm{rep}}\!\!=%$Nint"

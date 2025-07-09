@@ -8,7 +8,7 @@ function parse_skip(str)
 end
 function parse_full(dir, skip, h5file)
     s = parse_skip.(skip)
-    llr_dir_hdf5(dir, h5file; skip_repeats = s)
+    return llr_dir_hdf5(dir, h5file; skip_repeats = s)
 end
 function parse_commandline()
     s = ArgParseSettings()
@@ -42,5 +42,6 @@ function main()
             parse_full(run, s, h5file)
         end
     end
+    return
 end
 main()

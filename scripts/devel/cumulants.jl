@@ -32,10 +32,10 @@ E1 = plaquette_moment.(β, 1) ./ ((6V)^1)
 E2 = plaquette_moment.(β, 2) ./ ((6V)^2)
 E4 = plaquette_moment.(β, 4) ./ ((6V)^4)
 
-CV = @. 6V*(E2 - E1^2)
-BC = @. 1 - E4/(3*E2^2)
+CV = @. 6V * (E2 - E1^2)
+BC = @. 1 - E4 / (3 * E2^2)
 
 pltCV = plot(xlabel = L"\beta", ylabel = "specirfic heat")
 scatter!(pltCV, β, CV, label = L"C_V(\beta)")
 pltBC = plot(xlabel = L"\beta", ylabel = "cumulants")
-scatter!(pltBC, β[2:(end-1)], BC[2:(end-1)], label = L"C_B(\beta)")
+scatter!(pltBC, β[2:(end - 1)], BC[2:(end - 1)], label = L"C_B(\beta)")

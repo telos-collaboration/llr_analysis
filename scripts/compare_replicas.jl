@@ -27,8 +27,8 @@ function a_vs_central_action_plot!(plt, h5id, runs::Vector, Nt, Nl; kws...)
         if Nt0 == Nt && Nl0 == Nl
             a0, Δa0, S0, _ = a_vs_central_action(h5id, run)
             Nrep = read(h5id[run], "N_replicas")
-            up = @. S0/(6*Nl^3*Nt)
-            label=L"N_{\!\mathrm{rep}}\!=\!%$Nrep"
+            up = @. S0 / (6 * Nl^3 * Nt)
+            label = L"N_{\!\mathrm{rep}}\!=\!%$Nrep"
             LLRParsing.a_vs_central_action_plot!(
                 plt,
                 a0,
@@ -42,9 +42,9 @@ function a_vs_central_action_plot!(plt, h5id, runs::Vector, Nt, Nl; kws...)
             )
             # find useful plot limits for the volume comparison
             ind = findmax(Δa0)[2]
-            δind = min(ind, length(a0)-ind)÷4
-            xmin, xmax = min(xmin, up[ind-δind]), max(xmax, up[ind+δind])
-            ymin, ymax = min(ymin, a0[ind-δind]), max(ymax, a0[ind+δind])
+            δind = min(ind, length(a0) - ind) ÷ 4
+            xmin, xmax = min(xmin, up[ind - δind]), max(xmax, up[ind + δind])
+            ymin, ymax = min(ymin, a0[ind - δind]), max(ymax, a0[ind + δind])
         end
     end
     plot!(
@@ -61,7 +61,7 @@ function an_action_volumes_replicas(file, plotdest, Nt, Nl)
     runs = keys(h5id)
     plt = a_vs_central_action_plot(h5id, runs, Nt, Nl, lens = false)
     plot!(plt; legend = :bottomright, xlabel = L"u_p", ylabel = L"a_n")
-    savefig(plt, plotdest)
+    return savefig(plt, plotdest)
 end
 function parse_commandline()
     s = ArgParseSettings()
@@ -89,6 +89,6 @@ function main()
     plotdst = args["plot_file"]
     Nt = args["Nt"]
     Nl = args["Nl"]
-    an_action_volumes_replicas(file, plotdst, Nt, Nl)
+    return an_action_volumes_replicas(file, plotdst, Nt, Nl)
 end
 main()

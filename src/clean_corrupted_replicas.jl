@@ -26,7 +26,7 @@ function find_first_duplicated_central_energies(S0, traj_lengths; i_min = 1)
     nreplicas = first(size(S0))
     S0_theory = collect(range(Smin, Smax, length = nreplicas))
     traj_min = minimum(traj_lengths)
-    for i = i_min:traj_min
+    for i in i_min:traj_min
         if !isapprox(S0_theory, sort(S0[:, i]))
             # identify duplicate indices and then
             # remove those that correspond to the longer trajectories
@@ -35,4 +35,5 @@ function find_first_duplicated_central_energies(S0, traj_lengths; i_min = 1)
             return i, inds
         end
     end
+    return
 end

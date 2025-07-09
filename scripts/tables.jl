@@ -22,16 +22,16 @@ $N_t$ & $N_l$ & $u_{p}^{\rm min}$ & $u_{p}^{\rm max}$ & $N_{\rm rep}$ & $N_{\rm 
         repeats = read(fid[run], "repeats")
         Nrepeats = read(fid[run], "N_repeats")
         Nreplicas = read(fid[run], "N_replicas")
-        up = S0/(6Nl^3 * Nt)
+        up = S0 / (6Nl^3 * Nt)
         isrm = read(fid[run], "$(first(repeats))/Rep_0/is_rm")
-        nr, rm = findlast(x->!x, isrm), length(isrm)
+        nr, rm = findlast(x -> !x, isrm), length(isrm)
         println(
             io,
-            "$Nt & $Nl & $(minimum(up)) & $(maximum(up)) & $Nreplicas & $Nrepeats & $nr & $(rm-nr) \\\\",
+            "$Nt & $Nl & $(minimum(up)) & $(maximum(up)) & $Nreplicas & $Nrepeats & $nr & $(rm - nr) \\\\",
         )
     end
     println(io, footer)
-    close(io)
+    return close(io)
 end
 function parse_commandline()
     s = ArgParseSettings()
@@ -47,6 +47,6 @@ function parse_commandline()
 end
 function main()
     args = parse_commandline()
-    write_run_table(args["h5file"], args["outfile"])
+    return write_run_table(args["h5file"], args["outfile"])
 end
 main()

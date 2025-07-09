@@ -9,8 +9,8 @@ RM = readdlm(david_RM_Sp4, ',', skipstart = 1)
 # only use rows where the replica (the 5th or 7th entry respectively) number is zero
 fa = fa[fa[:, 5] .== 0, :]
 RM = RM[RM[:, 7] .== 0, :]
-RM = sortslices(RM, dims = 1, by = x->(x[1]))
-fa = sortslices(fa, dims = 1, by = x->(x[8]))
+RM = sortslices(RM, dims = 1, by = x -> (x[1]))
+fa = sortslices(fa, dims = 1, by = x -> (x[8]))
 
 dS0, S0, plaq, a, is_rm, S0_fxa, a_fxa, poly = parse_llr(fileSp4)
 

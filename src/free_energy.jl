@@ -2,7 +2,7 @@ function thermodynamic_potentials_repeats(h5dset, run; kws...)
     a, S0_all, ind = LLRParsing.a_vs_central_action_repeats(h5dset, run)
     Nl = read(h5dset[run], "Nl")
     Nt = read(h5dset[run], "Nt")
-    V = Nt*Nl^3
+    V = Nt * Nl^3
     S0 = dropdims(unique(S0_all, dims = 2), dims = 2)
     return thermodynamic_potentials_repeats(a, S0, V; kws...)
 end
@@ -10,31 +10,31 @@ function thermodynamic_potentials(h5dset, run; kws...)
     a, S0_all, ind = LLRParsing.a_vs_central_action_repeats(h5dset, run)
     Nl = read(h5dset[run], "Nl")
     Nt = read(h5dset[run], "Nt")
-    V = Nt*Nl^3
+    V = Nt * Nl^3
     S0 = dropdims(unique(S0_all, dims = 2), dims = 2)
     return thermodynamic_potentials(a, S0, V; kws...)
 end
 function thermodynamic_potentials_repeats(a, S0, V; logρ0 = 0.0)
-    @. S0 = S0/V
+    @. S0 = S0 / V
     dS = S0[2] - S0[1]
     E = copy(S0)
     s, t, f, u = zero(a), zero(a), zero(a), zero(a)
     replicas = size(a, 1)
     repeats = size(a, 2)
-    for r = 1:repeats
+    for r in 1:repeats
         a0 = a[:, r]
         cs = cumsum(a0)
-        for i = 1:replicas
+        for i in 1:replicas
             logρ = log_rho(E[i], S0, dS, a0; cumsum_a = cs)
             s[i, r] = logρ
-            t[i, r] = 1/a0[i]
+            t[i, r] = 1 / a0[i]
         end
         # Perform additive constant to the entropy
         min_s = minimum(s[:, r])
         @. s[:, r] = s[:, r] - min_s
-        for i = 1:replicas
+        for i in 1:replicas
             u = 6 - E[i]
-            f[i, r] = u - t[i, r]*s[i, r]
+            f[i, r] = u - t[i, r] * s[i, r]
         end
     end
     return t, f, s
@@ -57,6 +57,7 @@ function plot_free_energies(file, plotdir)
     for r in runs
         plot_free_energy(file, joinpath(plotdir, "$r.pdf"), r)
     end
+    return
 end
 function plot_free_energy(file, plotfile, run)
     h5dset = h5open(file)
@@ -81,17 +82,17 @@ function plot_free_energy(file, plotfile, run)
     # set plot limits
     tmin, tmax = extrema((t[pks], t[mns]))
     δt = tmax - tmin
-    tmin, tmax = tmin-δt/4, tmax+δt/4
+    tmin, tmax = tmin - δt / 4, tmax + δt / 4
     fmin, fmax = extrema((f[pks], f[mns]))
     δf = fmax - fmin
-    fmin, fmax = extrema((itp2(tmin), itp1(tmax), fmin-δf/3, fmax+δf/3))
+    fmin, fmax = extrema((itp2(tmin), itp1(tmax), fmin - δf / 3, fmax + δf / 3))
 
     # rescale free energy for nicer, centred plots
     scale = 10^6
     @. f = f - fc
     @. f = f * scale
     @. Δf = Δf * scale
-    fmin, fmax = (fmin - fc)*scale, (fmax - fc)*scale
+    fmin, fmax = (fmin - fc) * scale, (fmax - fc) * scale
 
     ispath(dirname(plotfile)) || mkpath(dirname(plotfile))
     plt = plot(title = LLRParsing.fancy_title(run))
@@ -99,7 +100,7 @@ function plot_free_energy(file, plotfile, run)
     plot!(plt, t, f, xerr = Δt, yerr = Δf, ms = 1, label = "")
     plot!(plt, ylims = (fmin, fmax), xlims = (tmin, tmax), xformatter = :plain)
     savefig(plt, plotfile)
-    close(h5dset)
+    return close(h5dset)
 end
 function plot_entropy(file, plotfile)
     h5dset = h5open(file)
@@ -111,5 +112,5 @@ function plot_entropy(file, plotfile)
     end
     ispath(dirname(plotfile)) || mkpath(dirname(plotfile))
     plot!(plt, legend = :bottomright, xlabel = L"t = 1/a_n", ylabel = L"entropy $s$")
-    savefig(plt, plotfile)
+    return savefig(plt, plotfile)
 end

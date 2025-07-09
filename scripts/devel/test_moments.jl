@@ -26,20 +26,20 @@ mina, maxa = extrema(a)
 
 println("Timings for T = Float64")
 @btime begin
-    LLRParsing.energy_moment.(Ref(S), Ref(a), βs, 1, Float64)/(6V)^1;
-    LLRParsing.energy_moment.(Ref(S), Ref(a), βs, 2, Float64)/(6V)^2;
+    LLRParsing.energy_moment.(Ref(S), Ref(a), βs, 1, Float64) / (6V)^1
+    LLRParsing.energy_moment.(Ref(S), Ref(a), βs, 2, Float64) / (6V)^2
 end
 println("Timings for T = BigFloat (precision = $(precision(BigFloat(0))))")
 @btime begin
-    LLRParsing.energy_moment.(Ref(S), Ref(a), βs, 1, BigFloat)/(6V)^1;
-    LLRParsing.energy_moment.(Ref(S), Ref(a), βs, 2, BigFloat)/(6V)^2;
+    LLRParsing.energy_moment.(Ref(S), Ref(a), βs, 1, BigFloat) / (6V)^1
+    LLRParsing.energy_moment.(Ref(S), Ref(a), βs, 2, BigFloat) / (6V)^2
 end
 
 plt = plot()
 for T in [Float64, BigFloat]
-    E1 = LLRParsing.energy_moment.(Ref(S), Ref(a), βs, 1, T)/(6V)^1;
-    E2 = LLRParsing.energy_moment.(Ref(S), Ref(a), βs, 2, T)/(6V)^2;
-    CV = @. 6V*(E2 - E1^2)
+    E1 = LLRParsing.energy_moment.(Ref(S), Ref(a), βs, 1, T) / (6V)^1
+    E2 = LLRParsing.energy_moment.(Ref(S), Ref(a), βs, 2, T) / (6V)^2
+    CV = @. 6V * (E2 - E1^2)
     plot!(
         plt,
         βs,

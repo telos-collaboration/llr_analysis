@@ -17,25 +17,25 @@ function peak_height_difference(fid, run, β; kws...)
     return peak_height_difference(a, S, β, V; kws...)
 end
 function peak_height_difference(
-    a,
-    S,
-    β,
-    V;
-    w = 5,
-    nbins = length(S),
-    A1 = 1,
-    A2 = 1,
-    retries = 0,
-)
+        a,
+        S,
+        β,
+        V;
+        w = 5,
+        nbins = length(S),
+        A1 = 1,
+        A2 = 1,
+        retries = 0,
+    )
     ups, P, ΔP, covP, V, dS = probability_density(a, S, β, V; nbins)
     pks = findmaxima(P, w)
     n_peaks = length(pks.indices)
     if n_peaks == 2
-        heightdiff = A2*pks.heights[2] - A1*pks.heights[1]
+        heightdiff = A2 * pks.heights[2] - A1 * pks.heights[1]
         return heightdiff
     elseif n_peaks > 2
         @warn "Found $n_peaks peak(s): Taking first and last one to be the relevant ones"
-        heightdiff = A2*pks.heights[end] - A1*pks.heights[1]
+        heightdiff = A2 * pks.heights[end] - A1 * pks.heights[1]
         return heightdiff
     end
 end
@@ -67,6 +67,7 @@ function find_initial_double_peak(a, S, β0, βmin, βmax, V; Nint = 1000, kws..
             return βs[i]
         end
     end
+    return
 end
 """
     bracket_critical_beta(a, S, V, β0, βmin, βmax; w=5, Nint=50)
@@ -97,6 +98,7 @@ function bracket_critical_beta(a, S, V, β0, βmin, βmax; Nint = 2000, kws...)
         # move to the next interval
         βold, diff = βnew, newdiff
     end
+    return
 end
 """
     Determine the critical coupling by first finding an interval for which the height

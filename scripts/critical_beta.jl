@@ -32,7 +32,7 @@ function all_critical_beta(file, outfile; A1 = 1, A2 = 1)
             println(io, "$run,$T,$L,$A1,$A2,NaN,NaN,NaN(NaN)")
         end
     end
-    close(io)
+    return close(io)
 end
 function parse_commandline()
     s = ArgParseSettings()
@@ -56,6 +56,6 @@ function main()
     A1 = args["relative_peak_height"]
     outfile = args["outfile"]
     isfile(outfile) && rm(outfile)
-    all_critical_beta(file, outfile; A1 = A1, A2 = 1)
+    return all_critical_beta(file, outfile; A1 = A1, A2 = 1)
 end
 main()

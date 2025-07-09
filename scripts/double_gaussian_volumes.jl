@@ -27,7 +27,7 @@ function plot_all_histogram_fits(file, plotfile)
             @warn "Cannot determine critical β for $run"
         end
     end
-    savefig(plt, plotfile)
+    return savefig(plt, plotfile)
 end
 function parse_commandline()
     s = ArgParseSettings()
@@ -45,6 +45,6 @@ function main()
     args = parse_commandline()
     file = args["h5file"]
     plotfile = args["plotfile"]
-    plot_all_histogram_fits(file, plotfile)
+    return plot_all_histogram_fits(file, plotfile)
 end
 main()

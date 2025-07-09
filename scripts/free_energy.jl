@@ -33,6 +33,6 @@ function main()
     file = args["h5file"]
     plotfile = args["plot_file"]
     run = args["run_name"]
-    LLRParsing.plot_free_energy(file, plotfile, run)
+    return LLRParsing.plot_free_energy(file, plotfile, run)
 end
 main()

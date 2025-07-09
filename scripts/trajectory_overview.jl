@@ -15,14 +15,14 @@ gr(
 )
 
 function overview(
-    h5dset,
-    run;
-    repeat_id = 1,
-    replica_id = read(h5dset[run], "N_replicas")÷2,
-)
+        h5dset,
+        run;
+        repeat_id = 1,
+        replica_id = read(h5dset[run], "N_replicas") ÷ 2,
+    )
     Nreplicas = read(h5dset[run], "N_replicas")
     plt1 = full_trajectory_plot(h5dset, run, repeat_id, replica_id, lens = false)
-    plt2 = full_trajectory_plot(h5dset, run, repeat_id, Nreplicas-1, lens = false)
+    plt2 = full_trajectory_plot(h5dset, run, repeat_id, Nreplicas - 1, lens = false)
     plt3 = full_trajectory_plot(h5dset, run, repeat_id, 1, lens = false)
     plot!(plt2, legend = :topleft)
     plt = plot(plt3, plt1, plt2, layout = grid(1, 3), size = (1400, 1000))
@@ -34,7 +34,7 @@ function overview_plot(file, run, plotfile)
     Δa0 = a_vs_central_action(h5dset, run)[2]
     ind = findmax(Δa0)[2]
     plt = overview(h5dset, run, repeat_id = 1, replica_id = ind)
-    savefig(plt, plotfile)
+    return savefig(plt, plotfile)
 end
 function parse_commandline_per_run()
     s = ArgParseSettings()
@@ -53,6 +53,6 @@ function parse_commandline_per_run()
 end
 function main_per_run()
     args = parse_commandline_per_run()
-    overview_plot(args["h5file"], args["run_name"], args["plot_file"])
+    return overview_plot(args["h5file"], args["run_name"], args["plot_file"])
 end
 main_per_run()

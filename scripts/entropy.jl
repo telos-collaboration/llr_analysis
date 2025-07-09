@@ -29,6 +29,6 @@ function main()
     args = parse_commandline()
     file = args["h5file"]
     plotfile = args["plot_file"]
-    LLRParsing.plot_entropy(file, plotfile)
+    return LLRParsing.plot_entropy(file, plotfile)
 end
 main()
