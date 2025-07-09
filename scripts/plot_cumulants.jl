@@ -28,15 +28,16 @@ function largets_replica_runs(h5id, runs)
     return unique(maxr)
 end
 
-function main(h5file, β)
+function cumulant_plots(h5file, Nt)
     fid = h5open(h5file)
-    pltCV = plot(legend = :outerright, xlabel = L"\beta", ylabel = L"C_V(\beta)", title = "specific heat")
-    pltBC = plot(legend = :outerright, xlabel = L"\beta", ylabel = L"B_L(\beta)", title = "Binder cumulant")
+    pltCV = plot(legend = :outerright, xlabel = L"\beta", ylabel = L"C_V(\beta)", title = L"specific heat $N_t = %$Nt$")
+    pltBC = plot(legend = :outerright, xlabel = L"\beta", ylabel = L"B_L(\beta)", title = L"Binder cumulant $N_t = %$Nt$")
     runs = largets_replica_runs(fid, keys(fid))
 
     for r in runs
 
         a, S, Nt, Nl, V = LLRParsing._set_up_histogram(fid, r)
+        β = range(start = minimum(a), stop = maximum(a), length = 100)
         repeats = size(a, 2)
 
         CV0 = zeros((length(β), repeats))
@@ -61,20 +62,31 @@ function main(h5file, β)
     return pltCV, pltBC
 end
 
-h5file = "data_assets/Sp4_Nt4_sorted.hdf5"
-β = range(start = 7.338, stop = 7.342, length = 100)
-pltCV, pltBC = main(h5file, β)
-savefig(pltCV, "specific_heat_Nt4.pdf")
-savefig(pltBC, "binder_cumulant_Nt4.pdf")
+function parse_commandline()
+    s = ArgParseSettings()
+    @add_arg_table s begin
+        "--h5file"
+        help = "HDF5 file containing the sorted results"
+        required = true
+        "--plot_file_specific_heat"
+        help = "Where to save the plot"
+        required = true
+        "--plot_file_binder_cumulant"
+        help = "Where to save the plot"
+        required = true
+        "--Nt"
+        help = "Nt of the runs to be plotted of the plot"
+        required = true
+        arg_type = Int
+    end
+    return parse_args(s)
+end
 
-h5file = "data_assets/Sp4_Nt5_sorted.hdf5"
-β = range(start = 7.489, stop = 7.4905, length = 100)
-pltCV, pltBC = main(h5file, β)
-savefig(pltCV, "specific_heat_Nt5.pdf")
-savefig(pltBC, "binder_cumulant_Nt5.pdf")
-
-h5file = "data_assets/SU3_sorted.hdf5"
-β = range(start = 5.68, stop = 5.7, length = 100)
-pltCV, pltBC = main(h5file, β)
-savefig(pltCV, "SU3_specific_heat.pdf")
-savefig(pltBC, "SU3_binder_cumulant.pdf")
+function main()
+    args = parse_commandline()
+    pltCV, pltBC = cumulant_plots(args["h5file"], args["Nt"])
+    savefig(pltCV, args["plot_file_specific_heat"])
+    savefig(pltBC, args["plot_file_binder_cumulant"])
+    return nothing
+end
+main()

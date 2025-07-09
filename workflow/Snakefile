@@ -90,6 +90,10 @@ rule all:
             Nt=[5, 5, 6],
             Nl=[48, 56, 72],
         ),
+        plot_binder_cumulant=expand(
+            "assets/plots/binder_cumulant_Nt{Nt}.pdf", Nt=[4, 5]
+        ),
+        plot_specific_heat=expand("assets/plots/specific_heat_Nt{Nt}.pdf", Nt=[4, 5]),
 
 
 rule julia_instantiate:
@@ -298,3 +302,17 @@ rule double_gaussian_plots_two_to_one:
         "envs/environment.yml"
     shell:
         'julia --project="." {input.script} --h5file {input.h5file} --plot_file {output.plot} --relative_peak_height 2 --run_name {wildcards.Nt}x{wildcards.Nl}_{wildcards.Nreplicas}replicas'
+
+
+rule cumulant_plots:
+    input:
+        h5file="data_assets/Sp4_Nt{Nt}_sorted.hdf5",
+        script="scripts/plot_cumulants.jl",
+        julia_instantiated="tmp/julia_ready",
+    output:
+        plot_binder_cumulant="assets/plots/binder_cumulant_Nt{Nt}.pdf",
+        plot_specific_heat="assets/plots/specific_heat_Nt{Nt}.pdf",
+    conda:
+        "envs/environment.yml"
+    shell:
+        'julia --project="." {input.script} --h5file {input.h5file} --plot_file_binder_cumulant {output.plot_binder_cumulant} --plot_file_specific_heat {output.plot_specific_heat} --Nt {wildcards.Nt}'
