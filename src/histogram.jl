@@ -3,7 +3,7 @@
 #   mp.prec = 53                [default: 53]
 #   mp.dps = 15                 [default: 15]
 #   mp.trap_complex = False     [default: False]
-setprecision(BigFloat, 106)
+setprecision(BigFloat, 53)
 
 function log_partition_function(a, S, beta, ::Type{T} = BigFloat) where {T}
     # David uses a different sign for a
@@ -51,17 +51,17 @@ function energy_moment(
     δS = S[2] - S[1]
     for (Si, ai) in zip(S, a)
         A = T(- ai + β)
-        full_exp = exp(pi_exp + β * (Si - δS / 2) + A * δS / 2)
+        full_exp = 2 * factorial(N) * exp(pi_exp + β * (Si - δS / 2) + A * δS / 2)
         for m in 0:N
             sinh_term = T(0)
             cosh_term = T(0)
             for j in 0:div(m, 2, RoundDown)
                 sinh_term += (δS / 2)^(2j) * Si^(m - 2j) / factorial(2j) / factorial(m - 2j)
             end
-            for j in 1:(div(m, 2, RoundDown) + 1)
-                isequal(-1, 2j - 1) && continue # for these two terms the contribution is zero
-                isequal(-1, m - 2j + 1) && continue # since 1/(-1)! = 1/Γ(0) → 0
-                cosh_term += (δS / 2)^(2j - 1) * Si^(m - 2j + 1) / factorial(2j - 1) / factorial(m - 2j + 1)
+            if m > 0 # this condition skips terms proportional to 1/(-1)! → 1/Γ(0) → 0
+                for j in 1:div(m, 2, RoundUp)
+                    cosh_term += (δS / 2)^(2j - 1) * Si^(m - 2j + 1) / factorial(2j - 1) / factorial(m - 2j + 1)
+                end
             end
             sh = sinh(A * δS / 2)
             ch = cosh(A * δS / 2)
@@ -70,7 +70,7 @@ function energy_moment(
         end
         pi_exp -= ai * δS
     end
-    return 2 * factorial(N) * En
+    return En
 end
 
 _E_in_interval(E, S0, dS) = E >= (S0 - dS / 2) && E < (S0 + dS / 2)

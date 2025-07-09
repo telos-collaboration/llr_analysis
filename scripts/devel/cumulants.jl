@@ -3,7 +3,6 @@ using LaTeXStrings
 using HDF5
 using Plots
 using ArgParse
-
 using Statistics
 gr(
     size = (425, 282),
@@ -16,6 +15,7 @@ gr(
     labelfontsize = 10,
     left_margin = 0Plots.mm,
 )
+
 function largets_replica_runs(h5id, runs)
     # Only include one run per volume with the largest number of N_replicas
     data = [[read(h5id[r], "Nt"), read(h5id[r], "Nl"), read(h5id[r], "N_replicas")] for r in runs]
@@ -43,13 +43,12 @@ function main(h5file, β)
         BC0 = zeros((length(β), repeats))
 
         for i in 1:repeats
-            E1 = LLRParsing.energy_moment.(Ref(S), Ref(a[:, i]), β, 1) ./ ((6V)^1)
-            E2 = LLRParsing.energy_moment.(Ref(S), Ref(a[:, i]), β, 2) ./ ((6V)^2)
-            E4 = LLRParsing.energy_moment.(Ref(S), Ref(a[:, i]), β, 4) ./ ((6V)^4)
+            E1 = LLRParsing.energy_moment.(Ref(S), Ref(a[:, i]), β, 1, BigFloat) ./ (6V)
+            E2 = LLRParsing.energy_moment.(Ref(S), Ref(a[:, i]), β, 2, BigFloat) ./ (6V) ./ (6V)
+            E4 = LLRParsing.energy_moment.(Ref(S), Ref(a[:, i]), β, 4, BigFloat) ./ (6V) ./ (6V) ./ (6V) ./ (6V)
             @. CV0[:, i] = 6V * (E2 - E1^2)
             @. BC0[:, i] = 1 - E4 / (3 * E2^2)
         end
-
 
         CV = dropdims(mean(CV0, dims = 2), dims = 2)
         ΔCV = dropdims(std(CV0, dims = 2), dims = 2) ./ sqrt.(repeats)
@@ -57,9 +56,7 @@ function main(h5file, β)
         ΔBC = dropdims(std(BC0, dims = 2), dims = 2) ./ sqrt.(repeats)
 
         plot!(pltCV, β, CV, ribbon = ΔCV, label = LLRParsing.fancy_title(r), lw = 2)
-        plot!(pltBC, β[2:(end - 1)], BC[2:(end - 1)], ribbon = ΔBC[2:(end - 1)], label = LLRParsing.fancy_title(r), lw = 2)
-        display(pltCV)
-        display(pltBC)
+        plot!(pltBC, β, BC, ribbon = ΔBC, label = LLRParsing.fancy_title(r), lw = 2)
     end
     return pltCV, pltBC
 end
@@ -67,9 +64,17 @@ end
 h5file = "data_assets/Sp4_Nt4_sorted.hdf5"
 β = range(start = 7.338, stop = 7.342, length = 100)
 pltCV, pltBC = main(h5file, β)
-#savefig(pltCV,"specific_heat_Nt4.pdf")
+savefig(pltCV, "specific_heat_Nt4.pdf")
+savefig(pltBC, "binder_cumulant_Nt4.pdf")
 
-#h5file = "data_assets/Sp4_Nt5_sorted.hdf5"
-#β      = range(start=7.489,stop=7.4905,length=100)
-#pltCV, pltBC  = main(h5file,β)
-##savefig(pltCV,"specific_heat_Nt5.pdf")
+h5file = "data_assets/Sp4_Nt5_sorted.hdf5"
+β = range(start = 7.489, stop = 7.4905, length = 100)
+pltCV, pltBC = main(h5file, β)
+savefig(pltCV, "specific_heat_Nt5.pdf")
+savefig(pltBC, "binder_cumulant_Nt5.pdf")
+
+h5file = "data_assets/SU3_sorted.hdf5"
+β = range(start = 5.68, stop = 5.7, length = 100)
+pltCV, pltBC = main(h5file, β)
+savefig(pltCV, "SU3_specific_heat.pdf")
+savefig(pltBC, "SU3_binder_cumulant.pdf")
