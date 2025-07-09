@@ -1,5 +1,6 @@
 default_language_version:
     python: python3.12
+exclude: 'test\/test_data\/.*'
 repos:
 - repo: https://github.com/astral-sh/ruff-pre-commit
   rev: v0.5.1
@@ -30,3 +31,10 @@ repos:
   rev: v2.1.2
   hooks:
   - id: julia-formatter
+    name: "Julia Formatter"
+    entry: "julia -e 'import Pkg; Pkg.activate(;temp=true); Pkg.add(\"JuliaFormatter\"); import JuliaFormatter: format; format(\".\")'"
+    pass_filenames: true
+    always_run: false
+    types: [file]
+    files: \.(jl|[jq]?md)$
+    language: "system"
