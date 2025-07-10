@@ -1,8 +1,8 @@
 function a_vs_central_action_repeats(h5dset, run; ind = nothing)
     N_replicas = read(h5dset[run], "N_replicas")
     N_repeats = read(h5dset[run], "N_repeats")
-    a = zeros(N_replicas, N_repeats)
-    S = zeros(N_replicas, N_repeats)
+    a::Matrix{Float64} = zeros(N_replicas, N_repeats)
+    S::Matrix{Float64} = zeros(N_replicas, N_repeats)
     repeat_indices = Int[]
     # read all last elements for a and the central action
     for i in 1:N_replicas, j in 1:N_repeats
@@ -17,7 +17,7 @@ function a_vs_central_action_repeats(h5dset, run; ind = nothing)
             end
         end
     end
-    repeat_indices = unique(repeat_indices)
+    repeat_indices::Vector{Int} = unique(repeat_indices)
     return a[:, repeat_indices], S[:, repeat_indices], ind
 end
 function a_vs_central_action(h5dset, run; ind = nothing)

@@ -45,16 +45,16 @@ function energy_moment(
         ::Type{T} = Float64,
         ::Type{U} = BigFloat,
     ) where {T, U}
-    pi_exp = - T(log_partition_function(a, S, β, U))
-    full_exp = T(0)
-    En = T(0)
+    pi_exp::T = - T(log_partition_function(a, S, β, U))
+    full_exp::T = T(0)
+    En::T = T(0)
     δS = S[2] - S[1]
     for (Si, ai) in zip(S, a)
-        A = T(- ai + β)
+        A::T = T(- ai + β)
         full_exp = 2 * factorial(N) * exp(pi_exp + β * (Si - δS / 2) + A * δS / 2)
         for m in 0:N
-            sinh_term = T(0)
-            cosh_term = T(0)
+            sinh_term::T = T(0)
+            cosh_term::T = T(0)
             for j in 0:div(m, 2, RoundDown)
                 sinh_term += (δS / 2)^(2j) * Si^(m - 2j) / factorial(2j) / factorial(m - 2j)
             end
@@ -86,11 +86,11 @@ function log_rho(E, S, dS, a; cumsum_a = cumsum(a))
 end
 function _set_up_histogram(fid, run)
     a, S_all = LLRParsing.a_vs_central_action_repeats(fid, run; ind = nothing)[1:2]
-    Nl = read(fid[run], "Nl")
-    Nt = read(fid[run], "Nt")
+    Nl = read(fid[run], "Nl")::Int
+    Nt = read(fid[run], "Nt")::Int
     S = unique(S_all)
     V = Nt * Nl^3
-    return a, S, Nt, Nl, V
+    return a::Matrix{Float64}, S::Vector{Float64}, Nt, Nl, V
 end
 function probability_density_repeats(fid, run, beta; kws...)
     a, S, Nt, Nl, V = _set_up_histogram(fid, run)
