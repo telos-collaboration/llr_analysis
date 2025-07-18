@@ -28,29 +28,36 @@ function largets_replica_runs(h5id, runs)
     end
     return unique(maxr)
 end
+function cumulants(h5dset, run)
+    a, S, Nt, Nl, V = LLRParsing._set_up_histogram(h5dset, run)
+    β = range(start = minimum(a), stop = maximum(a), length = 100)
+    return cumulants(h5dset, run, β)
+end
+function cumulants(h5dset, run, β)
+    a, S, Nt, Nl, V = LLRParsing._set_up_histogram(h5dset, run)
+    repeats = size(a, 2)
 
-function cumulant_plots(h5file, Nt)
+    CV = zeros((length(β), repeats))
+    BC = zeros((length(β), repeats))
+
+    Threads.@threads for i in 1:repeats
+        EN(β, N, V) = LLRParsing.energy_moment(S, a[:, i], β, N, Float128, BigFloat) / (6.0V)^N
+        fCV(β) = 6V * (EN(β, 2, V) - EN(β, 1, V)^2)
+        fBC(β) = 1 - EN(β, 4, 1) / EN(β, 2, 1) / EN(β, 2, 1) / 3
+        CV[:, i] .= fCV.(β)
+        BC[:, i] .= fBC.(β)
+    end
+    return β, CV, BC
+end
+function cumulant_plots(h5file, β, Nt)
     fid = h5open(h5file)
     pltCV = plot(legend = :outerright, xlabel = L"\beta", ylabel = L"C_V(\beta)", title = L"specific heat $N_t = %$Nt$")
     pltBC = plot(legend = :outerright, xlabel = L"\beta", ylabel = L"B_L(\beta)", title = L"Binder cumulant $N_t = %$Nt$")
     runs = largets_replica_runs(fid, keys(fid))
 
     for r in runs
-
-        a, S, Nt, Nl, V = LLRParsing._set_up_histogram(fid, r)
-        β = range(start = minimum(a), stop = maximum(a), length = 100)
-        repeats = size(a, 2)
-
-        CV0 = zeros((length(β), repeats))
-        BC0 = zeros((length(β), repeats))
-
-        for i in 1:repeats
-            E1 = LLRParsing.energy_moment.(Ref(S), Ref(a[:, i]), β, 1, Float64) ./ (6V)
-            E2 = LLRParsing.energy_moment.(Ref(S), Ref(a[:, i]), β, 2, Float64) ./ (6V) ./ (6V)
-            E4 = LLRParsing.energy_moment.(Ref(S), Ref(a[:, i]), β, 4, Float64) ./ (6V) ./ (6V) ./ (6V) ./ (6V)
-            @. CV0[:, i] = 6V * (E2 - E1^2)
-            @. BC0[:, i] = 1 - E4 / (3 * E2^2)
-        end
+        β, CV0, BC0 = cumulants(fid, r, β)
+        repeats = size(CV0, 2)
 
         CV = dropdims(mean(CV0, dims = 2), dims = 2)
         ΔCV = dropdims(std(CV0, dims = 2), dims = 2) ./ sqrt.(repeats)
@@ -58,9 +65,7 @@ function cumulant_plots(h5file, Nt)
         ΔBC = dropdims(std(BC0, dims = 2), dims = 2) ./ sqrt.(repeats)
 
         plot!(pltCV, β, CV, ribbon = ΔCV, label = LLRParsing.fancy_title(r), lw = 2)
-        #pks = findminima(BC, 5)
         plot!(pltBC, β, BC, ribbon = ΔBC, label = LLRParsing.fancy_title(r), lw = 2)
-        #vline!(pltBC,β[pks.indices])
     end
     return pltCV, pltBC
 end
