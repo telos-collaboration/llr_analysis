@@ -3,16 +3,16 @@
 #   mp.prec = 53                [default: 53]
 #   mp.dps = 15                 [default: 15]
 #   mp.trap_complex = False     [default: False]
-setprecision(BigFloat, 53)
+setprecision(BigFloat, 106)
 
 function log_partition_function(a, S, beta, ::Type{T} = BigFloat) where {T}
     # David uses a different sign for a
-    dS = S[2] - S[1]
+    dS = T(S[2]) - T(S[1])
     pi_exp = T(0)
     Z = T(0)
     for (ai, Si) in zip(a, S)
-        A = beta - ai
-        exp_factor = exp(T(pi_exp + Si * beta - ai * dS / 2))
+        A = T(beta) - T(ai)
+        exp_factor = exp(T(pi_exp) + T(Si) * T(beta) - T(ai) * T(dS) / 2)
         sinh_factor = iszero(A) ? dS / 2 : sinh(A * dS / 2) / A
         Z += exp_factor * sinh_factor
         pi_exp -= ai * dS
@@ -50,9 +50,9 @@ function energy_moment(
     En::T = T(0)
     δS = S[2] - S[1]
     for (Si, ai) in zip(S, a)
-        A::T = T(- ai + β)
-        full_exp = 2 * factorial(N) * exp(pi_exp + β * (Si - δS / 2) + A * δS / 2)
-        for m in 0:N
+        A::T = - T(ai) + T(β)
+        full_exp = 2 * factorial(N) * exp(T(pi_exp) + T(β) * (T(Si) - T(δS) / 2) + T(A) * T(δS) / 2)
+        for m in 0:(N)
             sinh_term::T = T(0)
             cosh_term::T = T(0)
             for j in 0:div(m, 2, RoundDown)
