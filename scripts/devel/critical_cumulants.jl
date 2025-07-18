@@ -41,17 +41,15 @@ function cumulants(h5dset, run, β)
     CV = zeros((length(β), repeats))
     BC = zeros((length(β), repeats))
 
-    @sync for i in 1:repeats
+    for i in 1:repeats
         for j in eachindex(β)
-            Threads.@spawn begin
-                logZ = LLRParsing.log_partition_function(a[:, i], S, β[j], BigFloat)
-                EN = LLRParsing.all_energy_moments(S, a[:, i], β[j], 4, Float128, BigFloat, logZ)
-                u4 = EN[4] / (6.0 * V)^4
-                u2 = EN[2] / (6.0 * V)^2
-                u1 = EN[1] / (6.0 * V)^1
-                CV[j, i] = 6V * (u2 - u1^2)
-                BC[j, i] = 1 - u4 / u2 / u2 / 3
-            end
+            logZ = LLRParsing.log_partition_function(a[:, i], S, β[j], BigFloat)
+            EN = LLRParsing.all_energy_moments(S, a[:, i], β[j], 4, Float128, BigFloat, logZ)
+            u4 = EN[4] / (6.0 * V)^4
+            u2 = EN[2] / (6.0 * V)^2
+            u1 = EN[1] / (6.0 * V)^1
+            CV[j, i] = 6V * (u2 - u1^2)
+            BC[j, i] = 1 - u4 / u2 / u2 / 3
         end
     end
     return β, CV, BC
@@ -72,7 +70,8 @@ function critical_beta_cumulants(h5dset, r; N = 30, eps = 1.0e-6, min_iter = 5, 
     min_a, max_a = minimum(a), maximum(a)
     β = range(start = min_a, stop = max_a, length = N)
 
-    βc_old, Δβc_old = +Inf, +Inf
+    βc_old = +Inf
+    βc, Δβc = +Inf, +Inf
     for i in 1:max_iter
         β, CV0, BC0 = cumulants(h5dset, r, β)
         βc, Δβc = beta_extremal(β, CV0; f = findmax)
@@ -94,7 +93,24 @@ h5 = "data_assets/Sp4_Nt4_sorted.hdf5"
 h5dset = h5open(h5)
 runs = keys(h5dset)
 
-using BenchmarkTools
-@btime critical_beta_cumulants(h5dset, runs[1]; N = 30, eps = 1.0e-7)
-@profview critical_beta_cumulants(h5dset, runs[1]; N = 30, eps = 1.0e-7)
-critical_beta_cumulants(h5dset, runs[1]; N = 30, eps = 1.0e-7)
+critical_beta_cumulants(h5dset, runs[1]; N = 30, eps = 1.0e-6)
+critical_beta_cumulants(h5dset, runs[2]; N = 30, eps = 1.0e-6)
+critical_beta_cumulants(h5dset, runs[3]; N = 30, eps = 1.0e-6)
+critical_beta_cumulants(h5dset, runs[4]; N = 30, eps = 1.0e-6)
+critical_beta_cumulants(h5dset, runs[5]; N = 30, eps = 1.0e-6)
+
+Nt = 5
+setprecision(BigFloat, 106)
+h5 = "data_assets/Sp4_Nt5_sorted.hdf5"
+h5dset = h5open(h5)
+runs = keys(h5dset)
+
+critical_beta_cumulants(h5dset, runs[1]; N = 30, eps = 1.0e-6)
+critical_beta_cumulants(h5dset, runs[2]; N = 30, eps = 1.0e-6)
+critical_beta_cumulants(h5dset, runs[3]; N = 30, eps = 1.0e-6)
+critical_beta_cumulants(h5dset, runs[4]; N = 30, eps = 1.0e-6)
+critical_beta_cumulants(h5dset, runs[5]; N = 30, eps = 1.0e-6)
+critical_beta_cumulants(h5dset, runs[5]; N = 30, eps = 1.0e-6)
+critical_beta_cumulants(h5dset, runs[6]; N = 30, eps = 1.0e-6)
+critical_beta_cumulants(h5dset, runs[7]; N = 30, eps = 1.0e-6)
+critical_beta_cumulants(h5dset, runs[8]; N = 30, eps = 1.0e-6)
