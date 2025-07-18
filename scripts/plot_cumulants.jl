@@ -41,12 +41,16 @@ function cumulants(h5dset, run, β)
     CV = zeros((length(β), repeats))
     BC = zeros((length(β), repeats))
 
-    Threads.@threads for i in 1:repeats
-        EN(β, N, V) = LLRParsing.energy_moment(S, a[:, i], β, N, Float128, BigFloat) / (6.0V)^N
-        fCV(β) = 6V * (EN(β, 2, V) - EN(β, 1, V)^2)
-        fBC(β) = 1 - EN(β, 4, 1) / EN(β, 2, 1) / EN(β, 2, 1) / 3
-        CV[:, i] .= fCV.(β)
-        BC[:, i] .= fBC.(β)
+    for i in 1:repeats
+        for j in eachindex(β)
+            logZ = LLRParsing.log_partition_function(a[:, i], S, β[j], BigFloat)
+            EN = LLRParsing.all_energy_moments(S, a[:, i], β[j], 4, Float128, BigFloat, logZ)
+            u4 = EN[4] / (6.0 * V)^4
+            u2 = EN[2] / (6.0 * V)^2
+            u1 = EN[1] / (6.0 * V)^1
+            CV[j, i] = 6V * (u2 - u1^2)
+            BC[j, i] = 1 - u4 / u2 / u2 / 3
+        end
     end
     return β, CV, BC
 end
@@ -56,8 +60,19 @@ function cumulant_plots(h5file, Nt)
     pltBC = plot(legend = :outerright, xlabel = L"\beta", ylabel = L"B_L(\beta)", title = L"Binder cumulant $N_t = %$Nt$")
     runs = largets_replica_runs(fid, keys(fid))
 
+    # first determine a good plotting range
+    β_min, β_max = +Inf, -Inf
     for r in runs
-        β, CV0, BC0 = cumulants(fid, r)
+        a, _, _, _ = a_vs_central_action(fid, r)
+        p_ind = only(findmaxima(a, 5).indices)
+        m_ind = only(findminima(a, 5).indices)
+        δ = m_ind - p_ind
+        β_min, β_max = a[p_ind - δ], a[p_ind + 3δ]
+    end
+
+    for r in runs
+        β = range(start = β_min, stop = β_max, length = 100)
+        β, CV0, BC0 = cumulants(fid, r, β)
         repeats = size(CV0, 2)
 
         CV = dropdims(mean(CV0, dims = 2), dims = 2)
