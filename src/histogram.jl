@@ -34,7 +34,7 @@ end
     datatype for floating point calculations. This can be overwritten by specifying
     the datatypes `T` and `U` to be used instead.
 
-    Typically, it suffices to use `T=Float64` for all calculations in here as long
+    Typically, it suffices to use `T=Float128` for all calculations in here as long
     as log(Z) is calculated in higher precision e.g. `U=BigFloat`.
 """
 function energy_moment(
@@ -48,7 +48,7 @@ function energy_moment(
     pi_exp::T = - T(log_partition_function(a, S, β, U))
     full_exp::T = T(0)
     En::T = T(0)
-    δS = S[2] - S[1]
+    δS::T = T(S[2]) - T(S[1])
     for (Si, ai) in zip(S, a)
         A::T = - T(ai) + T(β)
         full_exp = 2 * factorial(N) * exp(T(pi_exp) + T(β) * (T(Si) - T(δS) / 2) + T(A) * T(δS) / 2)
@@ -56,11 +56,11 @@ function energy_moment(
             sinh_term::T = T(0)
             cosh_term::T = T(0)
             for j in 0:div(m, 2, RoundDown)
-                sinh_term += (δS / 2)^(2j) * Si^(m - 2j) / factorial(2j) / factorial(m - 2j)
+                sinh_term += (δS / 2)^(2j) * T(Si)^(m - 2j) / factorial(2j) / factorial(m - 2j)
             end
             if m > 0 # this condition skips terms proportional to 1/(-1)! → 1/Γ(0) → 0
                 for j in 1:div(m, 2, RoundUp)
-                    cosh_term += (δS / 2)^(2j - 1) * Si^(m - 2j + 1) / factorial(2j - 1) / factorial(m - 2j + 1)
+                    cosh_term += (δS / 2)^(2j - 1) * T(Si)^(m - 2j + 1) / factorial(2j - 1) / factorial(m - 2j + 1)
                 end
             end
             sh = sinh(A * δS / 2)

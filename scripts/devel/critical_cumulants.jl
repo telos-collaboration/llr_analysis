@@ -4,6 +4,8 @@ using HDF5
 using Plots
 using ArgParse
 using Statistics
+using Quadmath
+
 gr(
     size = (425, 282),
     fontfamily = "Computer Modern",
@@ -40,7 +42,7 @@ function cumulants(h5dset, run, β)
     BC = zeros((length(β), repeats))
 
     Threads.@threads for i in 1:repeats
-        EN(β, N, V) = LLRParsing.energy_moment(S, a[:, i], β, N, BigFloat, BigFloat) / (6.0V)^N
+        EN(β, N, V) = LLRParsing.energy_moment(S, a[:, i], β, N, Float128, BigFloat) / (6.0V)^N
         fCV(β) = 6V * (EN(β, 2, V) - EN(β, 1, V)^2)
         fBC(β) = 1 - EN(β, 4, 1) / EN(β, 2, 1) / EN(β, 2, 1) / 3
         CV[:, i] .= fCV.(β)
@@ -69,13 +71,15 @@ function cumulant_plots(h5file, β, Nt)
     return pltCV, pltBC
 end
 
-#Nt = 4
+Nt = 4
 setprecision(BigFloat, 106)
-#h5 = "data_assets/Sp4_Nt4_sorted.hdf5"
-#β  = range(start = 7.338, stop = 7.342, length = 400)
-#pltCV, pltBC = @time cumulant_plots(h5, β, Nt)
-#plot!(pltCV)
-#plot!(pltBC, yformatter = :plain)
+h5 = "data_assets/Sp4_Nt4_sorted.hdf5"
+β = range(start = 7.338, stop = 7.342, length = 400)
+pltCV, pltBC = @time cumulant_plots(h5, β, Nt)
+plot!(pltCV)
+plot!(pltBC, yformatter = :plain)
+display(pltCV)
+display(pltBC)
 
 Nt = 5
 setprecision(BigFloat, 106)
@@ -84,3 +88,5 @@ h5 = "data_assets/Sp4_Nt5_sorted.hdf5"
 pltCV, pltBC = @time cumulant_plots(h5, β, Nt)
 plot!(pltBC, yformatter = :plain)
 plot!(pltCV)
+display(pltCV)
+display(pltBC)
