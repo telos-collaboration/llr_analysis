@@ -314,5 +314,6 @@ rule cumulant_plots:
         plot_specific_heat="assets/plots/specific_heat_Nt{Nt}.pdf",
     conda:
         "envs/environment.yml"
+    threads: workflow.cores / 2
     shell:
-        'julia --project="." {input.script} --h5file {input.h5file} --plot_file_binder_cumulant {output.plot_binder_cumulant} --plot_file_specific_heat {output.plot_specific_heat} --Nt {wildcards.Nt}'
+        'julia --threads {threads} --project="." {input.script} --h5file {input.h5file} --plot_file_binder_cumulant {output.plot_binder_cumulant} --plot_file_specific_heat {output.plot_specific_heat} --Nt {wildcards.Nt}'

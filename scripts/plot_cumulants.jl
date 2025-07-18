@@ -5,6 +5,7 @@ using Plots
 using ArgParse
 using Statistics
 using Peaks
+using Quadmath
 gr(
     size = (425, 282),
     fontfamily = "Computer Modern",
@@ -49,14 +50,14 @@ function cumulants(h5dset, run, β)
     end
     return β, CV, BC
 end
-function cumulant_plots(h5file, β, Nt)
+function cumulant_plots(h5file, Nt)
     fid = h5open(h5file)
     pltCV = plot(legend = :outerright, xlabel = L"\beta", ylabel = L"C_V(\beta)", title = L"specific heat $N_t = %$Nt$")
     pltBC = plot(legend = :outerright, xlabel = L"\beta", ylabel = L"B_L(\beta)", title = L"Binder cumulant $N_t = %$Nt$")
     runs = largets_replica_runs(fid, keys(fid))
 
     for r in runs
-        β, CV0, BC0 = cumulants(fid, r, β)
+        β, CV0, BC0 = cumulants(fid, r)
         repeats = size(CV0, 2)
 
         CV = dropdims(mean(CV0, dims = 2), dims = 2)
@@ -67,6 +68,7 @@ function cumulant_plots(h5file, β, Nt)
         plot!(pltCV, β, CV, ribbon = ΔCV, label = LLRParsing.fancy_title(r), lw = 2)
         plot!(pltBC, β, BC, ribbon = ΔBC, label = LLRParsing.fancy_title(r), lw = 2)
     end
+    hline!(pltBC, [2 / 3], yformatter = :plain, linestyle = :dot, color = :black, label = L"B_L(\beta) = 2/3")
     return pltCV, pltBC
 end
 
