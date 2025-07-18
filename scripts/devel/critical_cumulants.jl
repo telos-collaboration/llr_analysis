@@ -70,21 +70,27 @@ function critical_beta_cumulants(h5dset, r; N = 30, eps = 1.0e-6, min_iter = 5, 
     min_a, max_a = minimum(a), maximum(a)
     β = range(start = min_a, stop = max_a, length = N)
 
-    βc_old = +Inf
-    βc, Δβc = +Inf, +Inf
+    βc_CV_old, βc_BC_old = +Inf, +Inf
+    βc_CV, Δβc_CV = +Inf, +Inf
+    βc_BC, Δβc_BC = +Inf, +Inf
     for i in 1:max_iter
         β, CV0, BC0 = cumulants(h5dset, r, β)
-        βc, Δβc = beta_extremal(β, CV0; f = findmax)
+
+        βc_CV, Δβc_CV = beta_extremal(β, CV0; f = findmax)
+        βc_BC, Δβc_BC = beta_extremal(β, BC0; f = findmin)
         βmin, βmax = extrema(β)
-        βmin, βmax = min(βmin, βc - w * Δβc), max(βmin, βc + w * Δβc)
-        β = range(start = (βmin + βc) / 2, stop = (βmax + βc) / 2, length = N)
-        diff = abs(βc_old - βc)
-        βc_old = βc
+        βmin = min(βmin, βc_CV - w * Δβc_CV, βc_BC - w * Δβc_BC)
+        βmax = max(βmin, βc_CV + w * Δβc_CV, βc_BC + w * Δβc_BC)
+        βc_avg = (βc_CV + βc_BC) / 2
+        β = range(start = (βmin + βc_avg) / 2, stop = (βmax + βc_avg) / 2, length = N)
+        diff = max(abs(βc_CV_old - βc_CV), abs(βc_BC_old - βc_BC))
+        βc_CV_old = βc_CV
+        βc_BC_old = βc_BC
         if diff < eps && i > min_iter
-            return βc, Δβc
+            return βc_CV, Δβc_CV, βc_BC, Δβc_BC
         end
     end
-    return βc, Δβc
+    return βc_CV, Δβc_CV, βc_BC, Δβc_BC
 end
 
 Nt = 4
