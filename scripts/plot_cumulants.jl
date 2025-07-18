@@ -4,6 +4,7 @@ using HDF5
 using Plots
 using ArgParse
 using Statistics
+using Peaks
 gr(
     size = (425, 282),
     fontfamily = "Computer Modern",
@@ -57,7 +58,9 @@ function cumulant_plots(h5file, Nt)
         ΔBC = dropdims(std(BC0, dims = 2), dims = 2) ./ sqrt.(repeats)
 
         plot!(pltCV, β, CV, ribbon = ΔCV, label = LLRParsing.fancy_title(r), lw = 2)
+        #pks = findminima(BC, 5)
         plot!(pltBC, β, BC, ribbon = ΔBC, label = LLRParsing.fancy_title(r), lw = 2)
+        #vline!(pltBC,β[pks.indices])
     end
     return pltCV, pltBC
 end
