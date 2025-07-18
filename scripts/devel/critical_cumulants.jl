@@ -70,6 +70,7 @@ function cumulant_plots(h5file, β, Nt)
 end
 
 #Nt = 4
+setprecision(BigFloat, 106)
 #h5 = "data_assets/Sp4_Nt4_sorted.hdf5"
 #β  = range(start = 7.338, stop = 7.342, length = 400)
 #pltCV, pltBC = @time cumulant_plots(h5, β, Nt)
@@ -77,6 +78,7 @@ end
 #plot!(pltBC, yformatter = :plain)
 
 Nt = 5
+setprecision(BigFloat, 106)
 h5 = "data_assets/Sp4_Nt5_sorted.hdf5"
 β = range(start = 7.488, stop = 7.492, length = 400)
 pltCV, pltBC = @time cumulant_plots(h5, β, Nt)
