@@ -50,43 +50,42 @@ function cumulants(h5dset, run, β)
     end
     return β, CV, BC
 end
-function cumulant_plots(h5file, β, Nt)
-    fid = h5open(h5file)
-    pltCV = plot(legend = :outerright, xlabel = L"\beta", ylabel = L"C_V(\beta)", title = L"specific heat $N_t = %$Nt$")
-    pltBC = plot(legend = :outerright, xlabel = L"\beta", ylabel = L"B_L(\beta)", title = L"Binder cumulant $N_t = %$Nt$")
-    runs = largets_replica_runs(fid, keys(fid))
-
-    for r in runs
-        β, CV0, BC0 = cumulants(fid, r, β)
-        repeats = size(CV0, 2)
-
-        CV = dropdims(mean(CV0, dims = 2), dims = 2)
-        ΔCV = dropdims(std(CV0, dims = 2), dims = 2) ./ sqrt.(repeats)
-        BC = dropdims(mean(BC0, dims = 2), dims = 2)
-        ΔBC = dropdims(std(BC0, dims = 2), dims = 2) ./ sqrt.(repeats)
-
-        plot!(pltCV, β, CV, ribbon = ΔCV, label = LLRParsing.fancy_title(r), lw = 2)
-        plot!(pltBC, β, BC, ribbon = ΔBC, label = LLRParsing.fancy_title(r), lw = 2)
+function beta_extremal(β, obs; f = findmax)
+    repeats = size(obs, 2)
+    βmax0 = zeros(repeats)
+    for i in 1:repeats
+        ind = f(obs[:, i])[2]
+        βmax0[i] = β[ind]
     end
-    return pltCV, pltBC
+    βmax = mean(βmax0)
+    Δβmax = std(βmax0) / sqrt(repeats)
+    return βmax, Δβmax
 end
 
 Nt = 4
 setprecision(BigFloat, 106)
 h5 = "data_assets/Sp4_Nt4_sorted.hdf5"
-β = range(start = 7.338, stop = 7.342, length = 400)
-pltCV, pltBC = @time cumulant_plots(h5, β, Nt)
-plot!(pltCV)
-plot!(pltBC, yformatter = :plain)
-display(pltCV)
-display(pltBC)
 
-Nt = 5
-setprecision(BigFloat, 106)
-h5 = "data_assets/Sp4_Nt5_sorted.hdf5"
-β = range(start = 7.488, stop = 7.492, length = 400)
-pltCV, pltBC = @time cumulant_plots(h5, β, Nt)
-plot!(pltBC, yformatter = :plain)
-plot!(pltCV)
-display(pltCV)
-display(pltBC)
+h5dset = h5open(h5)
+runs = keys(h5dset)
+
+function critical_beta_cumulants(h5dset, r; N = 200, eps = 1.0e-6, min_iter = 5, max_iter = 20, w = 20)
+    a = first(LLRParsing._set_up_histogram(h5dset, r))
+    min_a, max_a = minimum(a), maximum(a)
+    β = range(start = min_a, stop = max_a, length = N)
+
+    βc_old, Δβc_old = +Inf, +Inf
+    for i in 1:max_iter
+        β, CV0, BC0 = cumulants(h5dset, r, β)
+        βc, Δβc = beta_extremal(β, CV0; f = findmax)
+        βmin, βmax = extrema(β)
+        βmin, βmax = min(βmin, βc - w * Δβc), max(βmin, βc + w * Δβc)
+        β = range(start = (βmin + βc) / 2, stop = (βmax + βc) / 2, length = N)
+        diff = abs(βc_old - βc)
+        βc_old = βc
+        if diff < eps && i > min_iter
+            return βc, Δβc
+        end
+    end
+    return βc, Δβc
+end
