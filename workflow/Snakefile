@@ -59,6 +59,9 @@ rule all:
         an_volume_plots=expand("assets/plots/an_volume_Nt{Nt}.pdf", Nt=[4, 5, 6]),
         entropy_plots=expand("assets/plots/entropy_Nt{Nt}.pdf", Nt=[4, 5]),
         critical_beta=expand("data_assets/critical_beta_Nt{Nt}.csv", Nt=[4, 5]),
+        critical_beta_cumulants=expand(
+            "data_assets/critical_beta_cumulants_Nt{Nt}.csv", Nt=[4, 5]
+        ),
         critical_beta_two_to_one=expand(
             "data_assets/critical_beta_2:1_Nt{Nt}.csv", Nt=[4, 5]
         ),
@@ -232,6 +235,19 @@ rule critical_beta:
         julia_instantiated="tmp/julia_ready",
     output:
         csv="data_assets/critical_beta_Nt{Nt}.csv",
+    conda:
+        "envs/environment.yml"
+    shell:
+        'julia --project="." {input.script} --h5file {input.h5file} --outfile {output.csv}'
+
+
+rule critical_cumulant:
+    input:
+        h5file="data_assets/Sp4_Nt{Nt}_sorted.hdf5",
+        script="scripts/critical_cumulants.jl",
+        julia_instantiated="tmp/julia_ready",
+    output:
+        csv="data_assets/critical_beta_cumulants_Nt{Nt}.csv",
     conda:
         "envs/environment.yml"
     shell:

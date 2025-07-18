@@ -92,31 +92,43 @@ function critical_beta_cumulants(h5dset, r; N = 30, eps = 1.0e-6, min_iter = 5, 
     end
     return βc_CV, Δβc_CV, βc_BC, Δβc_BC
 end
+function critical_cumulants_all_runs(h5file, outfile)
+    h5dset = h5open(h5file)
+    runs = keys(h5dset)
+    setprecision(BigFloat, 106)
+    io = open(outfile, "w")
+    println(io, "run,T,L,βc_CV,Δβc_CV,βc_BC,Δβc_BC,str_CV,str_BC")
+    for r in runs
 
-Nt = 4
-setprecision(BigFloat, 106)
-h5 = "data_assets/Sp4_Nt4_sorted.hdf5"
-h5dset = h5open(h5)
-runs = keys(h5dset)
+        L = read(h5dset[r], "Nl")
+        T = read(h5dset[r], "Nt")
 
-critical_beta_cumulants(h5dset, runs[1]; N = 30, eps = 1.0e-6)
-critical_beta_cumulants(h5dset, runs[2]; N = 30, eps = 1.0e-6)
-critical_beta_cumulants(h5dset, runs[3]; N = 30, eps = 1.0e-6)
-critical_beta_cumulants(h5dset, runs[4]; N = 30, eps = 1.0e-6)
-critical_beta_cumulants(h5dset, runs[5]; N = 30, eps = 1.0e-6)
+        kws = (N = 30, eps = 1.0e-6)
+        βc_CV, Δβc_CV, βc_BC, Δβc_BC = critical_beta_cumulants(h5dset, r; kws...)
+        str_CV = errorstring(βc_CV, Δβc_CV)
+        str_BC = errorstring(βc_BC, Δβc_BC)
 
-Nt = 5
-setprecision(BigFloat, 106)
-h5 = "data_assets/Sp4_Nt5_sorted.hdf5"
-h5dset = h5open(h5)
-runs = keys(h5dset)
-
-critical_beta_cumulants(h5dset, runs[1]; N = 30, eps = 1.0e-6)
-critical_beta_cumulants(h5dset, runs[2]; N = 30, eps = 1.0e-6)
-critical_beta_cumulants(h5dset, runs[3]; N = 30, eps = 1.0e-6)
-critical_beta_cumulants(h5dset, runs[4]; N = 30, eps = 1.0e-6)
-critical_beta_cumulants(h5dset, runs[5]; N = 30, eps = 1.0e-6)
-critical_beta_cumulants(h5dset, runs[5]; N = 30, eps = 1.0e-6)
-critical_beta_cumulants(h5dset, runs[6]; N = 30, eps = 1.0e-6)
-critical_beta_cumulants(h5dset, runs[7]; N = 30, eps = 1.0e-6)
-critical_beta_cumulants(h5dset, runs[8]; N = 30, eps = 1.0e-6)
+        println(io, "$r,$T,$L,$βc_CV,$Δβc_CV,$βc_BC,$Δβc_BC,$str_CV,$str_BC")
+    end
+    close(io)
+    return nothing
+end
+function parse_commandline()
+    s = ArgParseSettings()
+    @add_arg_table s begin
+        "--h5file"
+        help = "HDF5 file containing the sorted results"
+        required = true
+        "--outfile"
+        help = "Where to save results"
+        required = true
+    end
+    return parse_args(s)
+end
+function main()
+    args = parse_commandline()
+    h5file = args["h5file"]
+    outfile = args["outfile"]
+    return critical_cumulants_all_runs(h5file, outfile)
+end
+main()
