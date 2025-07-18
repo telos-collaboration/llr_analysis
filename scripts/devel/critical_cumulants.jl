@@ -41,14 +41,18 @@ function cumulants(h5dset, run, β)
     CV = zeros((length(β), repeats))
     BC = zeros((length(β), repeats))
 
-    Threads.@threads for i in 1:repeats
-        EN(β, N, V, logZ) = LLRParsing.energy_moment(S, a[:, i], β, N, Float128, BigFloat, logZ) / (6.0V)^N
-        logZ = LLRParsing.log_partition_function.(Ref(a[:, i]), Ref(S), β, BigFloat)
-        E4 = EN.(β, 4, V, logZ)
-        E2 = EN.(β, 2, V, logZ)
-        E1 = EN.(β, 1, V, logZ)
-        @. CV[:, i] = 6V * (E2 - E1^2)
-        @. BC[:, i] = 1 - E4 / E2 / E2 / 3
+    @sync for i in 1:repeats
+        for j in eachindex(β)
+            Threads.@spawn begin
+                logZ = LLRParsing.log_partition_function(a[:, i], S, β[j], BigFloat)
+                EN = LLRParsing.all_energy_moments(S, a[:, i], β[j], 4, Float128, BigFloat, logZ)
+                u4 = EN[4] / (6.0 * V)^4
+                u2 = EN[2] / (6.0 * V)^2
+                u1 = EN[1] / (6.0 * V)^1
+                CV[j, i] = 6V * (u2 - u1^2)
+                BC[j, i] = 1 - u4 / u2 / u2 / 3
+            end
+        end
     end
     return β, CV, BC
 end

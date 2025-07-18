@@ -49,7 +49,7 @@ function energy_moment(S, a, β, N::Int, ::Type{T} = Float64, ::Type{U} = BigFlo
     δS::T = T(S[2]) - T(S[1])
     for (Si, ai) in zip(S, a)
         A::T = - T(ai) + T(β)
-        full_exp = 2 * factorial(N) * exp(T(pi_exp) + T(β) * (T(Si) - T(δS) / 2) + T(A) * T(δS) / 2)
+        full_exp = 2 * exp(T(pi_exp) + T(β) * (T(Si) - T(δS) / 2) + T(A) * T(δS) / 2)
         for m in 0:(N)
             sinh_term::T = T(0)
             cosh_term::T = T(0)
@@ -63,8 +63,49 @@ function energy_moment(S, a, β, N::Int, ::Type{T} = Float64, ::Type{U} = BigFlo
             end
             sh = sinh(A * δS / 2)
             ch = cosh(A * δS / 2)
-            Ap = A^(m - N - 1)
-            En += full_exp * (sh * sinh_term + ch * cosh_term) * Ap * (-1)^(N - m)
+            Ap = factorial(N) * A^(m - N - 1) * (-1)^(N - m)
+            En += full_exp * (sh * sinh_term + ch * cosh_term) * Ap
+        end
+        pi_exp -= ai * δS
+    end
+    return En
+end
+
+"""
+    all_energy_moments(S,a,β,N,[::Type{T}=Float64,::Type{U}=BigFloat])
+
+    Calculate all from the first to the N-th moment of the energy from the dos
+    coefficients `a` at the central energies `S` at the inverse coupling β.
+
+    Return as vector with `N` elements, with their indices corresponding
+    to the moment of the plaquette
+"""
+function all_energy_moments(S, a, β, N::Int, ::Type{T} = Float64, ::Type{U} = BigFloat, logZ = log_partition_function(a, S, β, U)) where {T, U}
+    pi_exp::T = - T(logZ)
+    full_exp::T = T(0)
+    En::Vector{T} = zeros(T, N)
+    δS::T = T(S[2]) - T(S[1])
+    for (Si, ai) in zip(S, a)
+        A::T = - T(ai) + T(β)
+        full_exp = 2 * exp(T(pi_exp) + T(β) * (T(Si) - T(δS) / 2) + T(A) * T(δS) / 2)
+        for m in 0:(N)
+            sinh_term::T = T(0)
+            cosh_term::T = T(0)
+            for j in 0:div(m, 2, RoundDown)
+                sinh_term += (δS / 2)^(2j) * T(Si)^(m - 2j) / factorial(2j) / factorial(m - 2j)
+            end
+            if m > 0 # this condition skips terms proportional to 1/(-1)! → 1/Γ(0) → 0
+                for j in 1:div(m, 2, RoundUp)
+                    cosh_term += (δS / 2)^(2j - 1) * T(Si)^(m - 2j + 1) / factorial(2j - 1) / factorial(m - 2j + 1)
+                end
+            end
+            sh = sinh(A * δS / 2)
+            ch = cosh(A * δS / 2)
+            factor = full_exp * (sh * sinh_term + ch * cosh_term)
+            for i in max(1, m):N
+                Ap = factorial(i) * A^(m - i - 1) * (-1)^(i - m)
+                En[i] += factor * Ap
+            end
         end
         pi_exp -= ai * δS
     end
