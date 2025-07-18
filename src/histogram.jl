@@ -10,14 +10,19 @@ function log_partition_function(a, S, beta, ::Type{T} = BigFloat) where {T}
     dS = T(S[2]) - T(S[1])
     pi_exp = T(0)
     Z = T(0)
-    for (ai, Si) in zip(a, S)
+    exponent::Vector{T} = zeros(T, length(a))
+    weight::Vector{T} = zeros(T, length(a))
+    for (i, ai, Si) in zip(eachindex(a), a, S)
+        # TODO: Use Kahan summation for a sums and cumulative sums
         A = T(beta) - T(ai)
-        exp_factor = exp(T(pi_exp) + T(Si) * T(beta) - T(ai) * T(dS) / 2)
+        exponent[i] = T(pi_exp) + T(Si) * T(beta) - T(ai) * T(dS) / 2
         sinh_factor = iszero(A) ? dS / 2 : sinh(A * dS / 2) / A
-        Z += exp_factor * sinh_factor
         pi_exp -= ai * dS
+        # TODO: perform weighted logsumexp here
+        weight[i] = 2 * sinh_factor
     end
-    return log(2Z)
+    Z = sum(exp.(exponent) .* weight)
+    return log(Z)
 end
 
 """
