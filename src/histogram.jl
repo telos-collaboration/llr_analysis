@@ -42,15 +42,8 @@ end
     Typically, it suffices to use `T=Float128` for all calculations in here as long
     as log(Z) is calculated in higher precision e.g. `U=BigFloat`.
 """
-function energy_moment(
-        S,
-        a,
-        β,
-        N::Int,
-        ::Type{T} = Float64,
-        ::Type{U} = BigFloat,
-    ) where {T, U}
-    pi_exp::T = - T(log_partition_function(a, S, β, U))
+function energy_moment(S, a, β, N::Int, ::Type{T} = Float64, ::Type{U} = BigFloat, logZ = log_partition_function(a, S, β, U)) where {T, U}
+    pi_exp::T = - T(logZ)
     full_exp::T = T(0)
     En::T = T(0)
     δS::T = T(S[2]) - T(S[1])

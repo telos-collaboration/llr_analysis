@@ -42,11 +42,13 @@ function cumulants(h5dset, run, β)
     BC = zeros((length(β), repeats))
 
     Threads.@threads for i in 1:repeats
-        EN(β, N, V) = LLRParsing.energy_moment(S, a[:, i], β, N, Float128, BigFloat) / (6.0V)^N
-        fCV(β) = 6V * (EN(β, 2, V) - EN(β, 1, V)^2)
-        fBC(β) = 1 - EN(β, 4, 1) / EN(β, 2, 1) / EN(β, 2, 1) / 3
-        CV[:, i] .= fCV.(β)
-        BC[:, i] .= fBC.(β)
+        EN(β, N, V, logZ) = LLRParsing.energy_moment(S, a[:, i], β, N, Float128, BigFloat, logZ) / (6.0V)^N
+        logZ = LLRParsing.log_partition_function.(Ref(a[:, i]), Ref(S), β, BigFloat)
+        E4 = EN.(β, 4, V, logZ)
+        E2 = EN.(β, 2, V, logZ)
+        E1 = EN.(β, 1, V, logZ)
+        @. CV[:, i] = 6V * (E2 - E1^2)
+        @. BC[:, i] = 1 - E4 / E2 / E2 / 3
     end
     return β, CV, BC
 end
@@ -61,15 +63,7 @@ function beta_extremal(β, obs; f = findmax)
     Δβmax = std(βmax0) / sqrt(repeats)
     return βmax, Δβmax
 end
-
-Nt = 4
-setprecision(BigFloat, 106)
-h5 = "data_assets/Sp4_Nt4_sorted.hdf5"
-
-h5dset = h5open(h5)
-runs = keys(h5dset)
-
-function critical_beta_cumulants(h5dset, r; N = 200, eps = 1.0e-6, min_iter = 5, max_iter = 20, w = 20)
+function critical_beta_cumulants(h5dset, r; N = 30, eps = 1.0e-6, min_iter = 5, max_iter = 20, w = 20)
     a = first(LLRParsing._set_up_histogram(h5dset, r))
     min_a, max_a = minimum(a), maximum(a)
     β = range(start = min_a, stop = max_a, length = N)
@@ -89,3 +83,14 @@ function critical_beta_cumulants(h5dset, r; N = 200, eps = 1.0e-6, min_iter = 5,
     end
     return βc, Δβc
 end
+
+Nt = 4
+setprecision(BigFloat, 106)
+h5 = "data_assets/Sp4_Nt4_sorted.hdf5"
+h5dset = h5open(h5)
+runs = keys(h5dset)
+
+using BenchmarkTools
+@btime critical_beta_cumulants(h5dset, runs[1]; N = 30, eps = 1.0e-7)
+@profview critical_beta_cumulants(h5dset, runs[1]; N = 30, eps = 1.0e-7)
+critical_beta_cumulants(h5dset, runs[1]; N = 30, eps = 1.0e-7)
