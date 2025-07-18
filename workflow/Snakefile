@@ -325,6 +325,7 @@ rule cumulant_plots:
         h5file="data_assets/Sp4_Nt{Nt}_sorted.hdf5",
         script="scripts/plot_cumulants.jl",
         julia_instantiated="tmp/julia_ready",
+        csv="data_assets/critical_beta_cumulants_Nt{Nt}.csv",
     output:
         plot_binder_cumulant="assets/plots/binder_cumulant_Nt{Nt}.pdf",
         plot_specific_heat="assets/plots/specific_heat_Nt{Nt}.pdf",
@@ -332,4 +333,4 @@ rule cumulant_plots:
         "envs/environment.yml"
     threads: workflow.cores / 2
     shell:
-        'julia --threads {threads} --project="." {input.script} --h5file {input.h5file} --plot_file_binder_cumulant {output.plot_binder_cumulant} --plot_file_specific_heat {output.plot_specific_heat} --Nt {wildcards.Nt}'
+        'julia --threads {threads} --project="." {input.script} --h5file {input.h5file} --critical_values {input.csv} --plot_file_binder_cumulant {output.plot_binder_cumulant} --plot_file_specific_heat {output.plot_specific_heat} --Nt {wildcards.Nt}'

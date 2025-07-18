@@ -6,6 +6,7 @@ using ArgParse
 using Statistics
 using Peaks
 using Quadmath
+using DelimitedFiles
 gr(
     size = (425, 282),
     fontfamily = "Computer Modern",
@@ -54,7 +55,7 @@ function cumulants(h5dset, run, β)
     end
     return β, CV, BC
 end
-function cumulant_plots(h5file, Nt)
+function cumulant_plots(h5file, Nt, critical_values)
     fid = h5open(h5file)
     pltCV = plot(legend = :outerright, xlabel = L"\beta", ylabel = L"C_V(\beta)", title = L"specific heat $N_t = %$Nt$")
     pltBC = plot(legend = :outerright, xlabel = L"\beta", ylabel = L"B_L(\beta)", title = L"Binder cumulant $N_t = %$Nt$")
@@ -80,6 +81,15 @@ function cumulant_plots(h5file, Nt)
         BC = dropdims(mean(BC0, dims = 2), dims = 2)
         ΔBC = dropdims(std(BC0, dims = 2), dims = 2) ./ sqrt.(repeats)
 
+        # add vertical lines with critical values
+        if isfile(critical_values)
+            data = readdlm(critical_values, ',', skipstart = 1)
+            ind = findfirst(i -> data[i, 1] == r, 1:length(data[:, 1]))
+            βc_CV, Δβc_CV, βc_BC, Δβc_BC = data[ind, 4:7]
+            vspan!(pltCV, [βc_CV - Δβc_CV, βc_CV + Δβc_CV], alpah = 0.3, color = :grey, label = "")
+            vspan!(pltBC, [βc_BC - Δβc_BC, βc_BC + Δβc_BC], alpah = 0.3, color = :grey, label = "")
+        end
+
         plot!(pltCV, β, CV, ribbon = ΔCV, label = LLRParsing.fancy_title(r), lw = 2)
         plot!(pltBC, β, BC, ribbon = ΔBC, label = LLRParsing.fancy_title(r), lw = 2)
     end
@@ -103,13 +113,16 @@ function parse_commandline()
         help = "Nt of the runs to be plotted of the plot"
         required = true
         arg_type = Int
+        "--critical_values"
+        help = "CSV file containing the critical values of beta"
+        default = ""
     end
     return parse_args(s)
 end
 
 function main()
     args = parse_commandline()
-    pltCV, pltBC = cumulant_plots(args["h5file"], args["Nt"])
+    pltCV, pltBC = cumulant_plots(args["h5file"], args["Nt"], args["critical_values"])
     savefig(pltCV, args["plot_file_specific_heat"])
     savefig(pltBC, args["plot_file_binder_cumulant"])
     return nothing
