@@ -23,6 +23,7 @@ function plot_all_histogram_fits(file, plotfile)
         try
             βc = LLRParsing.beta_at_equal_heights(fid, run)
             plot_plaquette_histogram!(plt, fid, run, βc)
+            plot!(plt, legend = :outerright)
         catch
             @warn "Cannot determine critical β for $run"
         end

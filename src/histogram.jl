@@ -187,5 +187,10 @@ function plot_plaquette_histogram!(plt, fid, run, beta; kws...)
     xlabel = L"u_p"
     ylabel = L"P_{\beta}(u_p)"
     plot!(plt; xlabel, ylabel, yticks = :none, left_margin = 5Plots.mm)
-    return plot!(plt, ups, P * 6V; label, ribbon = ΔP * 6V, kws...)
+    plot!(plt, ups, P * 6V; label, ribbon = ΔP * 6V, kws...)
+    # restric plotting range
+    i1 = findfirst(x -> x > 1.0e-4, P * 6V)
+    i2 = findlast(x -> x > 1.0e-4, P * 6V)
+    plot!(plt, xlims = (ups[i1], ups[i2]))
+    return plt
 end

@@ -3,6 +3,7 @@ using LaTeXStrings
 using HDF5
 using Plots
 using ArgParse
+using Peaks
 gr(
     size = (425, 282),
     fontfamily = "Computer Modern",
@@ -41,10 +42,20 @@ function a_vs_central_action_plot!(plt, h5id, runs::Vector, Nt, Nl; kws...)
                 kws...,
             )
             # find useful plot limits for the volume comparison
-            ind = findmax(Δa0)[2]
-            δind = min(ind, length(a0) - ind) ÷ 4
-            xmin, xmax = min(xmin, up[ind - δind]), max(xmax, up[ind + δind])
-            ymin, ymax = min(ymin, a0[ind - δind]), max(ymax, a0[ind + δind])
+            p_ind = findmaxima(a0, 5).indices
+            m_ind = findminima(a0, 5).indices
+            if length(m_ind) == length(p_ind) == 1
+                p_ind = only(p_ind)
+                m_ind = only(m_ind)
+                δ = m_ind - p_ind
+                xmin, xmax = min(xmin, up[p_ind - δ]), max(xmax, up[m_ind + 2δ])
+                ymin, ymax = min(ymin, a0[p_ind - δ]), max(ymax, a0[m_ind + 2δ])
+            else
+                ind = findmax(Δa0)[2]
+                δind = min(ind, length(a0) - ind) ÷ 4
+                xmin, xmax = min(xmin, up[ind - δind]), max(xmax, up[ind + δind])
+                ymin, ymax = min(ymin, a0[ind - δind]), max(ymax, a0[ind + δind])
+            end
         end
     end
     plot!(

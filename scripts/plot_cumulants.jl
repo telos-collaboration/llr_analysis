@@ -68,7 +68,7 @@ function cumulant_plots(h5file, Nt, critical_values)
         p_ind = only(findmaxima(a, 5).indices)
         m_ind = only(findminima(a, 5).indices)
         δ = m_ind - p_ind
-        β_min, β_max = a[p_ind - δ], a[p_ind + 3δ]
+        β_min, β_max = a[p_ind - δ], a[m_ind + 2δ]
     end
 
     for r in runs
@@ -86,8 +86,8 @@ function cumulant_plots(h5file, Nt, critical_values)
             data = readdlm(critical_values, ',', skipstart = 1)
             ind = findfirst(i -> data[i, 1] == r, 1:length(data[:, 1]))
             βc_CV, Δβc_CV, βc_BC, Δβc_BC = data[ind, 4:7]
-            vspan!(pltCV, [βc_CV - Δβc_CV, βc_CV + Δβc_CV], alpah = 0.3, color = :grey, label = "")
-            vspan!(pltBC, [βc_BC - Δβc_BC, βc_BC + Δβc_BC], alpah = 0.3, color = :grey, label = "")
+            #vspan!(pltCV, [βc_CV - Δβc_CV, βc_CV + Δβc_CV], alpah = 0.3, color = :grey, label = "")
+            #vspan!(pltBC, [βc_BC - Δβc_BC, βc_BC + Δβc_BC], alpah = 0.3, color = :grey, label = "")
         end
 
         plot!(pltCV, β, CV, ribbon = ΔCV, label = LLRParsing.fancy_title(r), lw = 2)
