@@ -1,4 +1,5 @@
 function errorstring(x, Δx; nsig = 2)
+    isnan(x) && isnan(Δx) && return "-"
     @assert Δx > 0
     sgn = x < 0 ? "-" : ""
     x = abs(x)
