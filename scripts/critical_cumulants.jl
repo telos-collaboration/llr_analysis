@@ -92,6 +92,50 @@ function critical_beta_cumulants(h5dset, r; N = 30, eps = 1.0e-6, min_iter = 5, 
     end
     return βc_CV, Δβc_CV, βc_BC, Δβc_BC
 end
+function critical_beta_binder_cumulant(h5dset, r; N = 30, eps = 1.0e-6, min_iter = 5, max_iter = 20, w = 20)
+    a = first(LLRParsing._set_up_histogram(h5dset, r))
+    min_a, max_a = minimum(a), maximum(a)
+    β = range(start = min_a, stop = max_a, length = N)
+
+    βc_BC_old = +Inf
+    βc_BC, Δβc_BC = +Inf, +Inf
+    for i in 1:max_iter
+        β, CV0, BC0 = cumulants(h5dset, r, β)
+        βc_BC, Δβc_BC = beta_extremal(β, BC0; f = findmin)
+        βmin, βmax = extrema(β)
+        βmin = min(βmin, βc_BC - w * Δβc_BC)
+        βmax = max(βmin, βc_BC + w * Δβc_BC)
+        β = range(start = (βmin + βc_BC) / 2, stop = (βmax + βc_BC) / 2, length = N)
+        diff = abs(βc_BC_old - βc_BC)
+        βc_BC_old = βc_BC
+        if diff < eps && i > min_iter
+            return βc_BC, Δβc_BC
+        end
+    end
+    return βc_BC, Δβc_BC
+end
+function critical_beta_specific_heat(h5dset, r; N = 30, eps = 1.0e-6, min_iter = 5, max_iter = 20, w = 20)
+    a = first(LLRParsing._set_up_histogram(h5dset, r))
+    min_a, max_a = minimum(a), maximum(a)
+    β = range(start = min_a, stop = max_a, length = N)
+
+    βc_CV_old = +Inf
+    βc_CV, Δβc_CV = +Inf, +Inf
+    for i in 1:max_iter
+        β, CV0, BC0 = cumulants(h5dset, r, β)
+        βc_CV, Δβc_CV = beta_extremal(β, CV0; f = findmax)
+        βmin, βmax = extrema(β)
+        βmin = min(βmin, βc_CV - w * Δβc_CV)
+        βmax = max(βmin, βc_CV + w * Δβc_CV)
+        β = range(start = (βmin + βc_CV) / 2, stop = (βmax + βc_CV) / 2, length = N)
+        diff = abs(βc_CV_old - βc_CV)
+        βc_CV_old = βc_CV
+        if diff < eps && i > min_iter
+            return βc_CV, Δβc_CV
+        end
+    end
+    return βc_CV, Δβc_CV
+end
 function critical_cumulants_all_runs(h5file, outfile)
     h5dset = h5open(h5file)
     runs = keys(h5dset)
@@ -104,7 +148,8 @@ function critical_cumulants_all_runs(h5file, outfile)
         T = read(h5dset[r], "Nt")
 
         kws = (N = 30, eps = 1.0e-6)
-        βc_CV, Δβc_CV, βc_BC, Δβc_BC = critical_beta_cumulants(h5dset, r; kws...)
+        βc_CV, Δβc_CV = critical_beta_specific_heat(h5dset, r; kws...)
+        βc_BC, Δβc_BC = critical_beta_binder_cumulant(h5dset, r; kws...)
         str_CV = errorstring(βc_CV, Δβc_CV)
         str_BC = errorstring(βc_BC, Δβc_BC)
 
