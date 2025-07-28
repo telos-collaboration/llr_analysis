@@ -17,15 +17,13 @@ function initial_param_double_gaussian(ups, P; w = 5)
     ]
     return p0
 end
-function fitting_range_double_gaussian(P; w = 5, N = 0.5)
+function fitting_range_double_gaussian(P; w = 5)
     # determine fitting range:
     # Include half the points between peak and minimum
     pks = findmaxima(P, w)
     mns = findminima(P, w)
-    δ1 = abs(pks.indices[1] - mns.indices[1]) * N
-    δ2 = abs(pks.indices[2] - mns.indices[1]) * N
     # After discussion: Only fit up to the peaks
-    δ = 0 # Int(round((δ1+δ2)/2))
+    δ = 0
     range1 = 1:(pks.indices[1] + δ)
     range2 = (pks.indices[2] - δ):length(P)
     range = vcat(collect(range1), collect(range2))
