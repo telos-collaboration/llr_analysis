@@ -1,0 +1,68 @@
+# This CITATION.cff file was generated with cffinit.
+# Visit https://bit.ly/cffinit to generate yours today!
+
+cff-version: 1.2.0
+title: >-
+  Density of states in Sp(4) gauge theory with Nt=5 and
+  large volumes - Analysis workflow
+message: >-
+  If you use this software, please cite it using the
+  metadata from this file.
+type: software
+authors:
+  - given-names: Enrico
+    family-names: Rinaldi
+    orcid: 'https://orcid.org/0000-0003-4134-809X'
+    email: erinaldi.work@gmail.com
+    affiliation: >-
+      RIKEN Center for Interdisciplinary Theoretical and
+      Mathematical Sciences (iTHEMS), RIKEN, 2-1 Hirosawa,
+      Wako, Saitama, 351-0198, Japan
+  - given-names: David
+    family-names: Mason
+    orcid: 'https://orcid.org/0000-0002-1857-1085'
+    email: d.mason@fz-juelich.de
+    affiliation: >-
+      Jülich Supercomputing Centre, Forschungszentrum
+      Jülich, D-52425 Jülich, Germany
+  - given-names: Biagio
+    family-names: Lucini
+    email: b.lucini@qmul.ac.uk
+    affiliation: >-
+      Swansea Academy of Advanced Computing, Swansea
+      University (Bay Campus), Fabian Way, SA1 8EN Swansea,
+      Wales, United Kingdom
+      School of Mathematical Sciences, Queen Mary University of London
+      Mile End Road, London, E1 4NS, UK
+    orcid: 'https://orcid.org/0000-0001-8974-8266'
+  - given-names: Maurizio
+    family-names: Piai
+    orcid: 'https://orcid.org/0000-0002-2251-0111'
+    affiliation: >-
+      Department of Physics, Faculty  of Science and
+      Engineering, Swansea University, Singleton Park, SA2
+      8PP, Swansea, Wales, UK
+    email: m.piai@swansea.ac.uk
+  - given-names: Davide
+    family-names: Vadacchino
+    affiliation: >-
+      Centre for Mathematical Sciences, University of
+      Plymouth, Plymouth, PL4 8AA, United Kingdom
+    email: davide.vadacchino@plymouth.ac.uk
+    orcid: 'https://orcid.org/0000-0002-5783-5602'
+  - given-names: Fabian
+    family-names: Zierler
+    affiliation: >-
+      Department of Physics, Faculty  of Science and
+      Engineering, Swansea University, Singleton Park, SA2
+      8PP, Swansea, Wales, UK
+    email: fabian.zierler@swansea.ac.uk
+    orcid: 'https://orcid.org/0000-0002-8670-4054'
+  - given-names: Ed
+    family-names: Bennett
+    affiliation: >-
+      Swansea Academy of Advanced Computing, Swansea
+      University (Bay Campus), Fabian Way, SA1 8EN Swansea,
+      Wales, United Kingdom
+    email: ed.bennett@swansea.ac.uk
+    orcid: 'https://orcid.org/0000-0002-1678-6701'
