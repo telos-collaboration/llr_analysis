@@ -108,6 +108,7 @@ rule all:
             "assets/plots/binder_cumulant_Nt{Nt}.pdf", Nt=[4, 5]
         ),
         plot_specific_heat=expand("assets/plots/specific_heat_Nt{Nt}.pdf", Nt=[4, 5]),
+        surface_tension_plot="assets/plots/surface_tension_term.pdf",
 
 
 rule julia_instantiate:
@@ -372,3 +373,17 @@ rule cumulant_plots:
     threads: workflow.cores / 2
     shell:
         'julia --threads {threads} --project="." {input.script} --h5file {input.h5file} --critical_values {input.csv} --plot_file_binder_cumulant {output.plot_binder_cumulant} --plot_file_specific_heat {output.plot_specific_heat} --Nt {wildcards.Nt}'
+
+
+rule surface_tension_plot:
+    input:
+        script="scripts/surface_tension_term.jl",
+        h5file_Nt4="data_assets/Sp4_Nt4_sorted.hdf5",
+        h5file_Nt5="data_assets/Sp4_Nt5_sorted.hdf5",
+        julia_instantiated="tmp/julia_ready",
+    output:
+        plot="assets/plots/surface_tension_term.pdf",
+    conda:
+        "envs/environment.yml"
+    shell:
+        'julia --project="." {input.script} --plotfile {output.plot} {input.h5file_Nt4} {input.h5file_Nt5}'

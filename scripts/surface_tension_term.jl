@@ -4,7 +4,7 @@ using Peaks
 using Statistics
 using Plots
 using LaTeXStrings
-
+using ArgParse
 gr(
     size = (425, 282),
     fontfamily = "Computer Modern",
@@ -51,7 +51,7 @@ function apply_jackknife(obs::AbstractVector)
     ΔO = sqrt(N - 1) * std(obs, corrected = false)
     return O, ΔO
 end
-function main(files)
+function main(files, plt_name)
     plt = plot(; ylabel = L"I", xlabel = L"N_t^2/N_l^2", title = L"surface tension term $I$")
     Nt = 0
     for file in files
@@ -65,10 +65,28 @@ function main(files)
         end
         plot!(plt, x .^ 2, I, yerr = ΔI, markershape = :circle, markeralpha = 0.7, label = L"N_t=%$Nt")
     end
+    plot!(plt; ylims = (0, maximum(ylims(plt))))
+    savefig(plt, plt_name)
     return plt
 end
-
-files = ["data_assets/Sp4_Nt$(Nt)_sorted.hdf5" for Nt in [4, 5]]
-plt = main(files)
-plot!(plt; ylims = (0, maximum(ylims(plt))))
-savefig("assets/plots/surface_tension_term.pdf")
+function parse_commandline()
+    s = ArgParseSettings()
+    @add_arg_table s begin
+        "--plotfile"
+        help = "Where to save the plot"
+        required = true
+        "arg"
+        help = "HDF5 files with sorted data for all Nt to be plotted"
+        required = true
+        nargs = '+'
+    end
+    return parse_args(s)
+end
+function main()
+    args = parse_commandline()
+    plotfile = args["plotfile"]
+    files = args["arg"]
+    main(files, plotfile)
+    return nothing
+end
+main()
