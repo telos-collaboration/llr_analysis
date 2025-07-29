@@ -107,6 +107,7 @@ rule all:
         plot_binder_cumulant=expand(
             "assets/plots/binder_cumulant_Nt{Nt}.pdf", Nt=[4, 5]
         ),
+        critical_beta_table=expand("assets/tables/beta_critical_Nt{Nt}.tex", Nt=[4, 5]),
         plot_specific_heat=expand("assets/plots/specific_heat_Nt{Nt}.pdf", Nt=[4, 5]),
         surface_tension_plot="assets/plots/surface_tension_term.pdf",
 
@@ -387,3 +388,17 @@ rule surface_tension_plot:
         "envs/environment.yml"
     shell:
         'julia --project="." {input.script} --plotfile {output.plot} {input.h5file_Nt4} {input.h5file_Nt5}'
+
+
+rule critical_beta_table:
+    input:
+        script="scripts/tex_critical_beta.jl",
+        csv_cumulant="data_assets/critical_beta_cumulants_Nt{Nt}.csv",
+        csv_histogram="data_assets/critical_beta_Nt{Nt}.csv",
+        julia_instantiated="tmp/julia_ready",
+    output:
+        textable="assets/tables/beta_critical_Nt{Nt}.tex",
+    conda:
+        "envs/environment.yml"
+    shell:
+        'julia --project="." {input.script} --tex_file {output.textable} --input_cumulants {input.csv_cumulant} --input_histogram {input.csv_histogram} '
