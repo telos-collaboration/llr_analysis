@@ -34,7 +34,7 @@ function plot_critical_beta!(plt, file)
         xticks = tks,
         yerr = Δβc,
         markershape = :hexagon,
-        label = L"$N_t=%$Nt:P_\beta$ peak ratio %$A1:%$A2",
+        label = L"$N_t=%$Nt$: ratio %$A1:%$A2",
     )
 end
 function plot_critical_beta(files, plotfile)
@@ -43,7 +43,7 @@ function plot_critical_beta(files, plotfile)
     for file in files
         plot_critical_beta!(plt, file)
     end
-    plot!(plt; xflip = true, legend = :left)
+    plot!(plt; xflip = true, legend = :topleft)
     return savefig(plt, plotfile)
 end
 
