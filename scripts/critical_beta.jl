@@ -43,7 +43,11 @@ function parse_commandline()
         "--outfile"
         help = "Where to save results"
         required = true
-        "--relative_peak_height"
+        "--peak1"
+        help = "Ratio of peak heights used for finding the critical coupling"
+        arg_type = Int
+        default = 1
+        "--peak2"
         help = "Ratio of peak heights used for finding the critical coupling"
         arg_type = Int
         default = 1
@@ -53,9 +57,10 @@ end
 function main()
     args = parse_commandline()
     file = args["h5file"]
-    A1 = args["relative_peak_height"]
+    A1 = args["peak1"]
+    A2 = args["peak2"]
     outfile = args["outfile"]
     isfile(outfile) && rm(outfile)
-    return all_critical_beta(file, outfile; A1 = A1, A2 = 1)
+    return all_critical_beta(file, outfile; A1 = A1, A2 = A2)
 end
 main()

@@ -45,7 +45,11 @@ function parse_commandline()
         "--run_name"
         help = "Run to be analysed"
         required = true
-        "--relative_peak_height"
+        "--peak1"
+        help = "Ratio of peak heights used for finding the critical coupling"
+        arg_type = Int
+        default = 1
+        "--peak2"
         help = "Ratio of peak heights used for finding the critical coupling"
         arg_type = Int
         default = 1
@@ -57,15 +61,9 @@ function main()
     file = args["h5file"]
     plotfile = args["plot_file"]
     run_name = args["run_name"]
-    A1 = args["relative_peak_height"]
-    return plot_all_histogram_fits(
-        file,
-        plotfile,
-        run_name;
-        fit = true,
-        A1 = A1,
-        A2 = 1,
-        name = "",
-    )
+    A1 = args["peak1"]
+    A2 = args["peak2"]
+    plot_all_histogram_fits(file, plotfile, run_name; fit = true, A1, A2, name = "")
+    return nothing
 end
 main()

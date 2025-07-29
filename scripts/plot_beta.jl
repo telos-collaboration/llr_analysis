@@ -18,13 +18,14 @@ function read_critical_betas(file)
     data = readdlm(file, ',', skipstart = 1)
     Nt = data[:, 2]
     Nl = data[:, 3]
-    ratio = data[:, 4]
+    A1 = data[:, 4]
+    A2 = data[:, 5]
     βc = data[:, 6]
     Δβc = data[:, 7]
-    return only(unique(Nt)), Nl, βc, Δβc, only(unique(ratio))
+    return only(unique(Nt)), Nl, βc, Δβc, only(unique(A1)), only(unique(A2))
 end
 function plot_critical_beta!(plt, file)
-    Nt, L, βc, Δβc, ratio = read_critical_betas(file)
+    Nt, L, βc, Δβc, A1, A2 = read_critical_betas(file)
     tks = (inv.(L), (L"1/%$Li" for Li in L))
     return scatter!(
         plt,
@@ -33,7 +34,7 @@ function plot_critical_beta!(plt, file)
         xticks = tks,
         yerr = Δβc,
         markershape = :hexagon,
-        label = L"$N_t=%$Nt:P_\beta$ peak ratio %$ratio:1",
+        label = L"$N_t=%$Nt:P_\beta$ peak ratio %$A1:%$A2",
     )
 end
 function plot_critical_beta(files, plotfile)

@@ -65,6 +65,9 @@ rule all:
         critical_beta_two_to_one=expand(
             "data_assets/critical_beta_2:1_Nt{Nt}.csv", Nt=[4, 5]
         ),
+        critical_beta_one_to_two=expand(
+            "data_assets/critical_beta_1:2_Nt{Nt}.csv", Nt=[4, 5]
+        ),
         critical_beta_volume_plots=expand(
             "assets/plots/critical_beta_volumes_Nt{Nt}.pdf", Nt=[4, 5]
         ),
@@ -85,6 +88,14 @@ rule all:
         ),
         double_gaussian_plots_Nt5_2_to_1=expand(
             "assets/plots/plaquette_distribution/{dataset}_two_to_one.pdf",
+            dataset=list_hdf5_datasets_Nt(metadata, 5),
+        ),
+        double_gaussian_plots_Nt4_1_to_2=expand(
+            "assets/plots/plaquette_distribution/{dataset}_one_to_two.pdf",
+            dataset=list_hdf5_datasets_Nt(metadata, 4),
+        ),
+        double_gaussian_plots_Nt5_1_to_2=expand(
+            "assets/plots/plaquette_distribution/{dataset}_one_to_two.pdf",
             dataset=list_hdf5_datasets_Nt(metadata, 5),
         ),
         an_replica_plots=expand(
@@ -264,7 +275,20 @@ rule critical_beta_two_to_one:
     conda:
         "envs/environment.yml"
     shell:
-        'julia --project="." {input.script} --h5file {input.h5file} --outfile {output.csv} --relative_peak_height 2'
+        'julia --project="." {input.script} --h5file {input.h5file} --outfile {output.csv} --peak1 2'
+
+
+rule critical_beta_one_to_two:
+    input:
+        h5file="data_assets/Sp4_Nt{Nt}_sorted.hdf5",
+        script="scripts/critical_beta.jl",
+        julia_instantiated="tmp/julia_ready",
+    output:
+        csv="data_assets/critical_beta_1:2_Nt{Nt}.csv",
+    conda:
+        "envs/environment.yml"
+    shell:
+        'julia --project="." {input.script} --h5file {input.h5file} --outfile {output.csv} --peak1 1 --peak2 2'
 
 
 rule double_gaussian_volume_plots:
@@ -285,13 +309,14 @@ rule critical_beta_volume_plots:
         script="scripts/plot_beta.jl",
         critical_beta="data_assets/critical_beta_Nt{Nt}.csv",
         critical_beta_two_to_one="data_assets/critical_beta_2:1_Nt{Nt}.csv",
+        critical_beta_one_to_two="data_assets/critical_beta_1:2_Nt{Nt}.csv",
         julia_instantiated="tmp/julia_ready",
     output:
         plot="assets/plots/critical_beta_volumes_Nt{Nt}.pdf",
     conda:
         "envs/environment.yml"
     shell:
-        'julia --project="." {input.script} --plotfile {output.plot} {input.critical_beta} {input.critical_beta_two_to_one}'
+        'julia --project="." {input.script} --plotfile {output.plot} {input.critical_beta} {input.critical_beta_two_to_one} {input.critical_beta_one_to_two}'
 
 
 rule double_gaussian_plots:
@@ -317,7 +342,20 @@ rule double_gaussian_plots_two_to_one:
     conda:
         "envs/environment.yml"
     shell:
-        'julia --project="." {input.script} --h5file {input.h5file} --plot_file {output.plot} --relative_peak_height 2 --run_name {wildcards.Nt}x{wildcards.Nl}_{wildcards.Nreplicas}replicas'
+        'julia --project="." {input.script} --h5file {input.h5file} --plot_file {output.plot} --peak1 2 --run_name {wildcards.Nt}x{wildcards.Nl}_{wildcards.Nreplicas}replicas'
+
+
+rule double_gaussian_plots_one_to_two:
+    input:
+        h5file="data_assets/Sp4_Nt{Nt}_sorted.hdf5",
+        script="scripts/double_gaussian_fit.jl",
+        julia_instantiated="tmp/julia_ready",
+    output:
+        plot="assets/plots/plaquette_distribution/{Nt}x{Nl}_{Nreplicas}replicas_one_to_two.pdf",
+    conda:
+        "envs/environment.yml"
+    shell:
+        'julia --project="." {input.script} --h5file {input.h5file} --plot_file {output.plot} --peak2 2 --run_name {wildcards.Nt}x{wildcards.Nl}_{wildcards.Nreplicas}replicas'
 
 
 rule cumulant_plots:
