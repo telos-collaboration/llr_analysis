@@ -42,6 +42,7 @@ function main()
             parse_full(run, s, h5file)
         end
     end
+    write_provenance_hdf5(h5file)
     return
 end
 main()

@@ -57,6 +57,7 @@ function main(files, plt_name)
     for file in files
         fid = h5open(file)
         runs = keys(fid)
+        runs = filter(!startswith("provenance"), runs)
         x, I, ΔI = zeros(length(runs)), zeros(length(runs)), zeros(length(runs))
         for (i, r) in enumerate(runs)
             beta, Pmin, Pmax, inter, Nt, Nl = beta_Pmin_Pmax_jackknife(fid, r)

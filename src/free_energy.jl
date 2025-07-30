@@ -105,6 +105,7 @@ end
 function plot_entropy(file, plotfile)
     h5dset = h5open(file)
     runs = keys(h5dset)
+    runs = filter(!startswith("provenance"), runs)
     plt = plot(title = L"entropy $s = \log(\rho) - \log(\rho_0)$")
     for r in runs
         t, Δt, f, Δf, s, Δs = thermodynamic_potentials(h5dset, r)
