@@ -41,6 +41,7 @@ def input_logs(wildcards):
 rule all:
     input:
         tables=expand("assets/tables/runs_Nt{Nt}.tex", Nt=[4, 5, 6]),
+        definitions="assets/definitions/definitions.tex",
         overview_plots=expand(
             "assets/plots/overview/{dataset}.pdf", dataset=list_hdf5_datasets(metadata)
         ),
@@ -402,3 +403,17 @@ rule critical_beta_table:
         "envs/environment.yml"
     shell:
         'julia --project="." {input.script} --tex_file {output.textable} --input_cumulants {input.csv_cumulant} --input_histogram {input.csv_histogram} '
+
+
+rule definitions:
+    input:
+        script="scripts/definitions.jl",
+        h5file_Nt4="tmp/Sp4_Nt4.hdf5",
+        h5file_Nt5="tmp/Sp4_Nt5.hdf5",
+        julia_instantiated="tmp/julia_ready",
+    output:
+        definitions="assets/definitions/definitions.tex",
+    conda:
+        "envs/environment.yml"
+    shell:
+        'julia --project="." {input.script} --outfile {output.definitions} --h5file_Nt4 {input.h5file_Nt4} --h5file_Nt5 {input.h5file_Nt5} '
