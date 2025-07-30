@@ -79,6 +79,9 @@ function parse_llr(file; skiplines = Int[])
     S0_fxa = Float64[]
     a_fxa = Float64[]
 
+    llr_therm = Int[]
+    llr_meas = Int[]
+
     tmp_poly = zeros(2)
     is_fxa = false
 
@@ -109,6 +112,15 @@ function parse_llr(file; skiplines = Int[])
                 str = m.captures
                 append!(a, parse(Float64, str[2]))
             end
+            # Parse LLR thermalisation and measurement steps
+            if startswith(line, "[MAIN][0]LLR number of mc steps per RM: ")
+                len = length("[MAIN][0]LLR number of mc steps per RM: ")
+                append!(llr_meas, parse(Int, line[len:end]))
+            end
+            if startswith(line, "[MAIN][0]LLR number of therm steps per RM ")
+                len = length("[MAIN][0]LLR number of therm steps per RM ")
+                append!(llr_therm, parse(Int, line[len:end]))
+            end
         end
         if !is_fxa && startswith(line, patternS0)
             pos2 = first(findnext("dS", line, posS0))
@@ -125,7 +137,11 @@ function parse_llr(file; skiplines = Int[])
             append!(poly, tmp_poly[1] + im * tmp_poly[2])
         end
     end
-    return dS0, S0, plaq, a, is_rm, S0_fxa[1:(end - 1)], a_fxa[1:(end - 1)], poly
+    # assert that we always have used a consistent number of
+    llr_therm = only(unique(llr_therm))
+    llr_meas = only(unique(llr_meas))
+    # end function and returned parsed information
+    return dS0, S0, plaq, a, is_rm, S0_fxa[1:(end - 1)], a_fxa[1:(end - 1)], poly, llr_therm, llr_meas
 end
 function llr_dir_hdf5(dir, h5file; suffix = "", skip_repeats = String[])
     fid = h5open(h5file, "cw")
@@ -155,7 +171,7 @@ function llr_dir_hdf5(dir, h5file; suffix = "", skip_repeats = String[])
         for rep in replica_dirs[repeat]
             file = joinpath(dir, repeat, rep, "out_0")
             a0 = parse_initial_a(file)
-            dS0, S0, plaq, a, is_rm, S0_fxa, a_fxa, poly = parse_llr(file)
+            dS0, S0, plaq, a, is_rm, S0_fxa, a_fxa, poly, llr_therm, llr_meas = parse_llr(file)
             write(fid, joinpath(name, repeat, rep, "dS0"), dS0)
             write(fid, joinpath(name, repeat, rep, "S0"), S0)
             write(fid, joinpath(name, repeat, rep, "a0"), a0)
@@ -165,6 +181,8 @@ function llr_dir_hdf5(dir, h5file; suffix = "", skip_repeats = String[])
             write(fid, joinpath(name, repeat, rep, "S0_fxa"), S0_fxa)
             write(fid, joinpath(name, repeat, rep, "a_fxa"), a_fxa)
             write(fid, joinpath(name, repeat, rep, "poly"), poly)
+            write(fid, joinpath(name, repeat, rep, "llr_therm"), llr_therm)
+            write(fid, joinpath(name, repeat, rep, "llr_meas"), llr_meas)
         end
     end
     return close(fid)
