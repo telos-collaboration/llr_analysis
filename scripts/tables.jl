@@ -7,6 +7,7 @@ function write_run_table(file, outfile)
     ispath(dirname(outfile)) || mkpath(dirname(outfile))
     fid = h5open(file)
     io = open(outfile, "w")
+    print_provenance_tex(io)
 
     header = L"\begin{tabular}{|c|c|c|c|c|c|c|c|} \hline
 $N_t$ & $N_l$ & $u_{p}^{\rm min}$ & $u_{p}^{\rm max}$ & $N_{\rm rep}$ & $N_{\rm repeats}$ & $n_{\rm NR}$ & $n_{\rm RM}$ \\ \hline \hline "
@@ -14,6 +15,7 @@ $N_t$ & $N_l$ & $u_{p}^{\rm min}$ & $u_{p}^{\rm max}$ & $N_{\rm rep}$ & $N_{\rm 
 \\end{tabular}"
 
     runs = keys(fid)
+    runs = filter(!startswith("provenance"), runs)
     println(io, header)
     for run in runs
         a0, Δa0, S0, ind = a_vs_central_action(fid, run)

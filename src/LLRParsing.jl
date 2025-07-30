@@ -37,5 +37,7 @@ include("critical_histogram.jl")
 include("double_gaussian_fit.jl")
 include("free_energy.jl")
 export plot_free_energies
+include("provenance.jl")
+export provenance, print_provenance_tex, write_provenance_hdf5
 
 end # module LLRParsing
