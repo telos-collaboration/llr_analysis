@@ -17,6 +17,7 @@ gr(
 function all_critical_beta(file, outfile; A1 = 1, A2 = 1)
     fid = h5open(file)
     runs = keys(fid)
+    runs = filter(!startswith("provenance"), runs)
     header = !isfile(outfile)
     io = open(outfile, "a")
     header && println(io, "run,Nt,Nl,A1,A2,βc,Δβc,str")

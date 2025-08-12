@@ -172,6 +172,7 @@ end
 function sort_by_central_energy_to_hdf5(h5file_in, h5file_out; skip_ens = nothing)
     h5dset = h5open(h5file_in, "r")
     runs = keys(h5dset)
+    runs = filter(!startswith("provenance"), runs)
     close(h5dset)
     for run in runs
         sort_by_central_energy_to_hdf5_run(h5file_in, h5file_out, run)

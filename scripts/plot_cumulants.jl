@@ -59,7 +59,8 @@ function cumulant_plots(h5file, Nt, critical_values)
     fid = h5open(h5file)
     pltCV = plot(legend = :outerright, xlabel = L"\beta", ylabel = L"C_V(\beta)", title = L"specific heat $N_t = %$Nt$")
     pltBC = plot(legend = :outerright, xlabel = L"\beta", ylabel = L"B_L(\beta)", title = L"Binder cumulant $N_t = %$Nt$")
-    runs = largets_replica_runs(fid, keys(fid))
+    runs = filter(!startswith("provenance"), keys(fid))
+    runs = largets_replica_runs(fid, runs)
 
     # first determine a good plotting range
     β_min, β_max = +Inf, -Inf
