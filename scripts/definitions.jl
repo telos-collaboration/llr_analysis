@@ -34,7 +34,7 @@ function definitions(h5file_Nt4, h5file_Nt5, outfile)
     ispath(dirname(outfile)) || mkpath(dirname(outfile))
     @show outfile
     io = open(outfile, "w")
-    # TODO: Write provenance to file once the respective PR is merged
+    print_provenance_tex(io)
     write(io, "\\newcommand\\MaxAspectRatioNtFour{$max_aspect_ratio_Nt4}\n")
     write(io, "\\newcommand\\MaxAspectRatioNtFive{$max_aspect_ratio_Nt5}\n")
     write(io, "\\newcommand\\llrtherm{$llr_therm}\n")
