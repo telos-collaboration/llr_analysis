@@ -42,7 +42,7 @@ function a_vs_central_action_plot!(plt, h5id, runs::Vector; kws...)
         Nl = read(h5id[run], "Nl")
         Nrep = read(h5id[run], "N_replicas")
         up = @. S0 / (6 * Nl^3 * Nt)
-        label = L"N_l\!=\!%$Nl,N_{\!\mathrm{rep}}\!=\!%$Nrep"
+        label = L"N_s\!=\!%$Nl,N_{\!\mathrm{rep}}\!=\!%$Nrep"
         LLRParsing.a_vs_central_action_plot!(plt, a0, Δa0, S0, Nt, Nl, Nrep; label, kws...)
         # find useful plot limits for the volume comparison
         p_ind = findmaxima(a0, 5).indices

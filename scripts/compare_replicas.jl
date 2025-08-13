@@ -60,7 +60,7 @@ function a_vs_central_action_plot!(plt, h5id, runs::Vector, Nt, Nl; kws...)
     end
     plot!(
         plt,
-        title = L"N_t\times N_l^3\!=\!%$Nt\times %$Nl^3",
+        title = L"N_t\times N_s^3\!=\!%$Nt\times %$Nl^3",
         xlims = (xmin, xmax),
         ylims = (ymin, ymax),
     )

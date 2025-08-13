@@ -14,11 +14,11 @@ gr(
     left_margin = 0Plots.mm,
 )
 
-function plot_all_histogram_fits(file, plotfile)
+function plot_all_histogram_fits(file, plotfile, title)
     ispath(dirname(plotfile)) || mkpath(dirname(plotfile))
     fid = h5open(file)
     runs = keys(fid)
-    plt = plot(title = "Comparison of probability distribution across volumes")
+    plt = plot(title = title)
     for run in runs
         try
             βc = LLRParsing.beta_at_equal_heights(fid, run)
@@ -39,6 +39,9 @@ function parse_commandline()
         "--plotfile"
         help = "Where to save the plot"
         required = true
+        "--title"
+        help = "Title of the plot"
+        required = true
     end
     return parse_args(s)
 end
@@ -46,6 +49,7 @@ function main()
     args = parse_commandline()
     file = args["h5file"]
     plotfile = args["plotfile"]
-    return plot_all_histogram_fits(file, plotfile)
+    title = args["title"]
+    return plot_all_histogram_fits(file, plotfile, title)
 end
 main()

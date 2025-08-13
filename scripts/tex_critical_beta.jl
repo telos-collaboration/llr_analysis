@@ -20,7 +20,7 @@ function main(file1, file2, file_tex)
     io = open(file_tex, "w")
     print_provenance_tex(io)
     header = L"""\begin{tabular}{|c|c|c|c|c|c|} \hline
-    $N_t$ & $N_l$ & $N_{\rm rep}$ & $\beta^{1:1}_c$ & $\beta^{C_V}_c$ & $\beta^{B_V}_c$ \\ \hline \hline """
+    $N_t$ & $N_s$ & $N_{\rm rep}$ & $\beta^{1:1}_c$ & $\beta^{C_V}_c$ & $\beta^{B_V}_c$ \\ \hline \hline """
     footer = """\\hline \\hline
     \\end{tabular}"""
 

@@ -39,7 +39,7 @@ function plot_critical_beta!(plt, file)
 end
 function plot_critical_beta(files, plotfile)
     ispath(dirname(plotfile)) || mkpath(dirname(plotfile))
-    plt = plot(ylabel = L"critical $\beta_c$", xlabel = L"inverse spatial volume $1/N_l$")
+    plt = plot(ylabel = L"critical $\beta_c$", xlabel = L"inverse spatial volume $1/N_s$")
     for file in files
         plot_critical_beta!(plt, file)
     end

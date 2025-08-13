@@ -52,7 +52,7 @@ function apply_jackknife(obs::AbstractVector)
     return O, ΔO
 end
 function main(files, plt_name)
-    plt = plot(; ylabel = L"I", xlabel = L"N_t^2/N_l^2", title = L"surface tension term $I$")
+    plt = plot(; ylabel = L"I", xlabel = L"N_t^2/N_s^2", title = L"surface tension term $I$")
     Nt = 0
     for file in files
         fid = h5open(file)

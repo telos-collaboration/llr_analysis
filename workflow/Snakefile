@@ -213,7 +213,7 @@ rule an_volume_comparison_plots:
     conda:
         "envs/environment.yml"
     shell:
-        r'julia --project="." {input.script} --h5file {input.h5file} --plot_file {output.plot} --title "\$a_n\$ volume dependence for \$N_t={wildcards.Nt}\$"'
+        r'julia --project="." {input.script} --h5file {input.h5file} --plot_file {output.plot} --title "\$N_t={wildcards.Nt}\$"'
 
 
 rule an_replica_comparison_plots:
@@ -304,7 +304,7 @@ rule double_gaussian_volume_plots:
     conda:
         "envs/environment.yml"
     shell:
-        'julia --project="." {input.script} --h5file {input.h5file} --plotfile {output.plot}'
+        r'julia --project="." {input.script} --h5file {input.h5file} --plotfile {output.plot} --title "\$N_t={wildcards.Nt}\$"'
 
 
 rule critical_beta_volume_plots:
