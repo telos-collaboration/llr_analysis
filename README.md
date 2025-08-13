@@ -18,7 +18,7 @@ The workflow in this repository performs the analyses presented in the paper
    and `cd` into it:
 
    ```shellsession
-   git clone --recurse-submodules https://github.com/fzierler/llr_analysis
+   git clone --recurse-submodules https://github.com/telos-collaboration/llr_analysis
    cd llr_analysis
    ```
 
