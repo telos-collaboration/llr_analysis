@@ -35,5 +35,5 @@ function find_first_duplicated_central_energies(S0, traj_lengths; i_min = 1)
             return i, inds
         end
     end
-    return
+    return nothing, nothing
 end

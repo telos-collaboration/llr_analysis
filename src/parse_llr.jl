@@ -215,11 +215,14 @@ function sort_by_central_energy_to_hdf5_run(h5file_in, h5file_out, run)
         data_healthy = all(allequal, eachslice(sort(S, dims = 1), dims = 1))
         if !data_healthy
             traj_lengths = dropdims(count(isfinite, S, dims = 2), dims = 2)
-            last_healthy_traj_p1, inds =
-                find_first_duplicated_central_energies(S, traj_lengths)
-            S = S[:, 1:(last_healthy_traj_p1 - 1)]
-            @warn "Run $run, repeat $j: Discarded data after step $(last_healthy_traj_p1 - 1)"
-            data_healthy = all(allequal, eachslice(sort(S, dims = 1), dims = 1))
+            last_healthy, inds = find_first_duplicated_central_energies(S, traj_lengths)
+            if isnothing(last_healthy)
+                data_healthy = true
+            else
+                S = S[:, 1:(last_healthy - 1)]
+                @warn "Run $run, repeat $j: Discarded data after step $(last_healthy - 1)"
+                data_healthy = all(allequal, eachslice(sort(S, dims = 1), dims = 1))
+            end
         end
 
         ntraj = dropdims(count(isfinite, S, dims = 2), dims = 2)
