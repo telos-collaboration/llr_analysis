@@ -58,7 +58,7 @@ end
 function cumulant_plots(h5file, Nt, critical_values)
     fid = h5open(h5file)
     pltCV = plot(legend = :outerright, xlabel = L"\beta", ylabel = L"C_V(\beta)", title = L"specific heat $N_t = %$Nt$")
-    pltBC = plot(legend = :outerright, xlabel = L"\beta", ylabel = L"B_L(\beta)", title = L"Binder cumulant $N_t = %$Nt$")
+    pltBC = plot(legend = :outerright, xlabel = L"\beta", ylabel = L"B_L(\beta)", title = L"Binder cumulant $B_L(\beta) - 2/3$  $N_t = %$Nt$")
     runs = filter(!startswith("provenance"), keys(fid))
     runs = largets_replica_runs(fid, runs)
 
@@ -82,19 +82,11 @@ function cumulant_plots(h5file, Nt, critical_values)
         BC = dropdims(mean(BC0, dims = 2), dims = 2)
         ΔBC = dropdims(std(BC0, dims = 2), dims = 2) ./ sqrt.(repeats)
 
-        # add vertical lines with critical values
-        if isfile(critical_values)
-            data = readdlm(critical_values, ',', skipstart = 1)
-            ind = findfirst(i -> data[i, 1] == r, 1:length(data[:, 1]))
-            βc_CV, Δβc_CV, βc_BC, Δβc_BC = data[ind, 4:7]
-            #vspan!(pltCV, [βc_CV - Δβc_CV, βc_CV + Δβc_CV], alpah = 0.3, color = :grey, label = "")
-            #vspan!(pltBC, [βc_BC - Δβc_BC, βc_BC + Δβc_BC], alpah = 0.3, color = :grey, label = "")
-        end
-
         plot!(pltCV, β, CV, ribbon = ΔCV, label = LLRParsing.fancy_title(r), lw = 2)
-        plot!(pltBC, β, BC, ribbon = ΔBC, label = LLRParsing.fancy_title(r), lw = 2)
+        plot!(pltBC, β, BC .- 2 / 3, ribbon = ΔBC, label = LLRParsing.fancy_title(r), lw = 2)
     end
-    hline!(pltBC, [2 / 3], yformatter = :plain, linestyle = :dot, color = :black, label = L"B_L(\beta) = 2/3")
+    #hline!(pltBC, [2 / 3], yformatter = :plain, linestyle = :dot, color = :black, label = L"B_L(\beta) = 2/3")
+    plot!(pltCV, ylims = (0, maximum(ylims(pltCV))))
     return pltCV, pltBC
 end
 
