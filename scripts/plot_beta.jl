@@ -24,24 +24,20 @@ function read_critical_betas(file)
     Δβc = data[:, 7]
     return only(unique(Nt)), Nl, βc, Δβc, only(unique(A1)), only(unique(A2))
 end
-function plot_critical_beta!(plt, file)
+function plot_critical_beta!(plt, file; kws...)
     Nt, L, βc, Δβc, A1, A2 = read_critical_betas(file)
     tks = (inv.(L), (L"1/%$Li" for Li in L))
-    return scatter!(
-        plt,
-        inv.(L),
-        βc,
-        xticks = tks,
-        yerr = Δβc,
-        markershape = :hexagon,
-        label = L"$N_t=%$Nt$: ratio %$A1:%$A2",
-    )
+    lbl = L"$N_t=%$Nt$: ratio %$A1:%$A2"
+    scatter!(plt, inv.(L), βc, xticks = tks, yerr = Δβc, label = lbl; kws...)
+    return nothing
 end
 function plot_critical_beta(files, plotfile)
     ispath(dirname(plotfile)) || mkpath(dirname(plotfile))
     plt = plot(ylabel = L"critical $\beta_c$", xlabel = L"inverse spatial volume $1/N_s$")
-    for file in files
-        plot_critical_beta!(plt, file)
+    markers = (:circle, :hexagon, :rect)
+    colors = (:orange, :blue, :green)
+    for (i, file) in enumerate(files)
+        plot_critical_beta!(plt, file; markershape = markers[i], color = colors[i], markeralpha = 0.8)
     end
     plot!(plt; xflip = true, legend = :topleft)
     return savefig(plt, plotfile)
