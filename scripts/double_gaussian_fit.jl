@@ -2,6 +2,7 @@ using LLRParsing
 using HDF5
 using Plots
 using ArgParse
+using Peaks
 gr(
     size = (425, 282),
     fontfamily = "Computer Modern",
@@ -26,6 +27,11 @@ function plot_all_histogram_fits(file, plotfile, run; fit, A1 = 1, A2 = 1, name 
             ups, f, Δf = LLRParsing.histogram_jackknife_fit(fid, run, βc)
             LLRParsing.plot_double_gaussian_fit_difference(plt, fid, run, βc)
             plot!(plt, ups, f, ribbon = Δf, label = "double Gaussian fit", lw = 2)
+            # shade the region used in the fit
+            ups, P, ΔP, covP, V, dS = probability_density(fid, run, βc)
+            pks = findmaxima(P, 5)
+            vspan!(plt, [ups[1], ups[pks.indices[1]]], color = :grey, alpha = 0.35, label = "")
+            vspan!(plt, [ups[pks.indices[2]], ups[end]], color = :grey, alpha = 0.35, label = "")
         end
     catch
         @warn "Error for plot with peak-ratio $A1:$A2 for $run"
