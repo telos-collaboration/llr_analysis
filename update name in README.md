@@ -1,9 +1,9 @@
-# Density of states in Sp(4) gauge theory with Nt=5 - Analysis workflow
+# Finite-temperature Yang-Mills theories with the density of states method: towards the continuum limit - Analysis workflow
 
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.16579683.svg)](https://doi.org/10.5281/zenodo.16579683)
 
 The workflow in this repository performs the analyses presented in the paper
-[Density of states in Sp(4) gauge theory with Nt=5 and large volumes][].
+[Finite-temperature Yang-Mills theories with the density of states method: towards the continuum limit]().
 
 ## Requirements
 
@@ -79,8 +79,6 @@ extending the analysis in this way
 has not been as fully tested as the rest of the workflow,
 and is not guaranteed to be trivial for someone not already familiar with the code.
 
-[datarelease]: https://doi.org/10.5281/zenodo.TODO_ZENODO_ID
 [miniforge]: https://github.com/conda-forge/miniforge
-[paper]: https://doi.org/10.48550/arXiv.TODO_ARXIV_ID
 [snakemake]: https://snakemake.github.io
 [snakemake-conda]: https://snakemake.readthedocs.io/en/stable/snakefiles/deployment.html
