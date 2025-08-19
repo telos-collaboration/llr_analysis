@@ -14,7 +14,7 @@ function thermodynamic_potentials(h5dset, run; kws...)
     S0 = dropdims(unique(S0_all, dims = 2), dims = 2)
     return thermodynamic_potentials(a, S0, V; kws...)
 end
-function thermodynamic_potentials_repeats(a, S0, V; logρ0 = 0.0)
+function thermodynamic_potentials_repeats(a, S0, V; s0 = 0.0)
     @. S0 = S0 / V
     dS = S0[2] - S0[1]
     E = copy(S0)
@@ -34,7 +34,7 @@ function thermodynamic_potentials_repeats(a, S0, V; logρ0 = 0.0)
         @. s[:, r] = s[:, r] - min_s
         for i in 1:replicas
             u = 6 - E[i]
-            f[i, r] = u - t[i, r] * s[i, r]
+            f[i, r] = u - t[i, r] * (s[i, r] + s0)
         end
     end
     return t, f, s
@@ -64,6 +64,21 @@ function plot_free_energy(file, plotfile, run)
 
     a, Δa, S0, _ = a_vs_central_action(h5dset, run)
     t, Δt, f, Δf, s, Δs = thermodynamic_potentials(h5dset, run)
+    # show slope of the interface region
+    pks = only(findmaxima(a, 5).indices)
+    mns = only(findminima(a, 5).indices)
+    t1, t2 = t[1], t[pks]
+    f1, f2 = f[1], f[pks]
+    slope = (f2 - f1) / (t2 - t1)
+    @show run, slope
+
+    # add constant s0 such that the slope is always matching
+    t, Δt, f, Δf, s, Δs = thermodynamic_potentials(h5dset, run; s0 = slope + 0.39)
+    # show slope of the interface region
+    t1, t2 = t[pks], t[mns]
+    f1, f2 = f[pks], f[mns]
+    slope = (f2 - f1) / (t2 - t1)
+
     pks = only(findmaxima(a, 5).indices)
     mns = only(findminima(a, 5).indices)
     r1 = 1:pks
@@ -108,7 +123,19 @@ function plot_entropy(file, plotfile)
     runs = filter(!startswith("provenance"), runs)
     plt = plot(title = L"entropy $s = \log(\rho) - \log(\rho_0)$")
     for r in runs
+        a, Δa, S0, _ = a_vs_central_action(h5dset, r)
         t, Δt, f, Δf, s, Δs = thermodynamic_potentials(h5dset, r)
+
+        # show slope of the interface region
+        pks = only(findmaxima(a, 5).indices)
+        mns = only(findminima(a, 5).indices)
+        t1, t2 = t[pks], t[mns]
+        f1, f2 = f[pks], f[mns]
+        slope = (f2 - f1) / (t2 - t1)
+        s0 = slope + 0.39
+        @.s = s + s0
+        @show run, slope
+
         plot!(plt, t, s, xerr = Δt, yerr = Δs, ms = 1, label = LLRParsing.fancy_title(r))
     end
     ispath(dirname(plotfile)) || mkpath(dirname(plotfile))
