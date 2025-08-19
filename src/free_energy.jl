@@ -121,7 +121,8 @@ function plot_entropy(file, plotfile)
     h5dset = h5open(file)
     runs = keys(h5dset)
     runs = filter(!startswith("provenance"), runs)
-    plt = plot(title = L"entropy $s = \log(\rho) - \log(\rho_0)$")
+    Nt = read(h5dset, joinpath(first(runs), "Nt"))
+    plt = plot(title = L"$N_t = %$Nt$")
     for r in runs
         a, Δa, S0, _ = a_vs_central_action(h5dset, r)
         t, Δt, f, Δf, s, Δs = thermodynamic_potentials(h5dset, r)
@@ -139,6 +140,6 @@ function plot_entropy(file, plotfile)
         plot!(plt, t, s, xerr = Δt, yerr = Δs, ms = 1, label = LLRParsing.fancy_title(r))
     end
     ispath(dirname(plotfile)) || mkpath(dirname(plotfile))
-    plot!(plt, legend = :bottomright, xlabel = L"t = 1/a_n", ylabel = L"entropy $s$")
+    plot!(plt, legend = :bottomright, xlabel = L"t = 1/a_n", ylabel = L"entropy $s = \log(\rho)$")
     return savefig(plt, plotfile)
 end
