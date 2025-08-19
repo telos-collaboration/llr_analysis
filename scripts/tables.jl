@@ -29,7 +29,7 @@ $N_t$ & $N_s$ & $u_{p}^{\rm min}$ & $u_{p}^{\rm max}$ & $N_{\rm rep}$ & $N_{\rm 
         nr, rm = findlast(x -> !x, isrm), length(isrm)
         println(
             io,
-            "$Nt & $Nl & $(minimum(up)) & $(maximum(up)) & $Nreplicas & $Nrepeats & $nr & $(rm - nr) \\\\",
+            "$Nt & $Nl & $(round((minimum(up)), digits = 3)) & $(round(maximum(up), digits = 3)) & $Nreplicas & $Nrepeats & $nr & $(rm - nr) \\\\",
         )
     end
     println(io, footer)
