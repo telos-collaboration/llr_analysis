@@ -50,16 +50,16 @@ function thermodynamic_potentials(a, S0, V; kws...)
     Δs = dropdims(std(s_r, dims = 2), dims = 2) ./ sqrt(N)
     return t, Δt, f, Δf, s, Δs
 end
-function plot_free_energies(file, plotdir)
+function plot_free_energies(file, plotdir, free_energy_slope)
     h5dset = h5open(file)
     runs = keys(h5dset)
     close(h5dset)
     for r in runs
-        plot_free_energy(file, joinpath(plotdir, "$r.pdf"), r)
+        plot_free_energy(file, joinpath(plotdir, "$r.pdf"), r, free_energy_slope)
     end
     return
 end
-function plot_free_energy(file, plotfile, run)
+function plot_free_energy(file, plotfile, run, free_energy_slope)
     h5dset = h5open(file)
 
     a, Δa, S0, _ = a_vs_central_action(h5dset, run)
@@ -73,7 +73,7 @@ function plot_free_energy(file, plotfile, run)
     @show run, slope
 
     # add constant s0 such that the slope is always matching
-    t, Δt, f, Δf, s, Δs = thermodynamic_potentials(h5dset, run; s0 = slope + 0.39)
+    t, Δt, f, Δf, s, Δs = thermodynamic_potentials(h5dset, run; s0 = slope - free_energy_slope)
     # show slope of the interface region
     t1, t2 = t[pks], t[mns]
     f1, f2 = f[pks], f[mns]
@@ -117,7 +117,7 @@ function plot_free_energy(file, plotfile, run)
     savefig(plt, plotfile)
     return close(h5dset)
 end
-function plot_entropy(file, plotfile)
+function plot_entropy(file, plotfile, free_energy_slope)
     h5dset = h5open(file)
     runs = keys(h5dset)
     runs = filter(!startswith("provenance"), runs)
@@ -133,9 +133,8 @@ function plot_entropy(file, plotfile)
         t1, t2 = t[pks], t[mns]
         f1, f2 = f[pks], f[mns]
         slope = (f2 - f1) / (t2 - t1)
-        s0 = slope + 0.39
-        @.s = s + s0
-        @show run, slope
+        s0 = slope - free_energy_slope
+        @. s = s + s0
 
         plot!(plt, t, s, xerr = Δt, yerr = Δs, ms = 1, label = LLRParsing.fancy_title(r))
     end
