@@ -50,16 +50,16 @@ function thermodynamic_potentials(a, S0, V; kws...)
     Δs = dropdims(std(s_r, dims = 2), dims = 2) ./ sqrt(N)
     return t, Δt, f, Δf, s, Δs
 end
-function plot_free_energies(file, plotdir, free_energy_slope)
+function plot_free_energies(file, plotdir, critical_entropy)
     h5dset = h5open(file)
     runs = keys(h5dset)
     close(h5dset)
     for r in runs
-        plot_free_energy(file, joinpath(plotdir, "$r.pdf"), r, free_energy_slope)
+        plot_free_energy(file, joinpath(plotdir, "$r.pdf"), r, critical_entropy)
     end
     return
 end
-function plot_free_energy(file, plotfile, run, free_energy_slope)
+function plot_free_energy(file, plotfile, run, critical_entropy)
     h5dset = h5open(file)
 
     a, Δa, S0, _ = a_vs_central_action(h5dset, run)
@@ -67,23 +67,17 @@ function plot_free_energy(file, plotfile, run, free_energy_slope)
     # show slope of the interface region
     pks = only(findmaxima(a, 5).indices)
     mns = only(findminima(a, 5).indices)
-    t1, t2 = t[1], t[pks]
-    f1, f2 = f[1], f[pks]
-    slope = (f2 - f1) / (t2 - t1)
-    @show run, slope
-
-    # add constant s0 such that the slope is always matching
-    t, Δt, f, Δf, s, Δs = thermodynamic_potentials(h5dset, run; s0 = slope - free_energy_slope)
-    # show slope of the interface region
     t1, t2 = t[pks], t[mns]
-    f1, f2 = f[pks], f[mns]
-    slope = (f2 - f1) / (t2 - t1)
 
-    pks = only(findmaxima(a, 5).indices)
-    mns = only(findminima(a, 5).indices)
+    βc = LLRParsing.beta_at_equal_heights(h5dset, run)
+    ind_tc = argmin(i -> abs(a[i] - βc), pks:mns)
+
+    # add constant s0 such that the entropy matches at criticality
+    t, Δt, f, Δf, s, Δs = thermodynamic_potentials(h5dset, run; s0 = critical_entropy - s[ind_tc])
+
+    # find crossing in free energy
     r1 = 1:pks
     r2 = mns:length(a)
-
     perm1 = sortperm(t[r1])
     perm2 = sortperm(t[r2])
     itp1 = Interpolator(t[r1][perm1], f[r1][perm1])
@@ -117,7 +111,7 @@ function plot_free_energy(file, plotfile, run, free_energy_slope)
     savefig(plt, plotfile)
     return close(h5dset)
 end
-function plot_entropy(file, plotfile, free_energy_slope)
+function plot_entropy(file, plotfile, critical_entropy)
     h5dset = h5open(file)
     runs = keys(h5dset)
     runs = filter(!startswith("provenance"), runs)
@@ -130,15 +124,15 @@ function plot_entropy(file, plotfile, free_energy_slope)
         # show slope of the interface region
         pks = only(findmaxima(a, 5).indices)
         mns = only(findminima(a, 5).indices)
-        t1, t2 = t[pks], t[mns]
-        f1, f2 = f[pks], f[mns]
-        slope = (f2 - f1) / (t2 - t1)
-        s0 = slope - free_energy_slope
+
+        βc = LLRParsing.beta_at_equal_heights(h5dset, r)
+        ind_tc = argmin(i -> abs(a[i] - βc), pks:mns)
+        s0 = critical_entropy - s[ind_tc]
         @. s = s + s0
 
         plot!(plt, t, s, xerr = Δt, yerr = Δs, ms = 1, label = LLRParsing.fancy_title(r))
     end
     ispath(dirname(plotfile)) || mkpath(dirname(plotfile))
-    plot!(plt, legend = :bottomright, xlabel = L"t = 1/a_n", ylabel = L"entropy $s = \log(\rho)$")
+    plot!(plt, legend = :bottomright, xlabel = L"t = 1/a_n", ylabel = L"$s$")
     return savefig(plt, plotfile)
 end

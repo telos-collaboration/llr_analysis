@@ -25,10 +25,10 @@ function parse_commandline()
         "--run_name"
         help = "Run to be analysed"
         required = true
-        "--free_energy_slope"
+        "--critical_entropy"
         arg_type = Float64
         help = "fixed slope of the free energy in coexistence regime"
-        default = -0.39
+        default = +0.4
     end
     return parse_args(s)
 end
@@ -37,7 +37,7 @@ function main()
     file = args["h5file"]
     plotfile = args["plot_file"]
     run = args["run_name"]
-    free_energy_slope = args["free_energy_slope"]
-    return LLRParsing.plot_free_energy(file, plotfile, run, free_energy_slope)
+    critical_entropy = args["critical_entropy"]
+    return LLRParsing.plot_free_energy(file, plotfile, run, critical_entropy)
 end
 main()
