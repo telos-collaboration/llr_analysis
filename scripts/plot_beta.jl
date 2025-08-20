@@ -33,7 +33,7 @@ function plot_critical_beta!(plt, file; kws...)
 end
 function plot_critical_beta(files, plotfile)
     ispath(dirname(plotfile)) || mkpath(dirname(plotfile))
-    plt = plot(ylabel = L"critical $\beta_c$", xlabel = L"inverse spatial volume $1/N_s$")
+    plt = plot(ylabel = L"$\beta_{CV}(P)$", xlabel = L"$1/N_s$")
     markers = (:circle, :hexagon, :rect)
     colors = (:orange, :blue, :green)
     for (i, file) in enumerate(files)
