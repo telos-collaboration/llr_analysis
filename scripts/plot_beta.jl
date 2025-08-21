@@ -39,7 +39,7 @@ function plot_critical_beta(files, plotfile)
     for (i, file) in enumerate(files)
         plot_critical_beta!(plt, file; markershape = markers[i], color = colors[i], markeralpha = 0.8)
     end
-    plot!(plt; xflip = true, legend = :topleft)
+    plot!(plt; xflip = false, legend = :topright)
     return savefig(plt, plotfile)
 end
 
