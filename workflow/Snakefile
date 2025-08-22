@@ -42,11 +42,11 @@ rule all:
     input:
         definitions="assets/definitions/definitions.tex",
         overview_plots=expand(
-            "data_assets/plots/overview/{dataset}.pdf",
+            "tmp/plots/overview/{dataset}.pdf",
             dataset=list_hdf5_datasets(metadata),
         ),
         an_trajectory_plots=expand(
-            "data_assets/plots/an_trajectories/{dataset}.pdf",
+            "tmp/plots/an_trajectories/{dataset}.pdf",
             dataset=list_hdf5_datasets(metadata),
         ),
         free_energy_plots_Nt4=expand(
@@ -171,7 +171,7 @@ rule overview_plots:
         script="scripts/trajectory_overview.jl",
         julia_instantiated="tmp/julia_ready",
     output:
-        plot="data_assets/plots/overview/{Nt}x{Nl}_{Nreplicas}replicas.pdf",
+        plot="tmp/plots/overview/{Nt}x{Nl}_{Nreplicas}replicas.pdf",
     conda:
         "envs/environment.yml"
     shell:
@@ -184,7 +184,7 @@ rule an_trajectory_plots:
         script="scripts/an_history.jl",
         julia_instantiated="tmp/julia_ready",
     output:
-        plot="data_assets/plots/an_trajectories/{Nt}x{Nl}_{Nreplicas}replicas.pdf",
+        plot="tmp/plots/an_trajectories/{Nt}x{Nl}_{Nreplicas}replicas.pdf",
     conda:
         "envs/environment.yml"
     shell:
