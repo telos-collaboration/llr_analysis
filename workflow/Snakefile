@@ -56,7 +56,7 @@ rule all:
             "assets/plots/free_energy/{dataset}.pdf",
             dataset=list_hdf5_datasets_Nt(metadata, 5),
         ),
-        an_volume_plots=expand("assets/plots/an_volume_Nt{Nt}.pdf", Nt=[4, 5, 6]),
+        an_volume_plots=expand("assets/plots/an_volume_Nt{Nt}.pdf", Nt=[4, 5]),
         entropy_plots=expand("assets/plots/entropy_Nt{Nt}.pdf", Nt=[4, 5]),
         critical_beta=expand("data_assets/critical_beta_Nt{Nt}.csv", Nt=[4, 5]),
         critical_beta_cumulants=expand(
@@ -101,8 +101,8 @@ rule all:
         an_replica_plots=expand(
             "assets/plots/an_replicas_Nt{Nt}_Nl{Nl}.pdf",
             zip,
-            Nt=[5, 5, 6],
-            Nl=[48, 56, 72],
+            Nt=[5, 5],
+            Nl=[48, 56],
         ),
         plot_binder_cumulant=expand(
             "assets/plots/binder_cumulant_Nt{Nt}.pdf", Nt=[4, 5]
