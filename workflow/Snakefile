@@ -40,7 +40,6 @@ def input_logs(wildcards):
 
 rule all:
     input:
-        tables=expand("assets/tables/runs_Nt{Nt}.tex", Nt=[4, 5, 6]),
         definitions="assets/definitions/definitions.tex",
         overview_plots=expand(
             "assets/plots/overview/{dataset}.pdf", dataset=list_hdf5_datasets(metadata)
@@ -108,11 +107,10 @@ rule all:
         plot_binder_cumulant=expand(
             "assets/plots/binder_cumulant_Nt{Nt}.pdf", Nt=[4, 5]
         ),
-        critical_beta_table=expand("assets/tables/beta_critical_Nt{Nt}.tex", Nt=[4, 5]),
         plot_specific_heat=expand("assets/plots/specific_heat_Nt{Nt}.pdf", Nt=[4, 5]),
         surface_tension_plot="assets/plots/surface_tension_term.pdf",
-        ensembles_combined="assets/tables/runs_all.tex",
-        file_out="assets/tables/beta_critical_all.tex",
+        ensembles_combined="assets/tables/runs.tex",
+        file_out="assets/tables/beta_critical.tex",
 
 
 rule julia_instantiate:
@@ -159,7 +157,7 @@ rule tables:
         h5file="data_assets/Sp4_Nt{Nt}_sorted.hdf5",
         julia_instantiated="tmp/julia_ready",
     output:
-        table="assets/tables/runs_Nt{Nt}.tex",
+        table="tmp/tables/runs_Nt{Nt}.tex",
     conda:
         "envs/environment.yml"
     shell:
@@ -400,7 +398,7 @@ rule critical_beta_table:
         csv_histogram="data_assets/critical_beta_Nt{Nt}.csv",
         julia_instantiated="tmp/julia_ready",
     output:
-        textable="assets/tables/beta_critical_Nt{Nt}.tex",
+        textable="tmp/tables/beta_critical_Nt{Nt}.tex",
     conda:
         "envs/environment.yml"
     shell:
@@ -424,11 +422,11 @@ rule definitions:
 rule combine_ensemble_tables:
     input:
         script="scripts/combine_tables.jl",
-        file1="assets/tables/runs_Nt5.tex",
-        file2="assets/tables/runs_Nt4.tex",
+        file1="tmp/tables/runs_Nt5.tex",
+        file2="tmp/tables/runs_Nt4.tex",
         julia_instantiated="tmp/julia_ready",
     output:
-        file_out="assets/tables/runs_all.tex",
+        file_out="assets/tables/runs.tex",
     conda:
         "envs/environment.yml"
     shell:
@@ -438,11 +436,11 @@ rule combine_ensemble_tables:
 rule combine_critical_beta_tables:
     input:
         script="scripts/combine_tables.jl",
-        file1="assets/tables/beta_critical_Nt5.tex",
-        file2="assets/tables/beta_critical_Nt4.tex",
+        file1="tmp/tables/beta_critical_Nt5.tex",
+        file2="tmp/tables/beta_critical_Nt4.tex",
         julia_instantiated="tmp/julia_ready",
     output:
-        file_out="assets/tables/beta_critical_all.tex",
+        file_out="assets/tables/beta_critical.tex",
     conda:
         "envs/environment.yml"
     shell:
