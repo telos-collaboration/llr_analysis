@@ -1,6 +1,7 @@
 using ArgParse
 using Plots
 using LLRParsing
+using DelimitedFiles
 gr(
     size = (425, 282),
     fontfamily = "Computer Modern",
@@ -26,9 +27,8 @@ function parse_commandline()
         help = "Run to be analysed"
         required = true
         "--critical_entropy"
-        arg_type = Float64
-        help = "fixed slope of the free energy in coexistence regime"
-        default = +0.4
+        help = "CSV containing entropy at the critical point"
+        required = true
     end
     return parse_args(s)
 end
@@ -37,7 +37,8 @@ function main()
     file = args["h5file"]
     plotfile = args["plot_file"]
     run = args["run_name"]
-    critical_entropy = args["critical_entropy"]
+    entropy_csv = args["critical_entropy"]
+    critical_entropy = Float64(readdlm(entropy_csv, skipstart = 1)[1, 1])
     return LLRParsing.plot_free_energy(file, plotfile, run, critical_entropy)
 end
 main()

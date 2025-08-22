@@ -195,12 +195,13 @@ rule free_energy_plots:
         h5file="data_assets/Sp4_Nt{Nt}_sorted.hdf5",
         script="scripts/free_energy.jl",
         julia_instantiated="tmp/julia_ready",
+        entropy="metadata/critical_entropy.csv",
     output:
         plot="assets/plots/free_energy/{Nt}x{Nl}_{Nreplicas}replicas.pdf",
     conda:
         "envs/environment.yml"
     shell:
-        'julia --project="." {input.script} --h5file {input.h5file} --plot_file {output.plot} --run_name {wildcards.Nt}x{wildcards.Nl}_{wildcards.Nreplicas}replicas'
+        'julia --project="." {input.script} --h5file {input.h5file} --critical_entropy {input.entropy} --plot_file {output.plot} --run_name {wildcards.Nt}x{wildcards.Nl}_{wildcards.Nreplicas}replicas'
 
 
 rule an_volume_comparison_plots:
@@ -234,12 +235,13 @@ rule entropy_plots:
         h5file="data_assets/Sp4_Nt{Nt}_sorted.hdf5",
         script="scripts/entropy.jl",
         julia_instantiated="tmp/julia_ready",
+        entropy="metadata/critical_entropy.csv",
     output:
         plot="assets/plots/entropy_Nt{Nt}.pdf",
     conda:
         "envs/environment.yml"
     shell:
-        'julia --project="." {input.script} --h5file {input.h5file} --plot_file {output.plot}'
+        'julia --project="." {input.script} --h5file {input.h5file} --critical_entropy {input.entropy} --plot_file {output.plot}'
 
 
 rule critical_beta:
