@@ -42,18 +42,19 @@ rule all:
     input:
         definitions="assets/definitions/definitions.tex",
         overview_plots=expand(
-            "assets/plots/overview/{dataset}.pdf", dataset=list_hdf5_datasets(metadata)
+            "data_assets/plots/overview/{dataset}.pdf",
+            dataset=list_hdf5_datasets(metadata),
         ),
         an_trajectory_plots=expand(
-            "assets/plots/an_trajectories/{dataset}.pdf",
+            "data_assets/plots/an_trajectories/{dataset}.pdf",
             dataset=list_hdf5_datasets(metadata),
         ),
         free_energy_plots_Nt4=expand(
-            "assets/plots/free_energy/{dataset}.pdf",
+            "assets/plots/free_energy/free_energy_{dataset}.pdf",
             dataset=list_hdf5_datasets_Nt(metadata, 4),
         ),
         free_energy_plots_Nt5=expand(
-            "assets/plots/free_energy/{dataset}.pdf",
+            "assets/plots/free_energy/free_energy_{dataset}.pdf",
             dataset=list_hdf5_datasets_Nt(metadata, 5),
         ),
         an_volume_plots=expand("assets/plots/an_volume_Nt{Nt}.pdf", Nt=[4, 5]),
@@ -75,27 +76,27 @@ rule all:
             "assets/plots/plaquette_distribution_Nt{Nt}_volumes.pdf", Nt=[4, 5]
         ),
         double_gaussian_plots_Nt4=expand(
-            "assets/plots/plaquette_distribution/{dataset}.pdf",
+            "assets/plots/plaquette_distribution/pd_{dataset}.pdf",
             dataset=list_hdf5_datasets_Nt(metadata, 4),
         ),
         double_gaussian_plots_Nt5=expand(
-            "assets/plots/plaquette_distribution/{dataset}.pdf",
+            "assets/plots/plaquette_distribution/pd_{dataset}.pdf",
             dataset=list_hdf5_datasets_Nt(metadata, 5),
         ),
         double_gaussian_plots_Nt4_2_to_1=expand(
-            "assets/plots/plaquette_distribution/{dataset}_two_to_one.pdf",
+            "assets/plots/plaquette_distribution/pd_{dataset}_two_to_one.pdf",
             dataset=list_hdf5_datasets_Nt(metadata, 4),
         ),
         double_gaussian_plots_Nt5_2_to_1=expand(
-            "assets/plots/plaquette_distribution/{dataset}_two_to_one.pdf",
+            "assets/plots/plaquette_distribution/pd_{dataset}_two_to_one.pdf",
             dataset=list_hdf5_datasets_Nt(metadata, 5),
         ),
         double_gaussian_plots_Nt4_1_to_2=expand(
-            "assets/plots/plaquette_distribution/{dataset}_one_to_two.pdf",
+            "assets/plots/plaquette_distribution/pd_{dataset}_one_to_two.pdf",
             dataset=list_hdf5_datasets_Nt(metadata, 4),
         ),
         double_gaussian_plots_Nt5_1_to_2=expand(
-            "assets/plots/plaquette_distribution/{dataset}_one_to_two.pdf",
+            "assets/plots/plaquette_distribution/pd_{dataset}_one_to_two.pdf",
             dataset=list_hdf5_datasets_Nt(metadata, 5),
         ),
         an_replica_plots=expand(
@@ -170,7 +171,7 @@ rule overview_plots:
         script="scripts/trajectory_overview.jl",
         julia_instantiated="tmp/julia_ready",
     output:
-        plot="assets/plots/overview/{Nt}x{Nl}_{Nreplicas}replicas.pdf",
+        plot="data_assets/plots/overview/{Nt}x{Nl}_{Nreplicas}replicas.pdf",
     conda:
         "envs/environment.yml"
     shell:
@@ -183,7 +184,7 @@ rule an_trajectory_plots:
         script="scripts/an_history.jl",
         julia_instantiated="tmp/julia_ready",
     output:
-        plot="assets/plots/an_trajectories/{Nt}x{Nl}_{Nreplicas}replicas.pdf",
+        plot="data_assets/plots/an_trajectories/{Nt}x{Nl}_{Nreplicas}replicas.pdf",
     conda:
         "envs/environment.yml"
     shell:
@@ -197,7 +198,7 @@ rule free_energy_plots:
         julia_instantiated="tmp/julia_ready",
         entropy="metadata/critical_entropy.csv",
     output:
-        plot="assets/plots/free_energy/{Nt}x{Nl}_{Nreplicas}replicas.pdf",
+        plot="assets/plots/free_energy/free_energy_{Nt}x{Nl}_{Nreplicas}replicas.pdf",
     conda:
         "envs/environment.yml"
     shell:
@@ -330,7 +331,7 @@ rule double_gaussian_plots:
         script="scripts/double_gaussian_fit.jl",
         julia_instantiated="tmp/julia_ready",
     output:
-        plot="assets/plots/plaquette_distribution/{Nt}x{Nl}_{Nreplicas}replicas.pdf",
+        plot="assets/plots/plaquette_distribution/pd_{Nt}x{Nl}_{Nreplicas}replicas.pdf",
     conda:
         "envs/environment.yml"
     shell:
@@ -343,7 +344,7 @@ rule double_gaussian_plots_two_to_one:
         script="scripts/double_gaussian_fit.jl",
         julia_instantiated="tmp/julia_ready",
     output:
-        plot="assets/plots/plaquette_distribution/{Nt}x{Nl}_{Nreplicas}replicas_two_to_one.pdf",
+        plot="assets/plots/plaquette_distribution/pd_{Nt}x{Nl}_{Nreplicas}replicas_two_to_one.pdf",
     conda:
         "envs/environment.yml"
     shell:
@@ -356,7 +357,7 @@ rule double_gaussian_plots_one_to_two:
         script="scripts/double_gaussian_fit.jl",
         julia_instantiated="tmp/julia_ready",
     output:
-        plot="assets/plots/plaquette_distribution/{Nt}x{Nl}_{Nreplicas}replicas_one_to_two.pdf",
+        plot="assets/plots/plaquette_distribution/pd_{Nt}x{Nl}_{Nreplicas}replicas_one_to_two.pdf",
     conda:
         "envs/environment.yml"
     shell:
