@@ -31,6 +31,14 @@ function provenance()
     return provenance
 end
 function print_provenance_tex(io = stdout)
+    comment_str = "% "
+    return print_provenance_plaintext(io, comment_str)
+end
+function print_provenance_csv(io = stdout)
+    comment_str = "# "
+    return print_provenance_plaintext(io, comment_str)
+end
+function print_provenance_plaintext(io = stdout, comment_str = "% ")
     p = provenance()
     str = string(p["comment"], "\n") *
         string("workflow script: ", p["script"], "\n") *
@@ -40,7 +48,7 @@ function print_provenance_tex(io = stdout)
         string("workflow timestamp: ", p["timestamp"], "\n") *
         string("analysis machine: ", p["machine"], "\n") *
         string("analysis user: ", p["user"], "\n")
-    str = replace("% " * str, "\n" => "\n% ")[1:(end - 2)]
+    str = replace(comment_str * str, "\n" => "\n" * comment_str)[1:(end - 2)]
     return print(io, str)
 end
 function write_provenance_hdf5(h5file)

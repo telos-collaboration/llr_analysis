@@ -20,6 +20,7 @@ function all_critical_beta(file, outfile; A1 = 1, A2 = 1)
     runs = filter(!startswith("provenance"), runs)
     header = !isfile(outfile)
     io = open(outfile, "a")
+    print_provenance_csv(io)
     header && println(io, "run,Nt,Nl,A1,A2,βc,Δβc,str")
     for run in runs
         L = read(fid[run], "Nl")

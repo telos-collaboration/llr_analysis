@@ -15,7 +15,7 @@ gr(
 )
 
 function read_critical_betas(file)
-    data = readdlm(file, ',', skipstart = 1)
+    data, header = readdlm(file, ',', header = true, comments = true)
     Nt = data[:, 2]
     Nl = data[:, 3]
     A1 = data[:, 4]

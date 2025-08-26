@@ -142,6 +142,7 @@ function critical_cumulants_all_runs(h5file, outfile)
     runs = filter(!startswith("provenance"), runs)
     setprecision(BigFloat, 106)
     io = open(outfile, "w")
+    print_provenance_csv(io)
     println(io, "run,T,L,βc_CV,Δβc_CV,βc_BC,Δβc_BC,str_CV,str_BC")
     for r in runs
 

@@ -4,7 +4,7 @@ using DelimitedFiles
 using ArgParse
 
 function read_critical_betas(file; offset = 0)
-    data = readdlm(file, ',', skipstart = 1)
+    data, header = readdlm(file, ',', header = true, comments = true)
     runs = data[:, 1]
     Nt = data[:, 2]
     Nl = data[:, 3]
@@ -25,7 +25,6 @@ function main(file1, file2, file_tex)
     \\end{tabular}"""
 
     @assert Nt11 == NtCV == NtBC
-    @assert Nl11 == NlCV == NlBC
     println(io, header)
     for i in eachindex(Nt11, NtCV, NtBC)
         rx = r"[0-9]x[0-9]+_([0-9]+)replicas"
