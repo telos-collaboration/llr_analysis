@@ -5,11 +5,11 @@ using ArgParse
 
 function read_critical_betas(file; offset = 0)
     data, header = readdlm(file, ',', header = true, comments = true)
-    runs = data[:, 1]
-    Nt = data[:, 2]
-    Nl = data[:, 3]
-    βc = data[:, 6 + offset]
-    Δβc = data[:, 7 + offset]
+    runs = data[:, 2]
+    Nt = data[:, 3]
+    Nl = data[:, 4]
+    βc = data[:, 7 + offset]
+    Δβc = data[:, 8 + offset]
     return runs, Nt, Nl, βc, Δβc
 end
 function main(file1, file2, file_tex)
