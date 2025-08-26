@@ -21,17 +21,16 @@ function all_critical_beta(file, outfile; A1 = 1, A2 = 1)
     header = !isfile(outfile)
     io = open(outfile, "a")
     print_provenance_csv(io)
-    header && println(io, "run,Nt,Nl,A1,A2,βc,Δβc,str")
+    header && println(io, "run,Nt,Nl,A1,A2,βc,Δβc")
     for run in runs
         L = read(fid[run], "Nl")
         T = read(fid[run], "Nt")
         try
             βc, Δβc = LLRParsing.βc_jackknife(fid, run; A1, A2)
-            str = errorstring(βc, Δβc; nsig = 1)
-            println(io, "$run,$T,$L,$A1,$A2,$βc,$Δβc,$str")
+            println(io, "$run,$T,$L,$A1,$A2,$βc,$Δβc")
         catch
             @warn "Cannot determine critical coupling for run $run with peak ratio $A1:$A2"
-            println(io, "$run,$T,$L,$A1,$A2,NaN,NaN,NaN(NaN)")
+            println(io, "$run,$T,$L,$A1,$A2,NaN,NaN")
         end
     end
     return close(io)

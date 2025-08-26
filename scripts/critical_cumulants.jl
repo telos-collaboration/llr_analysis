@@ -143,7 +143,7 @@ function critical_cumulants_all_runs(h5file, outfile)
     setprecision(BigFloat, 106)
     io = open(outfile, "w")
     print_provenance_csv(io)
-    println(io, "run,T,L,βc_CV,Δβc_CV,βc_BC,Δβc_BC,str_CV,str_BC")
+    println(io, "run,T,L,βc_CV,Δβc_CV,βc_BC,Δβc_BC")
     for r in runs
 
         L = read(h5dset[r], "Nl")
@@ -152,10 +152,8 @@ function critical_cumulants_all_runs(h5file, outfile)
         kws = (N = 30, eps = 1.0e-6)
         βc_CV, Δβc_CV = critical_beta_specific_heat(h5dset, r; kws...)
         βc_BC, Δβc_BC = critical_beta_binder_cumulant(h5dset, r; kws...)
-        str_CV = errorstring(βc_CV, Δβc_CV)
-        str_BC = errorstring(βc_BC, Δβc_BC)
 
-        println(io, "$r,$T,$L,$βc_CV,$Δβc_CV,$βc_BC,$Δβc_BC,$str_CV,$str_BC")
+        println(io, "$r,$T,$L,$βc_CV,$Δβc_CV,$βc_BC,$Δβc_BC")
     end
     close(io)
     return nothing
