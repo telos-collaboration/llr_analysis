@@ -34,8 +34,8 @@ function a_vs_central_action_plot(h5dset, runs; indices)
         for ind in indices
             a0, Δa0, S0, ind = a_vs_central_action(h5dset, run; ind)
             Nt = read(fid[run], "Nt")
-            Nl = read(fid[run], "Nl")
-            V = Nl^3 * Nt
+            Ns = read(fid[run], "Ns")
+            V = Ns^3 * Nt
             up = S0 / (6V)
             plot!(
                 plt,
@@ -43,7 +43,7 @@ function a_vs_central_action_plot(h5dset, runs; indices)
                 a0,
                 yerr = Δa0,
                 marker = :auto,
-                label = "$(Nt)x$(Nl): ΔE=$(round(2(S0[2] - S0[1]) / 6V, sigdigits = 1)) (Nr+RM steps=$ind)",
+                label = "$(Nt)x$(Ns): ΔE=$(round(2(S0[2] - S0[1]) / 6V, sigdigits = 1)) (Nr+RM steps=$ind)",
             )
         end
     end
@@ -66,9 +66,9 @@ end
 function a_vs_central_action_plot!(plt, h5dset, run; index = nothing, kws...)
     a0, Δa0, S0, ind = a_vs_central_action(h5dset, run; ind = index)
     Nt = read(h5dset[run], "Nt")
-    Nl = read(h5dset[run], "Nl")
+    Ns = read(h5dset[run], "Ns")
     Nrep = read(h5dset[run], "N_replicas")
-    return a_vs_central_action_plot!(plt, a0, Δa0, S0, Nt, Nl, Nrep; kws...)
+    return a_vs_central_action_plot!(plt, a0, Δa0, S0, Nt, Ns, Nrep; kws...)
 end
 function a_vs_central_action_plot!(
         plt,
@@ -76,13 +76,13 @@ function a_vs_central_action_plot!(
         Δa0,
         S0,
         Nt,
-        Nl,
+        Ns,
         replicas;
-        label = LLRParsing.fancy_title(Nt, Nl, replicas),
+        label = LLRParsing.fancy_title(Nt, Ns, replicas),
         highlight_index = nothing,
         lens = true,
     )
-    V = Nl^3 * Nt
+    V = Ns^3 * Nt
     up = S0 / (6V)
     plot!(plt, up, a0, yerr = Δa0, marker = :auto; label)
     if !isnothing(highlight_index)
@@ -108,8 +108,8 @@ function a_variance_vs_central_action_plot!(
     )
     a0, Δa0, S0, ind = a_vs_central_action(h5dset, run; ind = index)
     Nt = read(h5dset[run], "Nt")
-    Nl = read(h5dset[run], "Nl")
-    V = Nl^3 * Nt
+    Ns = read(h5dset[run], "Ns")
+    V = Ns^3 * Nt
     up = S0 / (6V)
     plot!(plt, up, zero(a0), ribbon = (zero(Δa0), Δa0), label = L"\Delta a_n")
     return if !isnothing(highlight_index)

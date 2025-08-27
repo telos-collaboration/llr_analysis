@@ -7,15 +7,15 @@ function read_critical_betas(file; offset = 0)
     data, header = readdlm(file, ',', header = true, comments = true)
     runs = data[:, 2]
     Nt = data[:, 3]
-    Nl = data[:, 4]
+    Ns = data[:, 4]
     βc = data[:, 7 + offset]
     Δβc = data[:, 8 + offset]
-    return runs, Nt, Nl, βc, Δβc
+    return runs, Nt, Ns, βc, Δβc
 end
 function main(file1, file2, file_tex)
-    runs11, Nt11, Nl11, βc11, Δβc11 = read_critical_betas(file1)
-    runsCV, NtCV, NlCV, βcCV, ΔβcCV = read_critical_betas(file2; offset = -2)
-    runsBC, NtBC, NlBC, βcBC, ΔβcBC = read_critical_betas(file2)
+    runs11, Nt11, Ns11, βc11, Δβc11 = read_critical_betas(file1)
+    runsCV, NtCV, NsCV, βcCV, ΔβcCV = read_critical_betas(file2; offset = -2)
+    runsBC, NtBC, NsBC, βcBC, ΔβcBC = read_critical_betas(file2)
 
     io = open(file_tex, "w")
     print_provenance_tex(io)
@@ -33,8 +33,8 @@ function main(file1, file2, file_tex)
         str_11 = errorstring(βc11[i], Δβc11[i])
         str_CV = errorstring(βcCV[i], ΔβcCV[i])
         str_BC = errorstring(βcBC[i], ΔβcBC[i])
-        Nt, Nl = Nt11[i], Nl11[i]
-        println(io, "$Nt & $Nl & $replicas & $str_11 & $str_CV & $str_BC \\\\")
+        Nt, Ns = Nt11[i], Ns11[i]
+        println(io, "$Nt & $Ns & $replicas & $str_11 & $str_CV & $str_BC \\\\")
     end
     println(io, footer)
     return close(io)

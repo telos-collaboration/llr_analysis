@@ -17,12 +17,12 @@ gr(
 function read_critical_betas(file, offset = 1)
     data, header = readdlm(file, ',', header = true, comments = true)
     Nt = data[:, 2 + offset]
-    Nl = data[:, 3 + offset]
+    Ns = data[:, 3 + offset]
     A1 = data[:, 4 + offset]
     A2 = data[:, 5 + offset]
     βc = data[:, 6 + offset]
     Δβc = data[:, 7 + offset]
-    return only(unique(Nt)), Nl, βc, Δβc, only(unique(A1)), only(unique(A2))
+    return only(unique(Nt)), Ns, βc, Δβc, only(unique(A1)), only(unique(A2))
 end
 function plot_critical_beta!(plt, file; kws...)
     Nt, L, βc, Δβc, A1, A2 = read_critical_betas(file)

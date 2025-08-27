@@ -37,7 +37,7 @@ function main()
     isfile(h5file) && rm(h5file)
 
     for row in eachrow(metadata)
-        run, s, replicas, repeats, Nt, Nl = row
+        run, s, replicas, repeats, Nt, Ns = row
         if iszero(only_Nt) || parse(Int, Nt) == only_Nt
             parse_full(run, s, h5file)
         end

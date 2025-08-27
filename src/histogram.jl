@@ -125,14 +125,14 @@ function log_rho(E, S, dS, a; cumsum_a = cumsum(a))
 end
 function _set_up_histogram(fid, run)
     a, S_all = LLRParsing.a_vs_central_action_repeats(fid, run; ind = nothing)[1:2]
-    Nl = read(fid[run], "Nl")::Int
+    Ns = read(fid[run], "Ns")::Int
     Nt = read(fid[run], "Nt")::Int
     S = unique(S_all)
-    V = Nt * Nl^3
-    return a::Matrix{Float64}, S::Vector{Float64}, Nt, Nl, V
+    V = Nt * Ns^3
+    return a::Matrix{Float64}, S::Vector{Float64}, Nt, Ns, V
 end
 function probability_density_repeats(fid, run, beta; kws...)
-    a, S, Nt, Nl, V = _set_up_histogram(fid, run)
+    a, S, Nt, Ns, V = _set_up_histogram(fid, run)
     return probability_density_repeats(a, S, beta, V; kws...)
 end
 function trapz(x, y)
@@ -181,7 +181,7 @@ function probability_density(a, S, beta, V; kws...)
     return ups, P, ΔP, covP, V, dS
 end
 function plot_plaquette_histogram!(plt, fid, run, beta; kws...)
-    a, S, Nt, Nl, V = _set_up_histogram(fid, run)
+    a, S, Nt, Ns, V = _set_up_histogram(fid, run)
     ups, P, ΔP, covP, V, dS = probability_density(a, S, beta, V)
     label = LLRParsing.fancy_title(run)
     xlabel = L"u_p"

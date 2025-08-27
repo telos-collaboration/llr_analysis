@@ -16,19 +16,19 @@ gr(
     left_margin = 0Plots.mm,
 )
 
-a_vs_central_action_plot(h5id, runs::Vector, Nt, Nl; kws...) =
-    a_vs_central_action_plot!(plot(), h5id, runs, Nt, Nl; kws...)
-function a_vs_central_action_plot!(plt, h5id, runs::Vector, Nt, Nl; kws...)
+a_vs_central_action_plot(h5id, runs::Vector, Nt, Ns; kws...) =
+    a_vs_central_action_plot!(plot(), h5id, runs, Nt, Ns; kws...)
+function a_vs_central_action_plot!(plt, h5id, runs::Vector, Nt, Ns; kws...)
     # default plot limits
     xmin, xmax = +Inf, -Inf
     ymin, ymax = +Inf, -Inf
     for run in runs
         Nt0 = read(h5id[run], "Nt")
-        Nl0 = read(h5id[run], "Nl")
-        if Nt0 == Nt && Nl0 == Nl
+        Ns0 = read(h5id[run], "Ns")
+        if Nt0 == Nt && Ns0 == Ns
             a0, Δa0, S0, _ = a_vs_central_action(h5id, run)
             Nrep = read(h5id[run], "N_replicas")
-            up = @. S0 / (6 * Nl^3 * Nt)
+            up = @. S0 / (6 * Ns^3 * Nt)
             label = L"N_{\!\mathrm{rep}}\!=\!%$Nrep"
             LLRParsing.a_vs_central_action_plot!(
                 plt,
@@ -36,7 +36,7 @@ function a_vs_central_action_plot!(plt, h5id, runs::Vector, Nt, Nl; kws...)
                 Δa0,
                 S0,
                 Nt,
-                Nl,
+                Ns,
                 Nrep;
                 label,
                 kws...,
@@ -60,18 +60,18 @@ function a_vs_central_action_plot!(plt, h5id, runs::Vector, Nt, Nl; kws...)
     end
     plot!(
         plt,
-        title = L"N_t\times N_s^3\!=\!%$Nt\times %$Nl^3",
+        title = L"N_t\times N_s^3\!=\!%$Nt\times %$Ns^3",
         xlims = (xmin, xmax),
         ylims = (ymin, ymax),
     )
     return plt
 end
-function an_action_volumes_replicas(file, plotdest, Nt, Nl)
+function an_action_volumes_replicas(file, plotdest, Nt, Ns)
     ispath(dirname(plotdest)) || mkpath(dirname(plotdest))
     h5id = h5open(file)
     runs = keys(h5id)
     runs = filter(!startswith("provenance"), runs)
-    plt = a_vs_central_action_plot(h5id, runs, Nt, Nl, lens = false)
+    plt = a_vs_central_action_plot(h5id, runs, Nt, Ns, lens = false)
     plot!(plt; legend = :bottomright, xlabel = L"u_p", ylabel = L"a_n")
     return savefig(plt, plotdest)
 end
@@ -88,8 +88,8 @@ function parse_commandline()
         help = "Nt of the runs to be plotted of the plot"
         required = true
         arg_type = Int
-        "--Nl"
-        help = "Nl of the runs to be plotted of the plot"
+        "--Ns"
+        help = "Ns of the runs to be plotted of the plot"
         required = true
         arg_type = Int
     end
@@ -100,7 +100,7 @@ function main()
     file = args["h5file"]
     plotdst = args["plot_file"]
     Nt = args["Nt"]
-    Nl = args["Nl"]
-    return an_action_volumes_replicas(file, plotdst, Nt, Nl)
+    Ns = args["Ns"]
+    return an_action_volumes_replicas(file, plotdst, Nt, Ns)
 end
 main()

@@ -35,20 +35,20 @@ function parse_beta(file)
     return
 end
 function parse_importance_sampling(file)
-    Nt, Nl = latticesize(file)[1:2]
+    Nt, Ns = latticesize(file)[1:2]
     plaq = plaquettes(file)
     beta = parse_beta(file)
     poly = polyakov_loop(file)
-    return Nt, Nl, plaq, beta, poly
+    return Nt, Ns, plaq, beta, poly
 end
 function importance_sampling_file_to_hdf5(file_in, h5file)
-    Nt, Nl, plaq, beta, poly = parse_importance_sampling(file_in)
-    ensemble = "ImportanceSampling/$(Nt)x$(Nl)/$beta"
+    Nt, Ns, plaq, beta, poly = parse_importance_sampling(file_in)
+    ensemble = "ImportanceSampling/$(Nt)x$(Ns)/$beta"
 
     h5write(h5file, joinpath(ensemble, "plaquette"), plaq)
     h5write(h5file, joinpath(ensemble, "polyakov_loop"), poly)
     h5write(h5file, joinpath(ensemble, "Nt"), Nt)
-    h5write(h5file, joinpath(ensemble, "Nl"), Nl)
+    h5write(h5file, joinpath(ensemble, "Ns"), Ns)
     return h5write(h5file, joinpath(ensemble, "beta"), beta)
 end
 function importance_sampling_dir_hdf5(basedir, h5file; outname = "output_file")

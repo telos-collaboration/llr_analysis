@@ -158,14 +158,14 @@ function llr_dir_hdf5(dir, h5file; suffix = "", skip_repeats = String[])
     # assure the global lattice parameters are identical for all repeats and replicas
     N_replicas = only(unique([length(replica_dirs[r]) for r in repeats]))
     Nt = only(unique(first.(latticesize.(files))))
-    Nl = only(unique(last.(latticesize.(files))))
+    Ns = only(unique(last.(latticesize.(files))))
 
-    name = "$(Nt)x$(Nl)_$(N_replicas)replicas" * suffix
+    name = "$(Nt)x$(Ns)_$(N_replicas)replicas" * suffix
     write(fid, joinpath(name, "N_repeats"), N_repeats)
     write(fid, joinpath(name, "N_replicas"), N_replicas)
     write(fid, joinpath(name, "repeats"), repeats)
     write(fid, joinpath(name, "Nt"), Nt)
-    write(fid, joinpath(name, "Nl"), Nl)
+    write(fid, joinpath(name, "Ns"), Ns)
 
     @showprogress desc = "parsing $name" for repeat in repeats
         for rep in replica_dirs[repeat]
@@ -258,7 +258,7 @@ function sort_by_central_energy_to_hdf5_run(h5file_in, h5file_out, run)
     write(h5dset_out, joinpath(run, "N_repeats"), N_repeats)
     write(h5dset_out, joinpath(run, "repeats"), repeats)
     write(h5dset_out, joinpath(run, "Nt"), h5read(h5file_in, joinpath(run, "Nt")))
-    write(h5dset_out, joinpath(run, "Nl"), h5read(h5file_in, joinpath(run, "Nl")))
+    write(h5dset_out, joinpath(run, "Ns"), h5read(h5file_in, joinpath(run, "Ns")))
 
     close(h5dset)
     return close(h5dset_out)

@@ -31,7 +31,7 @@ runs = keys(fid)
 
 for run in runs
     β0, βmin, βmax = 7.49, 7.488, 7.492
-    a, S, Nt, Nl, V = LLRParsing._set_up_histogram(fid, run)
+    a, S, Nt, Ns, V = LLRParsing._set_up_histogram(fid, run)
     beta = LLRParsing.beta_at_equal_heights(fid, run, β0, βmin, βmax)
     ups, prob, V, dS = LLRParsing.probability_density_repeats(a, S, beta, V)
     corP = cor(prob, dims = 2)

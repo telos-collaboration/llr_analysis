@@ -60,7 +60,7 @@ function jackknife_resamples(obs)
     return samples
 end
 function histogram_jackknife_fit(fid, run)
-    a, S, Nt, Nl, V = LLRParsing._set_up_histogram(fid, run)
+    a, S, Nt, Ns, V = LLRParsing._set_up_histogram(fid, run)
     # estimate the covariance matrix of the probability distribution by calculating
     # it from the ensemble averages. I will use it as the weight in the least squares fit.
     a_jk = jackknife_resamples(a)
@@ -82,7 +82,7 @@ function histogram_jackknife_fit(fid, run)
     return ups, f, Δf
 end
 function βc_jackknife(fid, run; kws...)
-    a, S, Nt, Nl, V = LLRParsing._set_up_histogram(fid, run)
+    a, S, Nt, Ns, V = LLRParsing._set_up_histogram(fid, run)
     a_jk = jackknife_resamples(a)
     beta = zeros(size(a_jk)[2])
     for i in axes(a_jk, 2)
@@ -95,7 +95,7 @@ function βc_jackknife(fid, run; kws...)
     return βc, Δβc
 end
 function histogram_jackknife_fit(fid, run, beta)
-    a, S, Nt, Nl, V = LLRParsing._set_up_histogram(fid, run)
+    a, S, Nt, Ns, V = LLRParsing._set_up_histogram(fid, run)
     # estimate the covariance matrix of the probability distribution by calculating
     # it from the ensemble averages. I will use it as the weight in the least squares fit.
     covP = LLRParsing.probability_density(a, S, beta, V)[4]

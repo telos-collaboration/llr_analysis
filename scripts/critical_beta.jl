@@ -21,9 +21,9 @@ function all_critical_beta(file, outfile; A1 = 1, A2 = 1)
     header = !isfile(outfile)
     io = open(outfile, "a")
     print_provenance_csv(io)
-    header && println(io, "group,run,Nt,Nl,A1,A2,βc,Δβc")
+    header && println(io, "group,run,Nt,Ns,A1,A2,βc,Δβc")
     for run in runs
-        L = read(fid[run], "Nl")
+        L = read(fid[run], "Ns")
         T = read(fid[run], "Nt")
         try
             βc, Δβc = LLRParsing.βc_jackknife(fid, run; A1, A2)

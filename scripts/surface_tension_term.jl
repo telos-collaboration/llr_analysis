@@ -18,7 +18,7 @@ gr(
 )
 
 function beta_Pmin_Pmax_jackknife(fid, run; w = 5)
-    a, S, Nt, Nl, V = LLRParsing._set_up_histogram(fid, run)
+    a, S, Nt, Ns, V = LLRParsing._set_up_histogram(fid, run)
     a_jk = LLRParsing.jackknife_resamples(a)
 
     beta = zeros(size(a_jk, 2))
@@ -40,10 +40,10 @@ function beta_Pmin_Pmax_jackknife(fid, run; w = 5)
         Pmax[i] = (P[i1] + P[i2]) / 2
         # interface term according to Eq.(28) in Bennett:2024bhy
         # Note that the second term has a typo: the sign is flipped
-        x = (Nt / Nl)^2
-        inter[i] = - x * log(Pmin[i] / Pmax[i]) / 2 + x * log(Nl) / 4
+        x = (Nt / Ns)^2
+        inter[i] = - x * log(Pmin[i] / Pmax[i]) / 2 + x * log(Ns) / 4
     end
-    return beta, Pmin, Pmax, inter, Nt, Nl
+    return beta, Pmin, Pmax, inter, Nt, Ns
 end
 function apply_jackknife(obs::AbstractVector)
     N = length(obs)
@@ -60,9 +60,9 @@ function main(files, plt_name)
         runs = filter(!startswith("provenance"), runs)
         x, I, ΔI = zeros(length(runs)), zeros(length(runs)), zeros(length(runs))
         for (i, r) in enumerate(runs)
-            beta, Pmin, Pmax, inter, Nt, Nl = beta_Pmin_Pmax_jackknife(fid, r)
+            beta, Pmin, Pmax, inter, Nt, Ns = beta_Pmin_Pmax_jackknife(fid, r)
             I[i], ΔI[i] = apply_jackknife(inter)
-            x[i] = inv(Nl / Nt)
+            x[i] = inv(Ns / Nt)
         end
         plot!(plt, x .^ 2, I, yerr = ΔI, markershape = :circle, markeralpha = 0.7, label = L"N_t=%$Nt")
     end

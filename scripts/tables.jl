@@ -20,16 +20,16 @@ $N_t$ & $N_s$ & $u_{p}^{\rm min}$ & $u_{p}^{\rm max}$ & $N_{\rm rep}$ & $N_{\rm 
     for run in runs
         a0, Δa0, S0, ind = a_vs_central_action(fid, run)
         Nt = read(fid[run], "Nt")
-        Nl = read(fid[run], "Nl")
+        Ns = read(fid[run], "Ns")
         repeats = read(fid[run], "repeats")
         Nrepeats = read(fid[run], "N_repeats")
         Nreplicas = read(fid[run], "N_replicas")
-        up = S0 / (6Nl^3 * Nt)
+        up = S0 / (6Ns^3 * Nt)
         isrm = read(fid[run], "$(first(repeats))/Rep_0/is_rm")
         nr, rm = findlast(x -> !x, isrm), length(isrm)
         println(
             io,
-            "$Nt & $Nl & $(round((minimum(up)), digits = 3)) & $(round(maximum(up), digits = 3)) & $Nreplicas & $Nrepeats & $nr & $(rm - nr) \\\\",
+            "$Nt & $Ns & $(round((minimum(up)), digits = 3)) & $(round(maximum(up), digits = 3)) & $Nreplicas & $Nrepeats & $nr & $(rm - nr) \\\\",
         )
     end
     println(io, footer)

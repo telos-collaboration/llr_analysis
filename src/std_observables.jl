@@ -1,8 +1,8 @@
 # For higher moments I use the didcated functions because they are faster
 # I have checked that the numerical precision is sufficient
 binder_cumulant(x) = 1 - moment(x, 4, 0.0) / mean(f -> f^2, x)^2 / 3
-poly_susceptibility(x, Nl) = var(abs.(x)) * Nl^3
-specific_heat_plaq(x, Nl, Nt) = var(x) * 6Nl^3 * Nt
+poly_susceptibility(x, Ns) = var(abs.(x)) * Ns^3
+specific_heat_plaq(x, Ns, Nt) = var(x) * 6Ns^3 * Nt
 
 # TODO: Give variance of the mean of those statistical uncertainties analytically
 #       Bin data instead of separating the measurements by τint
@@ -30,14 +30,14 @@ function std_observables(h5file, ens)
     plaq = f[ens]["plaquette"][]
     poly = f[ens]["polyakov_loop"][]
     Nt = f[ens]["Nt"][]
-    Nl = f[ens]["Nl"][]
-    return std_observables(plaq, poly, Nt, Nl)
+    Ns = f[ens]["Ns"][]
+    return std_observables(plaq, poly, Nt, Ns)
 end
-function std_observables(plaq, poly, Nt, Nl)
+function std_observables(plaq, poly, Nt, Ns)
     binder_plaq = binder_cumulant(plaq)
-    sh_plaq = specific_heat_plaq(plaq, Nl, Nt)
+    sh_plaq = specific_heat_plaq(plaq, Ns, Nt)
     plaq_vev = mean(plaq)
-    poly_sus = poly_susceptibility(poly, Nl)
+    poly_sus = poly_susceptibility(poly, Ns)
     poly_vev = mean(abs, poly)
 
     # Estimate autocorrelation times:
@@ -58,9 +58,9 @@ function std_observables(plaq, poly, Nt, Nl)
 
     Δbinder_plaq = jackknife_resample_1d_reduction(plaq_τ, x -> binder_cumulant(x))[2]
     Δsh_plaq =
-        jackknife_resample_1d_reduction(plaq_τ, x -> specific_heat_plaq(x, Nl, Nt))[2]
+        jackknife_resample_1d_reduction(plaq_τ, x -> specific_heat_plaq(x, Ns, Nt))[2]
     Δplaq_vev = std(plaq_τ) / sqrt(length(plaq_τ))
-    Δpoly_sus = jackknife_resample_1d_reduction(poly_τ, x -> poly_susceptibility(x, Nl))[2]
+    Δpoly_sus = jackknife_resample_1d_reduction(poly_τ, x -> poly_susceptibility(x, Ns))[2]
     Δpoly_vev = std(poly_τ) / sqrt(length(poly_τ))
 
     # Obtain histograms like David did for further use
@@ -85,11 +85,11 @@ function write_all_std_observables_to_hdf5(h5file_in, h5file_out)
             plaq_vec = fid[joinpath(latt, β, "plaquette")][]
             poly_vec = fid[joinpath(latt, β, "polyakov_loop")][]
             Nt = fid[joinpath(latt, β, "Nt")][]
-            Nl = fid[joinpath(latt, β, "Nl")][]
+            Ns = fid[joinpath(latt, β, "Ns")][]
             beta = fid[joinpath(latt, β, "beta")][]
 
             bc, Δbc, sh, Δsh, plaq, Δplaq, psus, Δpsus, poly, Δpoly =
-                std_observables(plaq_vec, poly_vec, Nt, Nl)
+                std_observables(plaq_vec, poly_vec, Nt, Ns)
 
             # Save newly computed data to file
             h5write(h5file_out, joinpath("ImportanceSampling", latt, β, "plaquette"), plaq)
@@ -140,7 +140,7 @@ function write_all_std_observables_to_hdf5(h5file_in, h5file_out)
             )
             # Also save basic lattice parameters
             h5write(h5file_out, joinpath("ImportanceSampling", latt, β, "Nt"), Nt)
-            h5write(h5file_out, joinpath("ImportanceSampling", latt, β, "Nl"), Nl)
+            h5write(h5file_out, joinpath("ImportanceSampling", latt, β, "Ns"), Ns)
             h5write(h5file_out, joinpath("ImportanceSampling", latt, β, "beta"), beta)
 
         end

@@ -24,8 +24,8 @@ function definitions(h5file_Nt4, h5file_Nt5, outfile)
     runs_Nt4 = filter(!startswith("provenance"), keys(fid_Nt4))
     runs_Nt5 = filter(!startswith("provenance"), keys(fid_Nt5))
 
-    ratio_Nt4 = [ read(fid_Nt4, joinpath(r, "Nl")) / read(fid_Nt4, joinpath(r, "Nt")) for r in runs_Nt4 ]
-    ratio_Nt5 = [ read(fid_Nt5, joinpath(r, "Nl")) / read(fid_Nt5, joinpath(r, "Nt")) for r in runs_Nt5 ]
+    ratio_Nt4 = [ read(fid_Nt4, joinpath(r, "Ns")) / read(fid_Nt4, joinpath(r, "Nt")) for r in runs_Nt4 ]
+    ratio_Nt5 = [ read(fid_Nt5, joinpath(r, "Ns")) / read(fid_Nt5, joinpath(r, "Nt")) for r in runs_Nt5 ]
 
     max_aspect_ratio_Nt4 = Int(maximum(ratio_Nt4))
     max_aspect_ratio_Nt5 = Int(maximum(ratio_Nt5))

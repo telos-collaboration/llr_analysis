@@ -11,7 +11,7 @@ write(output, input)
 close(input)
 close(output)
 
-Nt, Nl, plaq, beta, poly = LLRParsing.parse_importance_sampling(file_tmp)
+Nt, Ns, plaq, beta, poly = LLRParsing.parse_importance_sampling(file_tmp)
 data = readdlm(compare_file, ',', skipstart = 1)
 rm(file_tmp)
 
@@ -23,7 +23,7 @@ poly2 = data[:, 3]
 Δplaq = maximum(abs.(plaq - plaq2))
 
 # Now test the "standard observables" from David's file ''
-ans = std_observables(plaq, abs.(real.(poly)), Nt, Nl)
+ans = std_observables(plaq, abs.(real.(poly)), Nt, Ns)
 binder_plaq,
     Δbinder_plaq,
     sh_plaq,

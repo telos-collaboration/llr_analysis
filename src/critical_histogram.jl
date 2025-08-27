@@ -13,7 +13,7 @@
     be used to investigate histograms of unequal heights.
 """
 function peak_height_difference(fid, run, β; kws...)
-    a, S, Nt, Nl, V = LLRParsing._set_up_histogram(fid, run)
+    a, S, Nt, Ns, V = LLRParsing._set_up_histogram(fid, run)
     return peak_height_difference(a, S, β, V; kws...)
 end
 function peak_height_difference(
@@ -105,11 +105,11 @@ end
     difference of the histogram peaks vanish
 """
 function beta_at_equal_heights(fid, run; kws...)
-    a, S, Nt, Nl, V = LLRParsing._set_up_histogram(fid, run)
+    a, S, Nt, Ns, V = LLRParsing._set_up_histogram(fid, run)
     return beta_at_equal_heights(a, S, V; kws...)
 end
 function beta_at_equal_heights(fid, run, β0, βmin, βmax; kws...)
-    a, S, Nt, Nl, V = LLRParsing._set_up_histogram(fid, run)
+    a, S, Nt, Ns, V = LLRParsing._set_up_histogram(fid, run)
     return beta_at_equal_heights(a, S, V, β0, βmin, βmax; kws...)
 end
 function beta_at_equal_heights(a, S, V; kws...)

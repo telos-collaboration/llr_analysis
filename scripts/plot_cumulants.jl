@@ -21,7 +21,7 @@ gr(
 
 function largets_replica_runs(h5id, runs)
     # Only include one run per volume with the largest number of N_replicas
-    data = [[read(h5id[r], "Nt"), read(h5id[r], "Nl"), read(h5id[r], "N_replicas")] for r in runs]
+    data = [[read(h5id[r], "Nt"), read(h5id[r], "Ns"), read(h5id[r], "N_replicas")] for r in runs]
     maxr = similar(runs)
     for i in eachindex(data)
         matches = findall(x -> x[1:2] == data[i][1:2], data)
@@ -31,12 +31,12 @@ function largets_replica_runs(h5id, runs)
     return unique(maxr)
 end
 function cumulants(h5dset, run)
-    a, S, Nt, Nl, V = LLRParsing._set_up_histogram(h5dset, run)
+    a, S, Nt, Ns, V = LLRParsing._set_up_histogram(h5dset, run)
     β = range(start = minimum(a), stop = maximum(a), length = 100)
     return cumulants(h5dset, run, β)
 end
 function cumulants(h5dset, run, β)
-    a, S, Nt, Nl, V = LLRParsing._set_up_histogram(h5dset, run)
+    a, S, Nt, Ns, V = LLRParsing._set_up_histogram(h5dset, run)
     repeats = size(a, 2)
 
     CV = zeros((length(β), repeats))

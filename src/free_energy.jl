@@ -1,16 +1,16 @@
 function thermodynamic_potentials_repeats(h5dset, run; kws...)
     a, S0_all, ind = LLRParsing.a_vs_central_action_repeats(h5dset, run)
-    Nl = read(h5dset[run], "Nl")
+    Ns = read(h5dset[run], "Ns")
     Nt = read(h5dset[run], "Nt")
-    V = Nt * Nl^3
+    V = Nt * Ns^3
     S0 = dropdims(unique(S0_all, dims = 2), dims = 2)
     return thermodynamic_potentials_repeats(a, S0, V; kws...)
 end
 function thermodynamic_potentials(h5dset, run; kws...)
     a, S0_all, ind = LLRParsing.a_vs_central_action_repeats(h5dset, run)
-    Nl = read(h5dset[run], "Nl")
+    Ns = read(h5dset[run], "Ns")
     Nt = read(h5dset[run], "Nt")
-    V = Nt * Nl^3
+    V = Nt * Ns^3
     S0 = dropdims(unique(S0_all, dims = 2), dims = 2)
     return thermodynamic_potentials(a, S0, V; kws...)
 end
