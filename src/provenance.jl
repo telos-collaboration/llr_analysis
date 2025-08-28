@@ -14,9 +14,13 @@ function provenance()
     provenance["cli_args"] = prod(ARGS .* " ")
 
     # git has and status of the repo
-    githash = LibGit2.head(".")
-    githash = LibGit2.isdirty(LibGit2.GitRepo(".")) ? githash * "-dirty" : githash
-    provenance["git_hash"] = githash
+    try
+        githash = LibGit2.head(".")
+        githash = LibGit2.isdirty(LibGit2.GitRepo(".")) ? githash * "-dirty" : githash
+        provenance["git_hash"] = githash
+    catch
+        provenance["git_hash"] = "[No commit ID available]"
+    end
 
     # get versioninfo for julia and machine
     buf = IOBuffer()
