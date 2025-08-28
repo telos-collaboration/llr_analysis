@@ -14,7 +14,7 @@ gr(
     left_margin = 1Plots.mm,
 )
 
-function read_critical_betas(file, offset = 1)
+function read_critical_betas(file, offset = 3)
     data, header = readdlm(file, ',', header = true, comments = true)
     Nt = data[:, 2 + offset]
     Ns = data[:, 3 + offset]
