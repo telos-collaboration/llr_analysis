@@ -85,8 +85,8 @@ function cumulant_plots(h5file, Nt, critical_values)
         plot!(pltCV, β, CV, ribbon = ΔCV, label = LLRParsing.fancy_title(r), lw = 2)
         plot!(pltBC, β, BC .- 2 / 3, ribbon = ΔBC, label = LLRParsing.fancy_title(r), lw = 2)
     end
-    #hline!(pltBC, [2 / 3], yformatter = :plain, linestyle = :dot, color = :black, label = L"B_L(\beta) = 2/3")
     plot!(pltCV, ylims = (0, maximum(ylims(pltCV))))
+    plot!(pltBC, ylims = (minimum(ylims(pltBC)), 0))
     return pltCV, pltBC
 end
 
