@@ -395,10 +395,11 @@ rule critical_beta_table:
         julia_instantiated="tmp/julia_ready",
     output:
         textable="tmp/tables/beta_critical_Nt{Nt}.tex",
+        plot="assets/plots/beta_critical_Nt{Nt}.pdf",
     conda:
         "envs/environment.yml"
     shell:
-        'julia --project="." {input.script} --tex_file {output.textable} --input_cumulants {input.csv_cumulant} --input_histogram {input.csv_histogram} '
+        'julia --project="." {input.script} --tex_file {output.textable} --plot_file {output.plot} --input_cumulants {input.csv_cumulant} --input_histogram {input.csv_histogram} '
 
 
 rule definitions:

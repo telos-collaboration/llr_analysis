@@ -2,6 +2,18 @@ using LLRParsing
 using LaTeXStrings
 using DelimitedFiles
 using ArgParse
+using Plots
+gr(
+    size = (425, 282),
+    fontfamily = "Computer Modern",
+    legend = :topright,
+    frame = :box,
+    titlefontsize = 10,
+    legendfontsize = 7,
+    tickfontsize = 7,
+    labelfontsize = 10,
+    left_margin = 1Plots.mm,
+)
 
 function read_critical_betas(file; offset = 0)
     data, header = readdlm(file, ',', header = true, comments = true)
@@ -12,7 +24,7 @@ function read_critical_betas(file; offset = 0)
     Δβc = data[:, 10 + offset]
     return runs, Nt, Ns, βc, Δβc
 end
-function main(file1, file2, file_tex)
+function main_table(file1, file2, file_tex)
     runs11, Nt11, Ns11, βc11, Δβc11 = read_critical_betas(file1)
     runsCV, NtCV, NsCV, βcCV, ΔβcCV = read_critical_betas(file2; offset = -2)
     runsBC, NtBC, NsBC, βcBC, ΔβcBC = read_critical_betas(file2)
@@ -39,6 +51,27 @@ function main(file1, file2, file_tex)
     println(io, footer)
     return close(io)
 end
+function plot_critical_beta!(plt, Ns, βc, Δβc; kws...)
+    tks = (inv.(Ns), (L"1/%$Li" for Li in Ns))
+    scatter!(plt, inv.(Ns), βc, xticks = tks, yerr = Δβc; kws...)
+    return nothing
+end
+function main_plot(file1, file2, outfile)
+    runs11, Nt11, Ns11, βc11, Δβc11 = read_critical_betas(file1)
+    runsCV, NtCV, NsCV, βcCV, ΔβcCV = read_critical_betas(file2; offset = -2)
+    runsBC, NtBC, NsBC, βcBC, ΔβcBC = read_critical_betas(file2)
+
+    @assert Nt11 == NtCV == NtBC
+    Nt = first(Nt11)
+    plt = plot(title = L"N_t = %$Nt", ylabel = L"$\beta_{CV}$", xlabel = L"$1/N_s$", legend = :topleft)
+
+    plot_critical_beta!(plt, Ns11, βc11, Δβc11; ma = 0.7, marker = :circ, label = L"$\beta_{CV }(P)$")
+    plot_critical_beta!(plt, NsCV, βcCV, ΔβcCV; ma = 0.7, marker = :hexagon, label = L"$\beta_{CV }(C_V)$")
+    plot_critical_beta!(plt, NsBC, βcBC, ΔβcBC; ma = 0.7, marker = :rect, label = L"$\beta_{CV }(B_C)$")
+    savefig(outfile)
+
+    return nothing
+end
 
 function parse_commandline()
     s = ArgParseSettings()
@@ -52,6 +85,9 @@ function parse_commandline()
         "--tex_file"
         help = "Where to save the table"
         required = true
+        "--plot_file"
+        help = "Where to save the table"
+        required = true
     end
     return parse_args(s)
 end
@@ -59,4 +95,6 @@ args = parse_commandline()
 file1 = args["input_histogram"]
 file2 = args["input_cumulants"]
 file_tex = args["tex_file"]
-main(file1, file2, file_tex)
+file_plot = args["plot_file"]
+main_table(file1, file2, file_tex)
+main_plot(file1, file2, file_plot)
