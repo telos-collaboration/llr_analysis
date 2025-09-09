@@ -66,8 +66,8 @@ function main_plot(file1, file2, outfile)
     plt = plot(title = L"N_t = %$Nt", ylabel = L"$\beta_{CV}$", xlabel = L"$1/N_s$", legend = :topleft)
 
     plot_critical_beta!(plt, Ns11, βc11, Δβc11; ma = 0.7, marker = :circ, label = L"$\beta_{CV }(P)$")
-    plot_critical_beta!(plt, NsCV, βcCV, ΔβcCV; ma = 0.7, marker = :hexagon, label = L"$\beta_{CV }(C_V)$")
     plot_critical_beta!(plt, NsBC, βcBC, ΔβcBC; ma = 0.7, marker = :rect, label = L"$\beta_{CV }(B_C)$")
+    plot_critical_beta!(plt, NsCV, βcCV, ΔβcCV; ma = 0.7, marker = :diamond, label = L"$\beta_{CV }(C_V)$")
     savefig(outfile)
 
     return nothing
