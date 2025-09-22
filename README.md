@@ -24,9 +24,9 @@ The workflow in this repository performs the analyses presented in the paper
 
 3. The raw data and metadata can be downloaded from Zenodo
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.16580109.svg)](https://doi.org/10.5281/zenodo.16580109).
-Download `metadata.zip` and `raw_data.tar.zst` from Zenodo and decompress the
-archives in this directory. On slow and/or unstable connections consider using
-`wget -c` to download the larger dataset. After decompression the raw data takes
+Download `metadata.zip`, `raw_data.zip` and `decompress_raw_data.sh` from Zenodo and decompress the
+archives in this directory by invoking `decompress_raw_data.sh`. On slow and/or unstable connections consider using
+`wget -c` to download large files. After decompression the raw data takes
 up roughly 90GB of space.
 
 ## Running the workflow
