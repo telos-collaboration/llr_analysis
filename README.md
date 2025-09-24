@@ -3,7 +3,7 @@
 [![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.16579683.svg)](https://doi.org/10.5281/zenodo.16579683)
 
 The workflow in this repository performs the analyses presented in the paper
-[Finite-temperature Yang-Mills theories with the density of states method: towards the continuum limit]().
+[Finite-temperature Yang-Mills theories with the density of states method: towards the continuum limit [2509.19009]](https://arxiv.org/abs/2509.19009).
 
 ## Requirements
 
