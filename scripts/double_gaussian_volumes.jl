@@ -12,18 +12,35 @@ gr(
     tickfontsize = 7,
     labelfontsize = 10,
     left_margin = 0Plots.mm,
+    palette = :Set1_5,
 )
+LINESTYLES = [:solid, :dot, :dash, :dashdot, :dashdotdot]
+MARKERS = [:circle, :diamond, :dtriangle, :heptagon, :hexagon, :ltriangle, :octagon, :pentagon, :rect, :rtriangle, :star4, :star5, :star6, :star7, :star8, :utriangle ]
 
+function largets_replica_runs(h5id, runs)
+    # Only include one run per volume with the largest number of N_replicas
+    data = [[read(h5id[r], "Nt"), read(h5id[r], "Ns"), read(h5id[r], "N_replicas")] for r in runs]
+    maxr = similar(runs)
+    for i in eachindex(data)
+        matches = findall(x -> x[1:2] == data[i][1:2], data)
+        j = findmax(x -> data[x][3], matches)[2]
+        maxr[i] = runs[matches[j]]
+    end
+    return unique(maxr)
+end
 function plot_all_histogram_fits(file, plotfile, title)
     ispath(dirname(plotfile)) || mkpath(dirname(plotfile))
     fid = h5open(file)
     runs = keys(fid)
+    runs = filter(!startswith("provenance"), keys(fid))
+    runs = largets_replica_runs(fid, runs)
     plt = plot(title = title)
-    for run in runs
+    for (i,run) in enumerate(reverse(runs))
         try
             βc = LLRParsing.beta_at_equal_heights(fid, run)
-            plot_plaquette_histogram!(plt, fid, run, βc)
-            plot!(plt, legend = :outerright)
+            ind = mod1(i,length(LINESTYLES))
+            plot_plaquette_histogram!(plt, fid, run, βc; linestyle = LINESTYLES[ind])
+            plot!(plt, legend = :outerright) 
         catch
             @warn "Cannot determine critical β for $run"
         end

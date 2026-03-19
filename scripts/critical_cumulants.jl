@@ -1,22 +1,12 @@
 using LLRParsing
 using LaTeXStrings
 using HDF5
-using Plots
 using ArgParse
 using Statistics
 using Quadmath
 
-gr(
-    size = (425, 282),
-    fontfamily = "Computer Modern",
-    legend = :topleft,
-    frame = :box,
-    titlefontsize = 10,
-    legendfontsize = 7,
-    tickfontsize = 7,
-    labelfontsize = 10,
-    left_margin = 0Plots.mm,
-)
+LINESTYLES = [:solid, :dot, :dash]
+MARKERS = [:circle, :diamond, :dtriangle, :heptagon, :hexagon, :ltriangle, :octagon, :pentagon, :rect, :rtriangle, :star4, :star5, :star6, :star7, :star8, :utriangle ]
 
 function largets_replica_runs(h5id, runs)
     # Only include one run per volume with the largest number of N_replicas

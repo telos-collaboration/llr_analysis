@@ -12,7 +12,10 @@ gr(
     tickfontsize = 7,
     labelfontsize = 10,
     left_margin = 1Plots.mm,
+    palette = :Set1_5,
 )
+LINESTYLES = [:solid, :dot, :dash]
+MARKERS = [:circle, :diamond, :dtriangle, :heptagon, :hexagon, :ltriangle, :octagon, :pentagon, :rect, :rtriangle, :star4, :star5, :star6, :star7, :star8, :utriangle ]
 
 function read_critical_betas(file, offset = 3)
     data, header = readdlm(file, ',', header = true, comments = true)
@@ -34,10 +37,8 @@ end
 function plot_critical_beta(files, plotfile)
     ispath(dirname(plotfile)) || mkpath(dirname(plotfile))
     plt = plot(ylabel = L"$\beta_{CV}(P)$", xlabel = L"$1/N_s$")
-    markers = (:circle, :hexagon, :rect)
-    colors = (:orange, :blue, :green)
     for (i, file) in enumerate(files)
-        plot_critical_beta!(plt, file; markershape = markers[i], color = colors[i], markeralpha = 0.8)
+        plot_critical_beta!(plt, file; markershape = MARKERS[i], markeralpha = 0.8)
     end
     plot!(plt; xflip = false, legend = :topright)
     return savefig(plt, plotfile)

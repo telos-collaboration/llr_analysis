@@ -14,7 +14,10 @@ gr(
     tickfontsize = 7,
     labelfontsize = 10,
     left_margin = 0Plots.mm,
+    palette = :Set1_5,
 )
+LINESTYLES = [:solid, :dot, :dash]
+MARKERS = [:circle, :diamond, :dtriangle, :heptagon, :hexagon, :ltriangle, :octagon, :pentagon, :rect, :rtriangle, :star4, :star5, :star6, :star7, :star8, :utriangle ]
 
 a_vs_central_action_plot(h5id, runs::Vector, Nt, Ns; kws...) =
     a_vs_central_action_plot!(plot(), h5id, runs, Nt, Ns; kws...)
@@ -22,7 +25,7 @@ function a_vs_central_action_plot!(plt, h5id, runs::Vector, Nt, Ns; kws...)
     # default plot limits
     xmin, xmax = +Inf, -Inf
     ymin, ymax = +Inf, -Inf
-    for run in runs
+    for (i,run) in enumerate(runs)
         Nt0 = read(h5id[run], "Nt")
         Ns0 = read(h5id[run], "Ns")
         if Nt0 == Nt && Ns0 == Ns
@@ -39,7 +42,9 @@ function a_vs_central_action_plot!(plt, h5id, runs::Vector, Nt, Ns; kws...)
                 Ns,
                 Nrep;
                 label,
-                kws...,
+                lens = false,
+                marker = MARKERS[i],
+                alpha = 0.9,
             )
             # find useful plot limits for the volume comparison
             p_ind = findmaxima(a0, 5).indices

@@ -81,10 +81,12 @@ function a_vs_central_action_plot!(
         label = LLRParsing.fancy_title(Nt, Ns, replicas),
         highlight_index = nothing,
         lens = true,
+        marker = :auto,
+        kws...
     )
     V = Ns^3 * Nt
     up = S0 / (6V)
-    plot!(plt, up, a0, yerr = Δa0, marker = :auto; label)
+    plot!(plt, up, a0, yerr = Δa0; label, marker, kws...)
     if !isnothing(highlight_index)
         mid = up[highlight_index]
         del = (up[highlight_index + 1] - up[highlight_index]) / 2

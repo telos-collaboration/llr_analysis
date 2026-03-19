@@ -17,7 +17,10 @@ gr(
     tickfontsize = 7,
     labelfontsize = 10,
     left_margin = 0Plots.mm,
+    palette = :Set1_5,
 )
+LINESTYLES = [:solid, :dot, :dash, :dashdot, :dashdotdot]
+MARKERS = [:circle, :diamond, :dtriangle, :heptagon, :hexagon, :ltriangle, :octagon, :pentagon, :rect, :rtriangle, :star4, :star5, :star6, :star7, :star8, :utriangle ]
 
 function largets_replica_runs(h5id, runs)
     # Only include one run per volume with the largest number of N_replicas
@@ -60,7 +63,7 @@ function cumulant_plots(h5file, Nt, critical_values)
     pltCV = plot(legend = :outerright, xlabel = L"\beta", ylabel = L"C_V(\beta)", title = L"N_t = %$Nt")
     pltBC = plot(legend = :outerright, xlabel = L"\beta", ylabel = L"B_V(\beta) - 2/3", title = L"N_t = %$Nt")
     runs = filter(!startswith("provenance"), keys(fid))
-    runs = largets_replica_runs(fid, runs)
+    runs = reverse(largets_replica_runs(fid, runs))
 
     # first determine a good plotting range
     β_min, β_max = +Inf, -Inf
@@ -72,7 +75,7 @@ function cumulant_plots(h5file, Nt, critical_values)
         β_min, β_max = a[p_ind - δ], a[m_ind + 2δ]
     end
 
-    for r in runs
+    for (i,r) in enumerate(runs)
         β = range(start = β_min, stop = β_max, length = 100)
         β, CV0, BC0 = cumulants(fid, r, β)
         repeats = size(CV0, 2)
@@ -82,8 +85,9 @@ function cumulant_plots(h5file, Nt, critical_values)
         BC = dropdims(mean(BC0, dims = 2), dims = 2)
         ΔBC = dropdims(std(BC0, dims = 2), dims = 2) ./ sqrt.(repeats)
 
-        plot!(pltCV, β, CV, ribbon = ΔCV, label = LLRParsing.fancy_title(r), lw = 2)
-        plot!(pltBC, β, BC .- 2 / 3, ribbon = ΔBC, label = LLRParsing.fancy_title(r), lw = 2)
+        ind = mod1(i,length(LINESTYLES))
+        plot!(pltCV, β, CV, ribbon = ΔCV, linestyle = LINESTYLES[ind], label = LLRParsing.fancy_title(r))
+        plot!(pltBC, β, BC .- 2 / 3, ribbon = ΔBC, linestyle = LINESTYLES[ind], label = LLRParsing.fancy_title(r))
     end
     plot!(pltCV, ylims = (0, maximum(ylims(pltCV))))
     plot!(pltBC, ylims = (minimum(ylims(pltBC)), 0))

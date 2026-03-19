@@ -14,10 +14,12 @@ gr(
     tickfontsize = 7,
     labelfontsize = 10,
     left_margin = 0Plots.mm,
+    palette = :Set1_5,
 )
+LINESTYLES = [:solid, :dot, :dash]
+MARKERS = [:circle, :diamond, :dtriangle, :heptagon, :ltriangle, :hexagon, :octagon, :pentagon, :rect, :rtriangle, :star4, :star5, :star6, :star7, :star8, :utriangle ]
 
-a_vs_central_action_plot(h5id, runs::Vector; kws...) =
-    a_vs_central_action_plot!(plot(), h5id, runs; kws...)
+a_vs_central_action_plot(h5id, runs::Vector; kws...) = a_vs_central_action_plot!(plot(), h5id, runs; kws...)
 function largets_replica_runs(h5id, runs)
     # Only include one run per volume with the largest number of N_replicas
     data = [
@@ -36,14 +38,14 @@ function a_vs_central_action_plot!(plt, h5id, runs::Vector; kws...)
     # default plot limits
     xmin, xmax = +Inf, -Inf
     ymin, ymax = +Inf, -Inf
-    for run in runs
+    for (i,run) in enumerate(runs)
         a0, Δa0, S0, _ = a_vs_central_action(h5id, run)
         Nt = read(h5id[run], "Nt")
         Ns = read(h5id[run], "Ns")
         Nrep = read(h5id[run], "N_replicas")
         up = @. S0 / (6 * Ns^3 * Nt)
         label = L"N_s\!=\!%$Ns,N_{\!\mathrm{rep}}\!=\!%$Nrep"
-        LLRParsing.a_vs_central_action_plot!(plt, a0, Δa0, S0, Nt, Ns, Nrep; label, kws...)
+        LLRParsing.a_vs_central_action_plot!(plt, a0, Δa0, S0, Nt, Ns, Nrep; label, marker = MARKERS[i], alpha = 0.9, kws...)
         # find useful plot limits for the volume comparison
         p_ind = findmaxima(a0, 5).indices
         m_ind = findminima(a0, 5).indices

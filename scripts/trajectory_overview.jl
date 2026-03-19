@@ -12,7 +12,10 @@ gr(
     tickfontsize = 7,
     labelfontsize = 10,
     left_margin = 7Plots.mm,
+    palette = :Set1_5,
 )
+LINESTYLES = [:solid, :dot, :dash]
+MARKERS = [:circle, :diamond, :dtriangle, :heptagon, :hexagon, :ltriangle, :octagon, :pentagon, :rect, :rtriangle, :star4, :star5, :star6, :star7, :star8, :utriangle ]
 
 function overview(
         h5dset,

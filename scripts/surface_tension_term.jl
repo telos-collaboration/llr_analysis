@@ -15,7 +15,10 @@ gr(
     tickfontsize = 7,
     labelfontsize = 10,
     left_margin = 0Plots.mm,
+    palette = :Set1_5,
 )
+LINESTYLES = [:solid, :dot, :dash]
+MARKERS = [:circle, :diamond, :dtriangle, :heptagon, :hexagon, :ltriangle, :octagon, :pentagon, :rect, :rtriangle, :star4, :star5, :star6, :star7, :star8, :utriangle ]
 
 function beta_Pmin_Pmax_jackknife(fid, run; w = 5)
     a, S, Nt, Ns, V = LLRParsing._set_up_histogram(fid, run)
@@ -54,7 +57,7 @@ end
 function main(files, plt_name)
     plt = plot(; ylabel = L"\tilde{I}", xlabel = L"N_t^2/N_s^2")
     Nt = 0
-    for file in files
+    for (j,file) in enumerate(files)
         fid = h5open(file)
         runs = keys(fid)
         runs = filter(!startswith("provenance"), runs)
@@ -64,7 +67,7 @@ function main(files, plt_name)
             I[i], ΔI[i] = apply_jackknife(inter)
             x[i] = inv(Ns / Nt)
         end
-        plot!(plt, x .^ 2, I, yerr = ΔI, markershape = :circle, markeralpha = 0.7, label = L"N_t=%$Nt")
+        plot!(plt, x .^ 2, I, yerr = ΔI, markershape = MARKERS[j], markeralpha = 0.7, label = L"N_t=%$Nt")
     end
     plot!(plt; ylims = (0, maximum(ylims(plt))))
     plot!(plt; xlims = (0, maximum(xlims(plt))))

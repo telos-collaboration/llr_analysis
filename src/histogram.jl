@@ -191,6 +191,6 @@ function plot_plaquette_histogram!(plt, fid, run, beta; kws...)
     # restric plotting range
     i1 = findfirst(x -> x > 1.0e-14, P * 6V)
     i2 = findlast(x -> x > 1.0e-10, P * 6V)
-    plot!(plt, xlims = (ups[i1], ups[i2]))
+    plot!(plt, xlims = (max(ups[i1],xlims(plt)[1]), min(ups[i2],xlims(plt)[2])))
     return plt
 end

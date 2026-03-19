@@ -13,7 +13,10 @@ gr(
     tickfontsize = 7,
     labelfontsize = 10,
     left_margin = 0Plots.mm,
+    palette = :Set1_5,
 )
+LINESTYLES = [:solid, :dot, :dash]
+MARKERS = [:circle, :diamond, :dtriangle, :heptagon, :hexagon, :ltriangle, :octagon, :pentagon, :rect, :rtriangle, :star4, :star5, :star6, :star7, :star8, :utriangle ]
 
 function plot_all_histogram_fits(file, plotfile, run; fit, A1 = 1, A2 = 1, name = "fit")
     plotdir = dirname(plotfile)
@@ -25,8 +28,8 @@ function plot_all_histogram_fits(file, plotfile, run; fit, A1 = 1, A2 = 1, name 
         plot_plaquette_histogram!(plt, fid, run, βc)
         if fit
             ups, f, Δf = LLRParsing.histogram_jackknife_fit(fid, run, βc)
-            LLRParsing.plot_double_gaussian_fit_difference(plt, fid, run, βc)
-            plot!(plt, ups, f, ribbon = Δf, label = "double Gaussian fit", lw = 2)
+            LLRParsing.plot_double_gaussian_fit_difference(plt, fid, run, βc; linestyle = :dot)
+            plot!(plt, ups, f, ribbon = Δf, label = "double Gaussian fit", lw = 2; linestyle = :dash)
             # shade the region used in the fit
             ups, P, ΔP, covP, V, dS = probability_density(fid, run, βc)
             pks = findmaxima(P, 5)
